@@ -2,8 +2,7 @@
 <!--[if IE 6 ]><html lang="fr" class="ie6"> <![endif]-->
 <!--[if IE 7 ]><html lang="fr" class="ie7"> <![endif]-->
 <!--[if IE 8 ]><html lang="fr" class="ie8"> <![endif]-->
-<!--[if (gt IE 7)|!(IE)]><!-->
-<html lang="fr"><!--<![endif]-->
+<html lang="<?php showSiteLang(); ?>">
 <head>
 	<meta charset="utf-8">	
 	<title>99ko - Administration</title>	
@@ -21,21 +20,20 @@
 		<nav role="navigation">
 		   <ol>
 			<?php foreach($navigation as $k=>$v){ ?>
-			<li><a class="<?php if($v['isActive']){ ?>current<?php } ?>" href="<?php echo $v['url']; ?>"><?php echo $v['label']; ?></a></li>
+			<li><a class="<?php if($v['isActive']){ ?>current<?php } ?>" href="<?php echo $v['url']; ?>"><?php echo lang($v['label']); ?></a></li>
 			<?php } ?>
+			<li><a href="index.php?action=logout&token=<?php echo $token; ?>"><?php echo lang('Logout'); ?></a></li>
+			<li><a href="../"><?php echo lang('Back to website'); ?></a></li>
 		   </ol>
-	       &nbsp;<a class="btn" id="logout" href="index.php?action=logout&token=<?php echo $token; ?>">Se déconnecter</a>
-	       <a target="_blank" class="btn" id="showSite" href="../">Voir le site</a>		   		
+	       <!--&nbsp;<a class="btn" id="logout" href="index.php?action=logout&token=<?php echo $token; ?>"><?php echo lang('Logout'); ?></a>
+	       <a target="_blank" class="btn" id="showSite" href="../"><?php echo lang('Back to website'); ?></a>-->		   		
 		</nav>
 		<div id="copyright">
-		   Just using <a target="_blank" href="http://99ko.tuxfamily.org/"><b>99ko</b></a> <span class="version"><?php echo $version; ?></span>.
+		   <?php echo lang('Just using'); ?> <a target="_blank" href="http://99ko.tuxfamily.org/"><b>99ko</b></a> <span class="version"><?php echo $version; ?></span>.
 		</div>
 	</header>
 	<section id="content" class="<?php echo $pluginName; ?>-admin">
-		<h2><?php echo $pageTitle; ?></h2>
-		<?php if($pluginConfigTemplate){ ?>
-			<a href="javascript:" class="btn" id="pluginConfigButton">Configuration du plugin</a>
-		<?php } ?>
+		<h2><?php echo lang($pageTitle); ?></h2>
 		<hr class="notop">
 		<?php if($pluginConfigTemplate){ ?>
 			<div id="pluginConfig">
@@ -47,7 +45,7 @@
 		<div id="tabs">
 		<ul class="tabs">
 			<?php foreach($tabs as $k=>$v){ ?>
-			<li><a href="<?php echo $v['url']; ?>"><?php echo $v['label']; ?></a></li>
+			<li><a href="<?php echo $v['url']; ?>"><?php echo lang($v['label']); ?></a></li>
 			<?php } ?>
 		</ul>
 		<?php } ?>

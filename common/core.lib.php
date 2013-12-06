@@ -34,9 +34,7 @@ function getCoreConf($k = ''){
 function saveConfig($val, $append = array()){
 	$config = json_decode(@file_get_contents(ROOT.'data/config.txt'), true);
 	$config = array_merge($config, $append);
-	foreach($config as $k=>$v){
-		if(isset($val[$k])) $config[$k] = $val[$k];
-	}
+	foreach($config as $k=>$v) if(isset($val[$k])) $config[$k] = $val[$k];
 	if(@file_put_contents(ROOT.'data/config.txt', json_encode($config), 0666)) return true;
 	return false;
 }
@@ -71,9 +69,7 @@ function addHook($hookName, $function){
 function listThemes(){
 	$data = array();
 	$items = utilScanDir(ROOT.'theme/');
-	foreach($items['dir'] as $file){
-		$data[$file] = getThemeInfos($file);
-	}
+	foreach($items['dir'] as $file) $data[$file] = getThemeInfos($file);
 	return $data;
 }
 
@@ -82,11 +78,15 @@ function listThemes(){
 ** @return : string (URL de base)
 */
 function getSiteUrl(){
-	$siteUrl = str_replace(array('install.php', '/admin/index.php'), array('', ''), $_SERVER['SCRIPT_NAME']);
-	$siteUrl = 'http://'.$_SERVER['HTTP_HOST'].$siteUrl;
-	$pos = mb_strlen($siteUrl)-1;
-	if($siteUrl[$pos] == '/') $siteUrl = substr($siteUrl, 0, -1);
-	return $siteUrl;
+        $siteUrl = str_replace(array('install.php', '/admin/index.php'), array('', ''), $_SERVER['SCRIPT_NAME']);
+        $isSecure = false;
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') $isSecure = true;
+        elseif(!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') $isSecure = true;
+        $REQUEST_PROTOCOL = $isSecure ? 'https' : 'http';
+        $siteUrl = $REQUEST_PROTOCOL.'://'.$_SERVER['HTTP_HOST'].$siteUrl;
+        $pos = mb_strlen($siteUrl)-1;
+        if($siteUrl[$pos] == '/') $siteUrl = substr($siteUrl, 0, -1);
+        return $siteUrl;
 }
 
 /*
@@ -108,18 +108,14 @@ function rewriteUrl($plugin, $params = array()){
 	if(getCoreConf('urlRewriting')){
 		$url = $plugin.'/';
 		if(count($params) > 0){
-			foreach($params as $k=>$v){
-				$url.= utilStrToUrl($v).',';
-			}
+			foreach($params as $k=>$v) $url.= utilStrToUrl($v).',';
 			$url = trim($url, ',');
 			$url.= '.html';
 		}
 	}
 	else{
 		$url = 'index.php?p='.$plugin;
-		foreach($params as $k=>$v){
-			$url.= '&'.$k.'='.utilStrToUrl($v);
-		}
+		foreach($params as $k=>$v) $url.= '&'.$k.'='.utilStrToUrl($v);
 	}
 	return $url;
 }
@@ -131,13 +127,9 @@ function rewriteUrl($plugin, $params = array()){
 */
 function getUrlParams(){
 	$data = array();
-	if(getCoreConf('urlRewriting')){
-		$data = explode(',', $_GET['param']);
-	}
+	if(getCoreConf('urlRewriting')) $data = explode(',', $_GET['param']);
 	else{
-		foreach($_GET as $k=>$v){
-			if($k != 'p') $data[] = $v;
-		}
+		foreach($_GET as $k=>$v) if($k != 'p') $data[] = $v;
 	}
 	return $data;
 }
@@ -149,22 +141,47 @@ function encrypt($data){
 	return hash_hmac('sha1', $data, KEY);
 }
 
-
+/*
+** liste le dossier lang
+** @return : array
+*/
+function listLangs(){
+	$data = array('en');
+	$items = utilScanDir(ROOT.'common/lang/');
+	foreach($items['file'] as $k=>$v) $data[] = substr($v, 0, 2);
+	return $data;
+}
 
 /*
-** Cache
+** Formate les phrases
 */
-function delCurrentFileCache(){
-	global $cacheFile;
-	unlink('data/cache/'.$cacheFile);
+function lang($k){
+	global $lang;
+	if(getCoreConf('siteLang') == 'en') return $k;
+	elseif(array_key_exists($k, $lang)) return $lang[$k];
+	else return $k;
 }
 
-function delCacheFiles($plugin){
-	$files = utilScanDir(ROOT.'data/cache/');
-	foreach($files['file'] as $file){
-		$temp = substr($file, 0, mb_strlen($plugin));
-		if($temp == $plugin) unlink(ROOT.'data/cache/'.$file);
-	}
+/*
+ * renvoie la page d'erreur 404
+ */
+function error404(){
+	header("HTTP/1.1 404 Not Found");
+	header("Status: 404 Not Found");
+	$url = getCoreConf('siteUrl');
+	$lang = getCoreConf('siteLang');
+	$msg = lang("The requested page does not exist.", "core");
+	$back = lang("Back to website", "core");
+	echo '<!DOCTYPE html>
+	<html lang="'.$lang.'">
+	<head>
+	<meta charset="utf-8" />
+	<title>404</title>
+	</head>
+	<body>
+	<p>'.$msg.'<br /><< <a href="'.$url.'">'.$back.'</a></p>
+	</body>
+	</html>';
+	die();
 }
-
 ?>

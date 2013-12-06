@@ -23,7 +23,7 @@ if(!file_exists(ROOT.'data/config.txt')){
 	die();
 }
 // constantes
-define('VERSION', '1.2.7');
+define('VERSION', '1.3.12 b');
 define('ACTION', ((isset($_GET['action'])) ? $_GET['action'] : '')); // inutile : voir $urlParams
 include(ROOT.'data/key.php');
 // tableau des hooks
@@ -36,30 +36,17 @@ $coreConf = getCoreConf();
 $urlParams = getUrlParams();
 // Chargement des thèmes
 $themes = listThemes();
+// Chargement des langs
+$langs = listLangs();
+$lang = array();
+// On charge la langue du core
+$lang = utilReadJsonFile(ROOT.'common/lang/' .getCoreConf('siteLang'). '.json');
+if(file_exists(ROOT.'theme/' .getCoreConf('theme'). '/lang/' .getCoreConf('siteLang'). '.json')) $lang = array_merge($lang, utilReadJsonFile(ROOT.'theme/' .getCoreConf('theme'). '/lang/' .getCoreConf('siteLang'). '.json'));
 //constantes
-define('DEFAULT_PLUGIN', $coreConf['defaultPlugin']);
+define('DEFAULT_PLUGIN', getCoreConf('defaultPlugin'));
 define('PLUGIN', ((isset($_GET['p'])) ? $_GET['p'] : DEFAULT_PLUGIN)); // inutile : voir $runPlugin
 // fix magic quotes
 utilSetMagicQuotesOff();
-
-/*
- * Cache
-*/
-
-$readCache = false;
-if(!strrchr($_SERVER['SCRIPT_NAME'], 'admin')){
-	if(count($_POST) == 0 && getCoreConf('useCache') > 0){
-		$cacheFile = PLUGIN.'-';
-		foreach($urlParams as $k=>$v) $cacheFile.= $k.'-'.$v.'-';
-		$cacheFile = trim($cacheFile, '-');
-		if(file_exists('data/cache/'.$cacheFile) && ((time()-((60*15)*getCoreConf('useCache'))) < filemtime('data/cache/'.$cacheFile))){
-			$readCache = true;
-			include 'data/cache/'.$cacheFile;
-			exit();
-		}
-		ob_start();
-	}
-}
 
 
 /*
@@ -74,15 +61,13 @@ $pluginsManager = pluginsManager::getInstance();
 foreach($pluginsManager->getPlugins() as $plugin){
 	// on inclu la librairie
 	include_once($plugin->getLibFile());
+	// on inclu la langue
+	if($plugin->getLang() != false) $lang = array_merge($lang, $plugin->getLang());
 	// installation
-	if (!$plugin->isInstalled()) {
-		$pluginsManager->installPlugin($plugin->getName());
-	}
+	if(!$plugin->isInstalled()) $pluginsManager->installPlugin($plugin->getName());
 	// on update le tableau des hooks
-	if ($plugin->getConfigVal('activate')) {
-		foreach ($plugin->getHooks() as $hookName=>$function) {
-			$hooks[$hookName][] = $function;
-		}
+	if($plugin->getConfigVal('activate')){
+		foreach($plugin->getHooks() as $hookName=>$function) $hooks[$hookName][] = $function;
 	}
 }
 
@@ -96,12 +81,8 @@ foreach($pluginsManager->getPlugins() as $plugin){
 eval(callHook('startCreatePlugin'));
 // on cree l'instance du plugin solicite
 $runPlugin = $pluginsManager->getPlugin(PLUGIN);
-// gestion erreur 404
-if(!$runPlugin || $runPlugin->getConfigVal('activate') < 1){
-	header("HTTP/1.1 404 Not Found");
-	header("Status: 404 Not Found");
-	die();
-}
+// erreur 404 si le plugin est introuvable ou inactif
+if(!$runPlugin || $runPlugin->getConfigVal('activate') < 1) error404();
 // hook
 eval(callHook('endCreatePlugin'));
 ?>

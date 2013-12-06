@@ -6,7 +6,7 @@ $error = false;
 
 $htaccess = @file_get_contents(ROOT.'.htaccess');
 $htaccess = htmlspecialchars($htaccess, ENT_QUOTES, 'UTF-8');
-$temp = str_replace('http://', '', $coreConf['siteUrl']);
+$temp = str_replace('http://', '', getCoreConf('siteUrl'));
 $temp = substr(strrchr($temp, '/'), 1);
 if($temp == '') $temp = '/';
 else $temp = '/'.$temp.'/';
@@ -17,7 +17,7 @@ foreach(listThemes() as $k=>$theme){
 	$themes[$k]['author'] = $theme['author'];
 	$themes[$k]['authorEmail'] = $theme['authorEmail'];
 	$themes[$k]['authorWebsite'] = $theme['authorWebsite'];
-	$themes[$k]['selected'] = ($k == $coreConf['theme']) ? true : false;
+	$themes[$k]['selected'] = ($k == getCoreConf('theme')) ? true : false;
 }
 $plugins = array();
 foreach($pluginsManager->getPlugins() as $k=>$v){
@@ -26,7 +26,7 @@ foreach($pluginsManager->getPlugins() as $k=>$v){
 	$plugins[$k]['name'] = $v->getInfoVal('name');
 	$plugins[$k]['target'] = ($v->getAdminFile()) ? 'index.php?p='.$v->getName() : false;
 	$plugins[$k]['activate'] = ($v->getConfigVal('activate')) ? true : false;
-	$plugins[$k]['frontFile'] = $v->getFrontFile();
+	$plugins[$k]['frontFile'] = $v->getPublicFile();
 }
 $config = $coreConf;
 
@@ -40,19 +40,20 @@ switch(ACTION){
 			'theme' => $_POST['theme'],
 			'defaultPlugin' => $_POST['defaultPlugin'],
 			'urlRewriting' => (isset($_POST['urlRewriting'])) ? '1' : '0',
-			'useCache' => (isset($_POST['useCache'])) ? '1' : '0',
+			'siteLang' => $_POST['lang'],
+			'hideTitles' => (isset($_POST['hideTitles'])) ? '1' : '0',
 		);
 		if(trim($_POST['adminPwd']) != ''){
 			if(trim($_POST['adminPwd']) == trim($_POST['adminPwd2'])) {
 				$config['adminPwd'] = encrypt(trim($_POST['adminPwd']));
 				$_SESSION['admin'] = $config['adminPwd'];
 			} else {
-				$msg = "Le mot de passe est différent de sa confirmation.";
+				$msg = lang("The password is different from his confirmation.");
 				$error = true;
 			}
 		}
 		if(!saveConfig($config)){
-			$msg = "Une erreur est survenue lors de l'enregistrement des modifications.";
+			$msg = lang("An error occurred while saving the changes.");
 			$error = true;
 		}
 		@file_put_contents(ROOT.'.htaccess', str_replace('¶m', '&param', $_POST['htaccess']));

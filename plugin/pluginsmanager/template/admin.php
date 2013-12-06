@@ -7,11 +7,11 @@
 	<table class="table table-striped table-condensed">
 	  <thead>
 		<tr>
-			<th>Nom</th>
+			<th><?php echo lang("Name"); ?></th>
 			<th></th>
-			<th>Version</th>
-			<th>Priorité</th>
-			<th>Activer</th>
+			<th><?php echo lang("Version"); ?></th>
+			<th><?php echo lang("Priority"); ?></th>
+			<th><?php echo lang("Enable"); ?></th>
 		</tr>
 	  </thead>
 	  <tbody>			  	
@@ -21,12 +21,12 @@
 				<?php echo $v['name']; ?>
 			</td>
 			<td>
-			<?php if($v['target'] && $v['activate']){ ?><a class="edit-btn" href="<?php echo $v['target']; ?>">Aller au plugin</a><?php } ?> 
-			<a class="edit-btn aboutPlugin" href="javascript:">A propos</a>
+			<?php if($v['target'] && $v['activate']){ ?><a class="edit-btn" href="<?php echo $v['target']; ?>"><?php echo lang("Go to plugin"); ?></a><?php } ?> 
+			<a class="edit-btn aboutPlugin" href="javascript:"><?php echo lang("About"); ?></a>
 			<span style="display:none;">
-			<b>Plugin <?php echo $v['name']; ?></b><br />
-			<?php echo $v['description']; ?><br /><br />
-			Auteur :<br />
+			<b><?php echo lang("Plugin"); ?> : <?php echo lang($v['name']); ?></b><br />
+			<?php echo lang($v['description']); ?><br /><br />
+			<?php echo lang("Author"); ?> :<br />
 			<?php echo $v['author']; ?><br />
 			<?php echo $v['authorEmail']; ?><br />
 			<a href="<?php echo $v['authorWebsite']; ?>" target="_blank"><?php echo $v['authorWebsite']; ?></a>
@@ -39,7 +39,6 @@
 		<?php } ?>
 	  </tbody>					
 	</table>
-	<!--<p><input type="submit" value="Enregistrer" /></p>-->
 </form>
 
 <?php include_once(ROOT.'admin/footer.php') ?>

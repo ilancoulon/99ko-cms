@@ -1,8 +1,8 @@
 {
-    "name" : "Gestionaire de plugins",
-    "description" : "Panel de gestion des plugins 99ko",
+    "name" : "Plugins manager",
+    "description" : "Plugins management of 99ko",
     "author" : "Jonathan Coulet",
     "authorEmail" : "j.coulet@gmail.com",
     "authorWebsite" : "http://99ko.tuxfamily.org",
-    "version" : "1.1"
+    "version" : "2.3.10"
 }

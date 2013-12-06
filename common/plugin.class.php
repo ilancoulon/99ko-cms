@@ -184,6 +184,8 @@ class plugin{
 	private $initConfig;
 	private $navigation;
 	private $adminTabs;
+	private $langFile;
+	private $lang;
 
 	/*
 	** Constructeur
@@ -198,6 +200,8 @@ class plugin{
 		$this->setTitleTag($infos['name']);
 		$this->setMainTitle($infos['name']);
 		$this->libFile = (file_exists(ROOT.'plugin/'.$this->name.'/'.$this->name.'.php')) ? ROOT.'plugin/'.$this->name.'/'.$this->name.'.php' : false;
+		$this->langFile = (file_exists(ROOT.'plugin/'.$this->name.'/lang/'.getCoreConf('siteLang').'.json')) ? ROOT.'plugin/'.$this->name.'/lang/'.getCoreConf('siteLang').'.json' : false;
+		$this->lang = ($this->langFile) ? utilReadJsonFile($this->langFile) : array();
 		$this->publicFile = (file_exists(ROOT.'plugin/'.$this->name.'/public.php')) ? ROOT.'plugin/'.$this->name.'/public.php' : false;
 		$this->adminFile = (file_exists(ROOT.'plugin/'.$this->name.'/admin.php')) ? ROOT.'plugin/'.$this->name.'/admin.php' : false;
 		$this->cssFile = (file_exists(ROOT.'plugin/'.$this->name.'/other/'.$this->name.'.css')) ? ROOT.'plugin/'.$this->name.'/other/'.$this->name.'.css' : false;
@@ -214,9 +218,7 @@ class plugin{
 		$this->navigation = array();
 		// tabs
 		$this->adminTabs = array();
-		if(isset($this->config['adminTabs']) && $this->config['adminTabs'] != ''){
-			$this->adminTabs = explode(',', $this->config['adminTabs']);
-		}
+		if(isset($this->config['adminTabs']) && $this->config['adminTabs'] != '') $this->adminTabs = explode(',', $this->config['adminTabs']);
 		// admin multi templates (tabs)
 		foreach($this->adminTabs as $k=>$v){
 			if(file_exists(ROOT.'plugin/'.$this->name.'/template/admin-tab-'.$k.'.php')){
@@ -294,6 +296,12 @@ class plugin{
 	}
 	public function getAdminTabs(){
 		return $this->adminTabs;
+	}
+	public function getLangFile(){
+		return $this->langFile;
+	}
+	public function getLang(){
+		return $this->lang;
 	}
 
 	/*
@@ -374,13 +382,6 @@ class plugin{
 		$initConfig = implode(',', array_keys($this->initConfig));
 		if(count($this->config) < 1 || $currentConfig != $initConfig) return false;
 		return true;
-	}
-	
-	/*
-	** Alias de getPublicFile
-	*/
-	public function getFrontFile(){
-		return $this->getPublicFile();
 	}
 }
 ?>
