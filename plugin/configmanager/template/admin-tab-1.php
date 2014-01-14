@@ -9,14 +9,14 @@
 
   <div class="row">
     <div class="large-6 columns">
-      <label>URL rewriting</label>
+      <label><?php echo lang("URL rewriting"); ?></label>
       <input id="urlRewriting" type="checkbox" onclick="updateHtaccess('<?php echo $rewriteBase; ?>');" <?php if($config['urlRewriting']){ ?>checked<?php } ?> name="urlRewriting" /> <label for="urlRewriting"><?php echo lang("Enable"); ?></label>
     </div>
   </div>
        
   <div class="row">
     <div class="large-12 columns">
-      <label>.htaccess</label>
+      <label><?php echo lang(".htaccess"); ?></label>
       <textarea id="htaccess" name="htaccess"><?php echo $htaccess; ?></textarea>
     </div>
   </div>

@@ -74,7 +74,7 @@
 
   <div class="row">
     <div class="large-6 columns">
-      <input <?php echo $data['pageIsHomepageChecked']; ?> type="checkbox" name="isHomepage" /> <label for="isHomepage"><?php echo lang("use as homepage"); ?></label> 
+      <input <?php echo $data['pageIsHomepageChecked']; ?> type="checkbox" name="isHomepage" /> <label for="isHomepage"><?php echo lang("Use as homepage"); ?></label> 
     </div>       
   </div>
   

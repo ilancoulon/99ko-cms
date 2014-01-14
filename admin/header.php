@@ -21,7 +21,7 @@
 <nav class="top-bar docs-bar hide-for-small" data-topbar>
   <ul class="title-area">
     <li class="name">
-      <h1><a href="./">99ko</a></h1>
+      <h1><a href="./"><?php showSiteName(); ?></a></h1>
     </li>
   </ul>
 
@@ -41,14 +41,14 @@
 </nav>
 <nav class="tab-bar show-for-small">
   <a class="left-off-canvas-toggle menu-icon">
-    <span>99ko</span>
+    <span><?php showSiteName(); ?></span>
   </a>
 </nav>
 
 <aside class="marketing-left-off-canvas-menu">
 
   <ul class="off-canvas-list">
-    <li><label class="first">99ko</label></li>
+    <li><label class="first"><?php showSiteName(); ?></label></li>
   </ul>
 
   <hr>
