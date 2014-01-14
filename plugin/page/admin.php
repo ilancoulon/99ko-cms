@@ -4,6 +4,7 @@ $data['pageMode'] = '';
 $data['pageMsg'] = '';
 $data['pageMsgType'] = '';
 $data['pageChangeOrder'] = (pluginsManager::isActivePlugin('menu')) ? false : true;
+$hideTitles = $runPlugin->getConfigVal('hideTitles');
 switch(ACTION){
 	case 'save':
 		if($_POST['id'] != '') $pageItem = $page->create($_POST['id']);
@@ -17,6 +18,13 @@ switch(ACTION){
 		$pageItem->setMainTitle($_POST['mainTitle']);
 		$pageItem->setMetaDescriptionTag($_POST['metaDescriptionTag']);
 		$page->save($pageItem);
+		header('location:index.php?p=page');
+		die();
+		break;
+	case 'saveconfig':
+		$hideTitles = (isset($_POST['hideTitles'])) ? 1 : "0";
+		$runPlugin->setConfigVal('hideTitles', $hideTitles);
+		$pluginsManager->savePluginConfig($runPlugin);
 		header('location:index.php?p=page');
 		die();
 		break;
@@ -44,14 +52,14 @@ switch(ACTION){
 			die();
 		}
 		else{
-			$data['pageMsg'] = "Suppression impossible";
+			$data['pageMsg'] = lang('Can\t delete');
 			$data['pageMsgType'] = 'error';
 		}
 	default:
 		$pageItems = $page->getItems();
 		$data['pageMode'] = 'list';
 		if(!$page->createHomepage()){
-			$data['pageMsg'] = "Aucune page d'accueil n'est définie";
+			$data['pageMsg'] = lang('No homepage defined');
 			$data['pageMsgType'] = 'error';
 		}
 		$data['pageList'] = array();
@@ -63,12 +71,5 @@ switch(ACTION){
 			$data['pageList'][$k]['content'] = $pageItem->getContent();
 			$data['pageList'][$k]['isHidden'] = $pageItem->getIsHidden();
 		}
-		/*if(pluginsManager::isActivePlugin('menu')){
-			if(menu::checkChanges() || pluginsManager::getPluginConfVal('menu', 'changed')){
-				$data['pageMsg'] = "Problème d'incohérence de données entre le plugin Page et le plugin Menu.
-				Le plugin Menu requiert un enregistrement des modifications.";
-				$data['pageMsgType'] = 'error';	
-			}
-		}*/
 }
 ?>

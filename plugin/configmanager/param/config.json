@@ -2,5 +2,6 @@
     "priority" : "1",
     "activate" : "1",
     "sidebarTitle" : "",
-    "sidebarCallFunction" : ""
+    "sidebarCallFunction" : "",
+    "adminTabs" : "General configuration,Advanced configuration"
 }

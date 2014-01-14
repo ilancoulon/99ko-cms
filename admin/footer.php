@@ -1,7 +1,22 @@
-</section>
-    <?php eval(callHook('endAdminBody')); ?>
-	<script src="js/plugin-config.js"></script>	
-	<script src="js/tinybox2/packed.js"></script>
+    <?php if($tabs){ ?>
+      </div>
+    </div>
+	<?php } ?>
+	
+        </div>
+      </div>
+    </section>
+
+  <a class="exit-off-canvas"></a>
+
+  </div>
+</div>
+
+    <script src="js/all.js"></script>
     <script src="js/scripts.js"></script>
-</body>
+    <script>
+            $(document).foundation().foundation('joyride', 'start');
+    </script>
+    <?php eval(callHook('endAdminBody')); ?>
+  </body>
 </html>

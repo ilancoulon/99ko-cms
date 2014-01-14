@@ -1,8 +1,11 @@
 <?php
 if(!defined('ROOT')) die();
 $id = (isset($urlParams[1])) ? $urlParams[1] : false;
-$pageItem = ($id) ? $page->create($id) : $page->createHomepage();
-$runPlugin->setMainTitle(($pageItem->getMainTitle() != '') ? $pageItem->getMainTitle() : $pageItem->getName());
+if(!$id) $pageItem = $page->createHomepage();
+elseif($pageItem = $page->create($id)){}
+else error404();
+if($runPlugin->getConfigVal('hideTitles')) $runPlugin->setMainTitle('');
+else $runPlugin->setMainTitle(($pageItem->getMainTitle() != '') ? $pageItem->getMainTitle() : $pageItem->getName());
 if($pageItem->getMetaDescriptionTag() != '') $runPlugin->setMetaDescriptionTag($pageItem->getMetaDescriptionTag());
 elseif($pageItem->getMetaDescriptionTag() == '' && $pageItem->getIsHomepage() && $runPlugin->getIsDefaultPlugin()) $runPlugin->setMetaDescriptionTag($coreConf['siteDescription']);
 $pageTitleTag = $pageItem->getName();
@@ -14,5 +17,5 @@ if($runPlugin->getIsDefaultPlugin() && $pageItem->getIsHomepage()) $runPlugin->i
 $data['pageId'] = $pageItem->getId();
 $data['pageName'] = $pageItem->getName();
 $data['pageContent'] = $pageItem->getContent();
-$data['pageFile'] = ($pageItem->getFile()) ? ROOT.'theme/'.$coreConf['theme'].'/'.$pageItem->getFile() : false;
+$data['pageFile'] = ($pageItem->getFile()) ? ROOT.'theme/'.getCoreConf('theme').'/'.$pageItem->getFile() : false;
 ?>

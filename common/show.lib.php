@@ -2,7 +2,7 @@
 ##########################################################################################################
 # 99ko http://99ko.tuxfamily.org/
 #
-# Copyright (c) 2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon
+# Copyright (c) 2013 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon
 # Copyright (c) 2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
 # Copyright (c) 2010 Jonathan Coulet (j.coulet@gmail.com)
 ##########################################################################################################
@@ -23,9 +23,7 @@ function showMsg($msg, $type) {
 	);
 	$data = '';
 	eval(callHook('startShowMsg'));
-	if ($msg != '') {
-		$data = '<div id="msg" class="'.$class[$type].'"><p>'.nl2br($msg).'</p></div>';
-	}
+	if($msg != '') $data = '<div class="alert-box '.$class[$type].' radius"><h6>'.nl2br($msg).'</h6><a href="#" class="close">&times;</a></div>';
 	eval(callHook('endShowMsg'));
 	echo $data;
 }
@@ -35,16 +33,13 @@ function showMsg($msg, $type) {
 ** @param : $format (format)
 */
 function showLinkTags($format = '<link href="[file]" rel="stylesheet" type="text/css" />'){
-	global $pluginsManager, $coreConf;
+	global $pluginsManager;
 	$data = '';
 	eval(callHook('startShowLinkTags'));
-	if(ROOT == './') $data.= str_replace('[file]', ROOT.'common/normalize.css', $format);
 	foreach($pluginsManager->getPlugins() as $k=>$plugin) if($plugin->getConfigval('activate') == 1){
-		if ($plugin->getConfigVal('activate') && $plugin->getCssFile()){
-			$data.= str_replace('[file]', $plugin->getCssFile(), $format);
-		}
+		if($plugin->getConfigVal('activate') && $plugin->getCssFile()) $data.= str_replace('[file]', $plugin->getCssFile(), $format);
 	}
-	if(ROOT == './') $data.= str_replace('[file]', ROOT.'theme/'.$coreConf['theme'].'/styles.css', $format);
+	if(ROOT == './') $data.= str_replace('[file]', getCoreConf('siteUrl').'/'.'theme/'.getCoreConf('theme').'/styles.css', $format);
 	eval(callHook('endShowLinkTags'));
 	echo $data;
 }
@@ -54,16 +49,13 @@ function showLinkTags($format = '<link href="[file]" rel="stylesheet" type="text
 ** @param : $format (format)
 */
 function showScriptTags($format = '<script type="text/javascript" src="[file]"></script>') {
-	global $pluginsManager, $coreConf;
+	global $pluginsManager;
 	$data = '';
 	eval(callHook('startShowScriptTags'));
-	$data = str_replace('[file]', ROOT.'common/jquery.js', $format);
 	foreach($pluginsManager->getPlugins() as $k=>$plugin) if($plugin->getConfigval('activate') == 1){
-		if ($plugin->getConfigVal('activate') && $plugin->getJsFile()){
-			$data.= str_replace('[file]', $plugin->getJsFile(), $format);
-		}
+		if($plugin->getConfigVal('activate') && $plugin->getJsFile()) $data.= str_replace('[file]', $plugin->getJsFile(), $format);
 	}
-	if(ROOT == './') $data.= str_replace('[file]', ROOT.'theme/'.$coreConf['theme'].'/scripts.js', $format);
+	if(ROOT == './') $data.= str_replace('[file]', getCoreConf('siteUrl').'/'.'theme/'.getCoreConf('theme').'/scripts.js', $format);
 	eval(callHook('endShowScriptTags'));
 	echo $data;
 }
@@ -125,10 +117,14 @@ function showMetaDescriptionTag() {
 /*
 ** Affiche le titre H1
 */
-function showMainTitle() {
+function showMainTitle($format = '<h1>[mainTitle]</h1>') {
 	global $runPlugin;
 	eval(callHook('startShowMainTitle'));
-	$data = $runPlugin->getMainTitle();
+	if(getCoreConf('hideTitles') == 0 && $runPlugin->getMainTitle() != ''){
+		$data = $format;
+		$data = str_replace('[mainTitle]', $runPlugin->getMainTitle(), $data);
+	}
+	else $data = '';
 	eval(callHook('endShowMainTitle'));
 	echo $data;
 }
@@ -137,9 +133,8 @@ function showMainTitle() {
 ** Affiche le nom du site
 */
 function showSiteName() {
-	global $coreConf;
 	eval(callHook('startShowSiteName'));
-	$data = $coreConf['siteName'];
+	$data = getCoreConf('siteName');
 	eval(callHook('endShowSiteName'));
 	echo $data;
 }
@@ -148,9 +143,8 @@ function showSiteName() {
 ** Affiche la description du site
 */
 function showSiteDescription() {
-	global $coreConf;
 	eval(callHook('startShowSiteDescription'));
-	$data = $coreConf['siteDescription'];
+	$data = getCoreConf('siteDescription');
 	eval(callHook('endShowSiteDescription'));
 	echo $data;
 }
@@ -159,10 +153,19 @@ function showSiteDescription() {
 ** Affiche l'url du site
 */
 function showSiteUrl() {
-	global $coreConf;
 	eval(callHook('startShowSiteUrl'));
-	$data = $coreConf['siteUrl'];
+	$data = getCoreConf('siteUrl');
 	eval(callHook('endShowSiteUrl'));
+	echo $data;
+}
+
+/*
+** Affiche la langue du site
+*/
+function showSiteLang() {
+	eval(callHook('startShowSiteLang'));
+	$data = getCoreConf('siteLang');
+	eval(callHook('endShowSiteLang'));
 	echo $data;
 }
 
@@ -201,16 +204,17 @@ function showMainNavigation($format = '<li><a target="[targetAttribut]" href="[t
 /*
 ** Affiche le fil d'Ariane
 */
-function showBreadcrumb() {
-	global $runPlugin, $coreConf;
+function showBreadcrumb($format = '<li><a href="[target]">[label]</a></li>') {
+	global $runPlugin;
 	$data = '';
 	eval(callHook('startShowBreadcrumb'));
-	if (count($runPlugin->getBreadcrumb()) > 0) {
-		$data.= '<p id="breadcrumb"><a href="'.$coreConf['siteUrl'].'">Accueil</a>';
-		foreach ($runPlugin->getBreadcrumb() as $item) {
-			$data.= ' >> <a href="'.$item['target'].'">'.$item['label'].'</a>';
-		}
-		$data.= '</p>';
+	if(count($runPlugin->getBreadcrumb()) > 0) {
+		foreach($runPlugin->getBreadcrumb() as $item);
+		    $temp = $format;
+	        $temp = str_replace('[target]', $item['target'], $temp);
+	        $temp = str_replace('[label]', $item['label'], $temp);
+	        $temp = str_replace('[home]', getCoreConf('siteUrl'), $temp);	
+		    $data.= $temp;
 	}
 	eval(callHook('endShowBreadcrumb'));
 	echo $data;
@@ -220,12 +224,12 @@ function showBreadcrumb() {
 ** Affiche le nom du thème
 */
 function showTheme($format = '<a target="_blank" href="[authorWebsite]">[name]</a>') {
-	global $themes, $coreConf;
+	global $themes;
 	eval(callHook('startShowTheme'));
 	$data = $format;
-	$data = str_replace('[authorWebsite]', $themes[$coreConf['theme']]['authorWebsite'], $data);
-	$data = str_replace('[author]', $themes[$coreConf['theme']]['author'], $data);
-	$data = str_replace('[name]', $themes[$coreConf['theme']]['name'], $data);
+	$data = str_replace('[authorWebsite]', $themes[getCoreConf('theme')]['authorWebsite'], $data);
+	$data = str_replace('[author]', $themes[getCoreConf('theme')]['author'], $data);
+	$data = str_replace('[name]', $themes[getCoreConf('theme')]['name'], $data);
 	eval(callHook('endShowTheme'));
 	echo $data;
 }

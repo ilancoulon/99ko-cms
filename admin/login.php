@@ -1,41 +1,78 @@
-<!doctype html>  
-<!--[if IE 6 ]><html lang="fr" class="ie6"> <![endif]-->
-<!--[if IE 7 ]><html lang="fr" class="ie7"> <![endif]-->
-<!--[if IE 8 ]><html lang="fr" class="ie8"> <![endif]-->
-<!--[if (gt IE 7)|!(IE)]><!-->
-<html lang="fr"><!--<![endif]-->
-<head>
-	<meta charset="utf-8">
-	<title>99ko - Connexion</title>
-	<link rel="stylesheet" href="css/login.css" media="all">
-	<link rel="stylesheet" href="css/common.css" media="all">
-</head>
-<body>
-	<?php if (isset($_SESSION['msg_install'])) { ?>     
-		<section id="install">
-		       <?php showMsg($_SESSION['msg_install'], 'success'); ?>
-		</section>
+<!doctype html>
+<!--[if IE 9]><html class="lt-ie10" lang="<?php showSiteLang(); ?>" > <![endif]-->
+<html class="no-js" lang="<?php showSiteLang(); ?>">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">	
+	<title>99ko - <?php echo lang('Login'); ?></title>	
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<?php showLinkTags(); ?>
+	<link rel="stylesheet" href="css/99ko.css?v1.0=" media="all">
+	<?php showScriptTags(); ?>
+	<?php eval(callHook('endAdminHead')); ?>	
+  </head>
+  
+  <body class="antialiased hide-extras">
+  <!-- Main Page Content and Sidebar -->
+ 
+  <div class="row">
+ 
+    <!-- Login Form -->
+    <div class="<?php if (isset($_SESSION['msg_install'])) { ?>large-7<?php } else { ?>login small-5<?php } ?> columns">
+ 
+      <h3><?php echo lang('Login'); ?></h3>
+      <hr>
+ 
+      <div class="section-container tabs" data-section>
+        <section class="section">
+          
+          <div class="content">
+           <?php showMsg($msg, 'error'); ?>
+           <form method="post" action="index.php?action=login">
+              <div class="row collapse">
+                <div class="large-3 columns">
+                  <?php showAdminTokenField(); ?>
+                  <label class="inline"><?php echo lang('Email'); ?></label>
+                </div>
+                <div class="large-9 columns">
+                  <input type="text" name="adminEmail" id="adminEmail">
+                </div>
+              </div>
+              <div class="row collapse">
+                <div class="large-3 columns">
+                  <?php showAdminTokenField(); ?>
+                  <label class="inline"><?php echo lang('Password'); ?></label>
+                </div>
+                <div class="large-9 columns">
+                  <input type="password" name="adminPwd" id="adminPwd">
+                </div>
+              </div>
+             <div class="row">
+                <div class="large-2 columns"><button type="submit" class="radius button"><?php echo lang('Go'); ?></button></div>
+                <div class="large-10 columns"><p class="right j"><?php echo lang('Just using'); ?><a href="index.php?action=logout&token=<?php echo $token; ?>">.</a></p></div>
+             </div>              
+              
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+ 
+    <!-- End Login Form -->
+ 
+     
+	<?php if (isset($_SESSION['msg_install'])) { ?>
+    <!-- Sidebar -->
+    <div class="large-5 columns"> 
+      <h3>Installation</h3>
+      <hr>    	
+        <?php showMsg($_SESSION['msg_install'], 'success'); ?> 
+    </div>
+    <!-- End Sidebar -->      		     
 	<?php } ?>
 
-	<section id="login">
-		<div id="login_panel">
-			<?php showMsg($msg, 'error'); ?>
-			<form method="post" action="index.php?action=login">
-				<div class="login_fields">			
-					<div class="field">
-					    <?php showAdminTokenField(); ?>
-						<label for="adminPwd">Mot de passe</label>
-						<input type="password" name="adminPwd" id="adminPwd" tabindex="1" />			
-					</div>
-				</div> <!-- login_fields -->
-				
-				<div class="login_actions">
-					<input type="submit" class="btn" tabindex="2" value="Valider" />
-					<em>Just using <a target="_blank" title="CMS sans base de données" href="http://99ko.tuxfamily.org/">99ko</a></em>
-				</div>
-			</form>
-		</div> <!-- #login_panel -->		
-	</section> <!-- #login -->
+  </div>
  
+  <!-- End Main Content and Sidebar -->
 </body>
 </html>

@@ -9,7 +9,7 @@ switch(ACTION){
 		$plugins = array();
 		foreach($pluginsManager->getPlugins() as $k=>$v){
 			$plugins[$k]['id'] = $v->getName();
-			$plugins[$k]['locked'] = ($v->getIsDefaultPlugin() || $v->getName() == 'pluginsmanager' || $v->getName() == 'configmanager') ? true : false;
+			$plugins[$k]['locked'] = ($v->getIsDefaultPlugin() || $v->getName() == 'pluginsmanager') ? true : false;
 			$plugins[$k]['name'] = $v->getInfoVal('name');
 			$plugins[$k]['description'] = $v->getInfoVal('description');
 			$plugins[$k]['target'] = ($v->getAdminFile() && $v->getName() != 'pluginsmanager') ? 'index.php?p='.$v->getName() : false;
@@ -19,7 +19,7 @@ switch(ACTION){
 			$plugins[$k]['author'] = $v->getInfoVal('author');
 			$plugins[$k]['authorEmail'] = $v->getInfoVal('authorEmail');
 			$plugins[$k]['authorWebsite'] = $v->getInfoVal('authorWebsite');
-			$plugins[$k]['frontFile'] = $v->getFrontFile();
+			$plugins[$k]['frontFile'] = $v->getPublicFile();
 		}
 		$priority = array(
 			1 => 1,
@@ -46,7 +46,7 @@ switch(ACTION){
 			$v->setConfigVal('priority', intval($_POST['priority'][$v->getName()]));
 			if(!$pluginsManager->savePluginConfig($v)){
 				$error = true;
-				$msg = "Une erreur est survenue lors de l'enregistrement des modifications.";
+				$msg = lang('An error occured while saving your modifications.');
 				$msgType = 'error';
 			}
 		}
