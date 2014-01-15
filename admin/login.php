@@ -7,7 +7,7 @@
 	<title>99ko - <?php echo lang('Login'); ?></title>	
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
 	<?php showLinkTags(); ?>
-	<link rel="stylesheet" href="css/99ko.css?v1.0=" media="all">
+	<link rel="stylesheet" href="css/99ko.min.css?v1.0=" media="all">
 	<?php showScriptTags(); ?>
 	<?php eval(callHook('endAdminHead')); ?>	
   </head>
