@@ -11,6 +11,23 @@ $temp = substr(strrchr($temp, '/'), 1);
 if($temp == '') $temp = '/';
 else $temp = '/'.$temp.'/';
 $rewriteBase = $temp;
+
+/*-----------------------------------------------------------------------------------*/
+/* Récupère l'aperçu du thème
+/*-----------------------------------------------------------------------------------*/
+function get_screenshot($pic) {
+	
+	# Chemin de l'aperçu du thème.
+	$screenshot = ROOT.'theme/' .$pic. '/screenshot.jpg';		
+	# On test si il existe.
+	if (!file_exists($screenshot)) {
+	    # Sans quoi on retourne une image par défaut
+	    $screenshot = ROOT.'plugin/configmanager/other/screenshot.jpg';
+	}	
+	# résultat
+	return $screenshot;
+}
+
 $themes = array();
 foreach(listThemes() as $k=>$theme){
 	$themes[$k]['name'] = $theme['name'];

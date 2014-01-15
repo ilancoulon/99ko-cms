@@ -33,9 +33,18 @@
 	    <li><input type="radio" name="theme" <?php if($v['selected']){ ?>checked<?php } ?> value="<?php echo $k; ?>" /> <label for="theme"><?php echo $v['name']; ?> <a href="#" data-reveal-id="<?php echo utilStrToUrl($v['name']); ?>" class="label radius"><?php echo lang("About"); ?></a></label></li>
 	    <div id="<?php echo utilStrToUrl($v['name']); ?>" class="reveal-modal small" data-reveal>
 		    <h2><?php echo lang("Theme"); ?> <?php echo $v['name']; ?></h2>
-		    <p><?php echo lang("Author"); ?> :<?php echo $v['author']; ?></p>
-		    <p><?php echo $v['authorEmail']; ?></p>
-		    <p><a href="<?php echo $v['authorWebsite']; ?>" onclick="window.open(this.href);return false;"><?php echo $v['authorWebsite']; ?></a></p>
+		    <div class="row">
+               <div class="large-3 columns">
+		            <img class="th radius" src="<?php echo get_screenshot($k); ?>" alt="screenshot">	               
+               </div>
+               <div class="large-9 columns">
+		         <ul class="no-bullet">
+		            <li><strong><?php echo lang("Author"); ?></strong> <?php echo $v['author']; ?></li>
+		            <li><strong><?php echo lang("Author Mail"); ?></strong> <?php echo $v['authorEmail']; ?></li>
+		            <li><strong><?php echo lang("Author Site"); ?></strong> <a class="label secondary round" href="<?php echo $v['authorWebsite']; ?>" onclick="window.open(this.href);return false;"><?php echo $v['authorWebsite']; ?></a></li>
+		         </ul>	               
+               </div>
+            </div>
 		    <a class="close-reveal-modal">&#215;</a>
 	    </div>
 	    <?php } ?>
