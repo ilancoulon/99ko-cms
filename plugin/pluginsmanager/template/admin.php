@@ -24,10 +24,18 @@
 			<?php if($v['target'] && $v['activate']){ ?><a class="button tiny radius secondary" href="<?php echo $v['target']; ?>"><?php echo lang("Go to plugin"); ?></a><?php } ?> 
 			<a href="#" data-reveal-id="<?php echo utilStrToUrl($v['name']); ?>" class="button tiny radius"><?php echo lang("About"); ?></a>
 	        <div id="<?php echo utilStrToUrl($v['name']); ?>" class="reveal-modal small" data-reveal>
-		        <h2><?php echo lang("Plugin"); ?> : <?php echo lang($v['name']); ?></h2>
-		        <blockquote><?php echo lang($v['description']); ?><cite><?php echo lang("Author"); ?> :<?php echo $v['author']; ?></cite></blockquote>
-		        <p><?php echo $v['authorEmail']; ?></p>
-		        <p><a href="<?php echo $v['authorWebsite']; ?>" target="_blank"><?php echo $v['authorWebsite']; ?></a></p>
+		        <h2><?php echo lang($v['name']); ?></h2>
+		        <blockquote><?php echo lang($v['description']); ?><cite><?php echo lang("Author"); echo $v['author']; ?></cite></blockquote>
+		         <ul class="no-bullet">
+		            <?php
+                      if(!empty($v['authorEmail'])){
+                         echo '<li><strong>'.lang("Author Mail").'</strong> '.$v['authorEmail'].'</li>';
+                      }
+                      if(!empty($v['authorWebsite'])){
+                         echo '<li><strong>'.lang("Author Site").'</strong> <a class="label secondary round" href="'.$v['authorWebsite'].'" onclick="window.open(this.href);return false;">'.$v['authorWebsite'].'</a></li>';
+                      }
+                    ?>
+		         </ul>		        
 		        <a class="close-reveal-modal">&#215;</a>
 	        </div>
 			</td>

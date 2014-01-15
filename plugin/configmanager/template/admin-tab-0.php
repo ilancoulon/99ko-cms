@@ -32,7 +32,7 @@
       <?php foreach($themes as $k=>$v){ ?>
 	    <li><input type="radio" name="theme" <?php if($v['selected']){ ?>checked<?php } ?> value="<?php echo $k; ?>" /> <label for="theme"><?php echo $v['name']; ?> <a href="#" data-reveal-id="<?php echo utilStrToUrl($v['name']); ?>" class="label radius"><?php echo lang("About"); ?></a></label></li>
 	    <div id="<?php echo utilStrToUrl($v['name']); ?>" class="reveal-modal small" data-reveal>
-		    <h2><?php echo lang("Theme"); ?> <?php echo $v['name']; ?></h2>
+		    <h2><?php echo $v['name']; ?></h2>
 		    <div class="row">
                <div class="large-3 columns">
 		            <img class="th radius" src="<?php echo get_screenshot($k); ?>" alt="screenshot">	               
@@ -40,8 +40,14 @@
                <div class="large-9 columns">
 		         <ul class="no-bullet">
 		            <li><strong><?php echo lang("Author"); ?></strong> <?php echo $v['author']; ?></li>
-		            <li><strong><?php echo lang("Author Mail"); ?></strong> <?php echo $v['authorEmail']; ?></li>
-		            <li><strong><?php echo lang("Author Site"); ?></strong> <a class="label secondary round" href="<?php echo $v['authorWebsite']; ?>" onclick="window.open(this.href);return false;"><?php echo $v['authorWebsite']; ?></a></li>
+		            <?php
+                      if(!empty($v['authorEmail'])){
+                         echo '<li><strong>'.lang("Author Mail").'</strong> '.$v['authorEmail'].'</li>';
+                      }
+                      if(!empty($v['authorWebsite'])){
+                         echo '<li><strong>'.lang("Author Site").'</strong> <a class="label secondary round" href="'.$v['authorWebsite'].'" onclick="window.open(this.href);return false;">'.$v['authorWebsite'].'</a></li>';
+                      }
+                    ?>
 		         </ul>	               
                </div>
             </div>
