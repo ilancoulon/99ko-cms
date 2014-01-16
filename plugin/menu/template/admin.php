@@ -1,7 +1,7 @@
 <?php include_once(ROOT.'admin/header.php'); ?>
 
 <?php if ($data['menuMode'] == 'list') { ?>
-<button class="button round small" id="addLink" onclick="addLink()"><?php echo lang('New link'); ?></button>
+<a class="button round small" id="addLink" onclick="addLink()"><?php echo lang('New link'); ?></a>
 <form method="post" action="index.php?p=menu&action=save">
 	<?php showAdminTokenField(); ?>
 	<table id="linksList" style="width:100%">
@@ -20,7 +20,7 @@
 			<tr id="<?php echo $position; ?>">
 				<input type="hidden" name="id<?php echo $position; ?>" value="<?php echo $link->getId(); ?>" />
 				<input type="hidden" name="plugin<?php echo $position; ?>" value="<?php echo $link->getPlugin(); ?>" />
-				<td class="label1">
+				<td class="lab1">
 					<?php if ($link->getPlugin() == 'menu') {?>
 						<input type="text" name="label<?php echo $position; ?>" value="<?php echo $link->getLabel(); ?>" />
 					<?php } else { ?>
@@ -49,17 +49,17 @@
 				</td>
 				<td class="up">
 					<?php if ($position > 0) {?>
-						<img src="<?php echo MENU_PLUGINPATH; ?>img/up.png" alt="<?php echo lang('Up'); ?>" onclick="upLink(<?php echo $position; ?>)" />
+						<a onclick="upLink(<?php echo $position; ?>)" data-tooltip class="has-tip tip-top" title="<?php echo lang('Up'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/up.png" alt="<?php echo lang('Up'); ?>" /></a>
 					<?php } ?>
 				</td>
 				<td class="down">
 					<?php if ($position < count($data['menuLinks']) - 1) {?>
-						<img src="<?php echo MENU_PLUGINPATH; ?>img/down.png" alt="<?php echo lang('Down'); ?>" onclick="downLink(<?php echo $position; ?>)" />
+						<a onclick="downLink(<?php echo $position; ?>)" data-tooltip class="has-tip tip-top" title="<?php echo lang('Down'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/down.png" alt="<?php echo lang('Down'); ?>" /></a>
 					<?php } ?>
 				</td>
 				<td class="delete">
 					<?php if ($link->getPlugin() == 'menu') {?>
-						<img src="<?php echo MENU_PLUGINPATH; ?>img/delete.png" alt="<?php echo lang('Delete'); ?>" onclick="deleteLink(<?php echo $position; ?>)" />
+						<a onclick="deleteLink(<?php echo $position; ?>)" data-tooltip class="has-tip tip-top" title="<?php echo lang('Delete'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/delete.png" alt="<?php echo lang('Delete'); ?>" /></a>
 					<?php } ?>
 				</td>
 			</tr>

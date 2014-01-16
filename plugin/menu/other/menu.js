@@ -9,7 +9,7 @@ function addLink() {
 		'<tr id="' + position + '" class="added">'+
 			'<input type="hidden" name="id' + position + '" value="-1" />'+
 			'<input type="hidden" name="plugin' + position + '" value="menu" />'+
-			'<td class="label">'+
+			'<td class="lab">'+
 				'<input type="text" name="label' + position + '" />'+
 			'</td>'+
 			'<td class="url">'+

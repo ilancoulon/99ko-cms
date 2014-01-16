@@ -7,18 +7,22 @@ section.menu-admin table#linksList tr {
 	height : 37px;
 }
 
-section.menu-admin table#linksList td.label,
-section.menu-admin table#linksList td.target,
-section.menu-admin table#linksList td.up,
-section.menu-admin table#linksList td.down,
-section.menu-admin table#linksList td.delete {
+section.menu-admin table#linksList td.lab,
+section.menu-admin table#linksList td.target {
 	height : 37px;
 	padding-top : 0;
 	padding-bottom : 0;
 	vertical-align : middle;
 }
-
-section.menu-admin table#linksList td.label input {
+section.menu-admin table#linksList td.up img,
+section.menu-admin table#linksList td.down img,
+section.menu-admin table#linksList td.delete img {
+    display: block;
+	height : 16px;
+	width: 16px;
+}
+ 
+section.menu-admin table#linksList td.lab input {
 	width : 150px;
 }
 
@@ -27,10 +31,10 @@ section.menu-admin table#linksList td.target input {
 }
 
 
-section.menu-admin table#linksList tr.deleted td {
+section.menu-admin table#linksList tr.deleted {
 	background-color : #ffcccc;
 }
 
-section.menu-admin table#linksList tr.added td {
+section.menu-admin table#linksList tr.added {
 	background-color : #ccffcc;
 }
