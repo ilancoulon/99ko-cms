@@ -113,5 +113,5 @@
 			<?php } ?>
         </dl>
         <div class="tabs-content">
-           <div class="content6">
+            <div class="contentlarge active">
 		<?php } ?>

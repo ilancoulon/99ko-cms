@@ -12,12 +12,11 @@
 	<?php eval(callHook('endFrontHead')); ?>
   </head>
   <body>
-    
-<!-- Navigation -->
- 
+  
+  <!-- Navigation -->     
   <nav class="top-bar" data-topbar>
     <ul class="title-area">
-      <!-- Title Area -->
+      <!-- Logo & Titre -->
       <li class="name">
         <h1>
           <a title="<?php showSiteDescription(); ?>" href="<?php showSiteUrl(); ?>">
@@ -28,17 +27,15 @@
       <li class="toggle-topbar menu-icon"><a href="#"><span><?php echo lang('menu') ?></span></a></li>
     </ul>
  
-    <section class="top-bar-section">
-      <!-- Right Nav Section -->
+    <section class="top-bar-section">   
+      <!-- Affichage Menu à droite (class="left" pour placer à gauche) -->
       <ul class="right">
         <li class="divider"></li>
         <?php showMainNavigation('<li><a target="[targetAttribut]" href="[target]">[label]</a></li><li class="divider"></li>'); ?>
       </ul>
     </section>
   </nav>
- 
-  <!-- End Top Bar -->
- 
+  <!-- Navigation Fin -->
   
   <div class="row <?php showPluginId(); ?>">  
     <div class="large-12 columns">  

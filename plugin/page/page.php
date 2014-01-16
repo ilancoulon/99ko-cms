@@ -19,9 +19,16 @@ function pageInstall(){
 		$pageItem->setName('Accueil');
 		$pageItem->setPosition(1);
 		$pageItem->setIsHomepage(1);
-		$pageItem->setContent("<p style='text-align:center'><img alt='99ko' src='admin/images/logo.png' /></p><p>Merci d'avoir téléchargé 99ko. L'installation s'est déroulée avec succès.<br>Vous pouvez maintenant vous connecter à l'administration en utilisant le lien en bas de page et les informations de connexion qui vous ont été communiqués lors de l'installation.</p><p>N'oubliez pas de modifier vos informations de connexion et de supprimer le fichier install de votre FTP.</p>");
+		$pageItem->setContent('<div class="large-8 columns">
+<h4>Merci d\'avoir téléchargé 99ko. </h4>
+<p>L\'installation s\'est déroulée avec succès.<br />Vous pouvez maintenant vous connecter à l\'administration en utilisant le lien en bas de page et les informations de connexion qui vous ont été communiqués lors de l\'installation.</p>
+<p>N\'oubliez pas de modifier vos informations de connexion et de supprimer le fichier install de votre FTP.</p>
+</div>
+<div class="large-4 columns">
+	<img alt="99ko" src="admin/images/logo.png"/>
+</div>');
 		$pageItem->setIsHidden(0);
-		$pageItem->setFile('');
+		$pageItem->setFile('home.php');
 		$page->save($pageItem);
 		$page = new page();
 		$pageItem = new pageItem();

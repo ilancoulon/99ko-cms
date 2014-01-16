@@ -4,7 +4,7 @@
 if($data['pageFile']) include_once($data['pageFile']);
 else echo $data['pageContent'];
 ?>
-<?php if($hideTitles){ ?>
+<?php if(isset($hideTitles) && $hideTitles){ ?>
 <script type="text/javascript">
     $(".page h1").hide();
 </script>

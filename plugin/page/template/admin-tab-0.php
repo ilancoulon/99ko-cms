@@ -5,8 +5,8 @@
   <thead>
 	<tr>
 		<th style="width:5%"></th>
-		<th style="width:10%"><?php echo lang("Name"); ?></th>
-		<th style="width:55%">URL</th>
+		<th style="width:15%"><?php echo lang("Name"); ?></th>
+		<th style="width:50%">URL</th>
 		<th style="width:30%"><?php echo lang("Actions"); ?></th>
 	</tr>
   </thead>
@@ -16,8 +16,13 @@
 		<td><?php if($pageItem['isHomepage']){ ?>&nbsp;<img data-tooltip class="has-tip tip-right" src="../plugin/page/other/house.png" alt="icon" title="<?php echo lang("Homepage"); ?>" /><?php } ?> <?php if($pageItem['isHidden']){ ?>&nbsp;<img data-tooltip class="has-tip tip-right" src="../plugin/page/other/ghost.png" alt="icon" title="Cette page n'apparait pas dans le menu" /> <?php } ?></td>
 		<td><?php echo $pageItem['name']; ?></td>
 		<td><input type="text" value="<?php echo $coreConf['siteUrl']; ?>/<?php echo rewriteUrl('page', array('name' => $pageItem['name'], 'id' => $pageItem['id'])); ?>" /></td>
-		<td class="button-bar">
-
+		<td>
+         <!--a href="#" data-dropdown="drop" class="button dropdown">Actions</a><br>
+         <ul id="drop" data-dropdown-content class="f-dropdown">
+             <li><a href="#" data-reveal-id="<?php echo utilStrToUrl($pageItem['name']); ?>"><?php echo lang("Preview"); ?></a></li>
+             <li><a href="index.php?p=page&action=edit&id=<?php echo $pageItem['id']; ?>"><?php echo lang("Edit"); ?></a></li>
+             <?php if(!$pageItem['isHomepage']){ ?><li><a href="index.php?p=page&action=del&id=<?php echo $pageItem['id']; ?>&token=<?php echo $data['token']; ?>" onclick="if(!confirm('<?php echo lang("Delete this page ?"); ?>')) return false;"><?php echo lang("Delete"); ?></a></li><?php } ?>
+         </ul-->
          <ul class="button-group radius">
              <li><button class="tiny button secondary" data-reveal-id="<?php echo utilStrToUrl($pageItem['name']); ?>"><?php echo lang("Preview"); ?></button></li>
              <li><a class="tiny button success" href="index.php?p=page&action=edit&id=<?php echo $pageItem['id']; ?>"><?php echo lang("Edit"); ?></a></li>
