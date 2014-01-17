@@ -20,6 +20,7 @@ if(in_array(ACTION, array('delinstallfile', 'save', 'del', 'saveconfig', 'savepl
 }
 // Variables de template
 $msg = '';
+$config = $coreConf;
 $data['msg'] = ''; // retro compatibilité
 $version = VERSION;
 $token = $_SESSION['token'];
