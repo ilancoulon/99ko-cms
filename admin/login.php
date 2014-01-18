@@ -6,8 +6,9 @@
 	<meta charset="utf-8">	
 	<title>99ko - <?php echo lang('Login'); ?></title>	
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="css/foundation.min.css?v=5.0.3" media="all">
+	<link rel="stylesheet" href="css/99ko.min.css?v=1.0.2" />
 	<?php showLinkTags(); ?>
-	<link rel="stylesheet" href="css/99ko.min.css?v1.0=" media="all">
 	<?php showScriptTags(); ?>
 	<?php eval(callHook('endAdminHead')); ?>	
   </head>

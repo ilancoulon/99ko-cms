@@ -16,13 +16,12 @@ function extrasInstall(){
 ********************************************************************************************************************/
 
 function extrasStartShowLinkTags(){
-    $temp = "\$data.= str_replace('[file]', ROOT.'plugin/extras/other/normalize.css', \$format);";
-    $temp.= "\$data.= str_replace('[file]', ROOT.'plugin/extras/other/foundation.min.css?v=5.0.3', \$format);";
-    return $temp;
+    # $temp = "\$data.= str_replace('[file]', ROOT.'plugin/extras/other/normalize.css', \$format);";
+    # $temp.= "\$data.= str_replace('[file]', ROOT.'plugin/extras/other/foundation.min.css?v=5.0.3', \$format);";
+    # return $temp;
 }
 
 function extrasStartShowScriptTags(){
-    $temp = "\$data.= str_replace('[file]', ROOT.'plugin/extras/other/html5.js', \$format);";
     $temp = "\$data.= str_replace('[file]', ROOT.'plugin/extras/other/jquery.min.js?v=2.0.3', \$format);";
     $temp.= "\$data.= str_replace('[file]', ROOT.'plugin/extras/other/modernizr.js?v=2.6.2', \$format);";
     return $temp;

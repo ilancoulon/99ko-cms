@@ -6,8 +6,9 @@
 	<meta charset="utf-8">	
 	<title>99ko - Administration</title>	
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="css/foundation.min.css?v=5.0.3" media="all">
+	<link rel="stylesheet" href="css/99ko.min.css?v=1.0.2" />
 	<?php showLinkTags(); ?>
-	<link rel="stylesheet" href="css/99ko.min.css?v1.0=" media="all">
 	<?php showScriptTags(); ?>
 	<?php eval(callHook('endAdminHead')); ?>	
   </head>
@@ -87,7 +88,7 @@
     </ul>
   </nav>
 
-  <a onclick="window.open(this.href);return false;" href="http://99ko.tuxfamily.org/" class="download button expand">Just using <b>99ko</b> <span class="label"><?php echo $version; ?></span></a>
+  <a onclick="window.open(this.href);return false;" href="http://99ko.hellojo.fr/" class="download button expand">Just using <b>99ko</b> <span class="label"><?php echo $version; ?></span></a>
 
 </div>  
               </div>

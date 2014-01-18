@@ -2,13 +2,17 @@
 <html lang="<?php showSiteLang(); ?>">
     <head>
         <meta charset="utf-8" />
-	<title><?php showTitleTag(); ?></title>
+	    <title><?php showTitleTag(); ?></title>
         <meta name="description" content="<?php showMetaDescriptionTag(); ?>" />
-	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-	<base href="<?php showSiteUrl(); ?>/" />
-	<?php showLinkTags(); ?>
-	<?php showScriptTags(); ?>
-	<?php eval(callHook('endFrontHead')); ?>
+	    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+	    <base href="<?php showSiteUrl(); ?>/" />
+	    <link rel="stylesheet" type="text/css" href="theme/<?php echo getCoreConf("theme"); ?>/normalize.css" />
+	    <?php showLinkTags(); ?>
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->	    
+	    <?php showScriptTags(); ?>
+	    <?php eval(callHook('endFrontHead')); ?>
     </head>
     <body>
         <div id="container">
@@ -19,5 +23,7 @@
 	    </header>
 	    <div id="body">
 		<section id="content" class="<?php showPluginId(); ?>">
+		<ul id="breadcrumb">
 		    <?php showBreadcrumb(); ?>
+		</ul>
 		    <?php showMainTitle(); ?>

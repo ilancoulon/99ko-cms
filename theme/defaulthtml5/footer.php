@@ -10,7 +10,7 @@
 	    </div>
             <footer id="footer">
 		<div id="footer_content">
-		    <p><?php echo lang('Just using') ?> <a target="_blank" title="<?php echo lang('NoDB CMS') ?>" href="http://99ko.tuxfamily.org/">99ko</a> | <?php echo lang('Theme') ?> <?php showTheme(); ?> | <a rel="nofollow" href="admin/"><?php echo lang('Administration') ?></a> | <?php showExecTime(); ?>s</p>
+		    <p><?php echo lang('Just using') ?> <a target="_blank" title="<?php echo lang('NoDB CMS') ?>" href="http://99ko.hellojo.fr/">99ko</a> | <?php echo lang('Theme') ?> <?php showTheme(); ?> | <a rel="nofollow" href="admin/"><?php echo lang('Administration') ?></a> | <?php showExecTime(); ?>s</p>
 		</div>
 	    </footer>
         </div>
