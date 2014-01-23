@@ -65,7 +65,7 @@
 	<?php if (isset($_SESSION['msg_install'])) { ?>
     <!-- Sidebar -->
     <div class="large-5 columns"> 
-      <h3>Installation</h3>
+      <h3><?php echo lang('Installed !'); ?></h3>
       <hr>    	
         <?php showMsg($_SESSION['msg_install'], 'success'); ?> 
     </div>
