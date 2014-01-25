@@ -23,6 +23,7 @@
 	"Delete" : "Supprimer",
 	"Installed !" : "Installation Terminée !",
 	"99ko installer" : "Installation de 99ko",
+	"99ko installer requires JavaScript. I will only be visible if you have it disabled." : "Javascript doit être activé pour poursuivre l'installation de 99ko.",
 	"Verifying the installation" : "Vérification de d'installation",
 	"Install" : "Installer",
 	"Continue" : "Étape suivante",
