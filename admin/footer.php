@@ -1,21 +1,21 @@
-    <?php if($tabs){ ?>
-      </div>
-    </div>
-	<?php } ?>
+		          <?php if($tabs){ ?>
+                         </div>
+                      </div>
+		          <?php } ?>
 	
-        </div>
-      </div>
-    </section>
+            </div> <!-- /large-9 medium-8 columns -->
+          </div> <!-- /row -->
+        </section>
 
-  <a class="exit-off-canvas"></a>
+      <a class="exit-off-canvas"></a>
 
-  </div>
-</div>
-
+      </div> <!-- /inner-wrap -->
+    </div> <!-- /marketing off-canvas-wrap -->
+    
     <script src="js/all.js"></script>
     <script src="js/scripts.js"></script>
     <script>
-            $(document).foundation().foundation('joyride', 'start');
+            $(document).foundation();
     </script>
     <?php eval(callHook('endAdminBody')); ?>
   </body>

@@ -62,12 +62,12 @@
   </ul>
 </aside>
 
-<a class="exit-off-canvas" href="#"></a>
+<a class="exit-off-canvas"></a>
 
 
-        <section role="main" class="<?php echo $pluginName; ?>-admin">
-        
+        <section role="main" class="<?php echo $pluginName; ?>-admin">        
           <div class="row">
+          
             <div class="large-3 medium-4 columns">
               <div class="hide-for-small">
               <div class="sidebar">
@@ -90,29 +90,34 @@
 
   <a onclick="window.open(this.href);return false;" href="http://99ko.hellojo.fr/" class="download button expand">Just using <b>99ko</b> <span class="label"><?php echo $version; ?></span></a>
 
-</div>  
-              </div>
-            </div>
+              </div>  <!-- /sidebar -->
+              </div> <!-- /hide-for-small -->
+            </div> <!-- /large-3 medium-4 columns -->
             
             
-            <!-- Content -->
-            
+            <!-- CONTENU -->          
             <div class="large-9 medium-8 columns">
-
-		<h2><?php echo lang($pageTitle); ?></h2>
-		<hr>
-		<?php if($pluginConfigTemplate){ ?>
-			<div id="pluginConfig">
-				<?php include_once($pluginConfigTemplate); ?>
-				<hr>
-			</div>
-		<?php } ?>
-		<?php if($tabs){ ?>
-        <dl class="radius tabs" data-tab>
-           	<?php foreach($tabs as $k=>$v){ ?>
-			<dd><a href="<?php echo $v['url']; ?>"><?php echo lang($v['label']); ?></a></dd>
-			<?php } ?>
-        </dl>
-        <div class="tabs-content">
-            <div class="contentlarge active">
-		<?php } ?>
+        
+		        <h2><?php echo lang($pageTitle); ?></h2>
+		        <hr>
+                <noscript>
+                  <div class="alert-box warning radius">
+                     <h6><?php echo lang("Javascript must be enabled in your browser to take full advantage of features 99ko."); ?></h6>
+                     <a href="#" class="close">&times;</a>
+                  </div>
+                </noscript> 		        
+		           <?php if($pluginConfigTemplate){ ?>
+			          <div id="pluginConfig">
+				       <?php include_once($pluginConfigTemplate); ?>
+				      <hr>
+			          </div>
+		           <?php } ?>
+		          <?php if($tabs){ ?>
+                      <dl class="radius tabs" data-tab>
+           	          <?php foreach($tabs as $k=>$v){ ?>
+			            <dd><a href="<?php echo $v['url']; ?>"><?php echo lang($v['label']); ?></a></dd>
+			          <?php } ?>
+                      </dl>
+                      <div class="tabs-content">
+                         <div class="contentlarge active">
+		          <?php } ?>

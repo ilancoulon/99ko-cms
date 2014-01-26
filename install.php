@@ -188,11 +188,12 @@ if (isset($_POST['install_submit'])) {
 	   <h1><img src="admin/images/logo.png" alt="99ko" /> 99ko</h1>
 	   
        <div class="row panel">
-        <noscript>
-            <div class="alert-box warning radius">
-                <?php echo lang("99ko installer requires JavaScript. I will only be visible if you have it disabled."); ?>
-            </div>
-        </noscript> 
+                <noscript>
+                  <div class="alert-box warning radius">
+                     <h6><?php echo lang("Javascript must be enabled in your browser to take full advantage of features 99ko."); ?></h6>
+                     <a href="#" class="close">&times;</a>
+                  </div>
+                </noscript> 
                       
 		<div class="step-1">
 		    <h3 class="subheader"><?php echo lang("Verifying the installation"); ?></h3>
