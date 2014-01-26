@@ -90,11 +90,11 @@
       <?php showAdminEditor('content', $data['pageContent']); ?>
     </div>
   </div>
-  	
+  <br /> 	
   <div class="row">
-    <div class="large-4 columns">
+    <div class="large-12 columns">
       <label><?php echo lang('Include a file instead of content (must be present in %s theme\'s folder)', 'page', $data['pageTheme']); ?></label>
-		<select name="file">
+		<select name="file" class="large-3 columns">
 			<option value="">--</option>
 			<?php foreach($data['pageFiles'] as $file){ ?>
 			<option <?php if($file == $data['pageFile']){ ?>selected<?php } ?> value="<?php echo $file; ?>"><?php echo $file; ?></option>
