@@ -69,9 +69,9 @@ function showScriptTags($format = '<script type="text/javascript" src="[file]"><
 ** @param : $name (attribut name), $content, $width, $height, $id (attribut id), $class (attribut class)
 ** @return : string HTML
 */
-function showAdminEditor($name, $content, $width, $height, $id = 'editor', $class = 'editor') {
+function showAdminEditor($name, $content, $id='editor', $class='editor') {
 	eval(callHook('startShowAdminEditor'));
-	$data = '<textarea style="width:'.$width.'px;height:'.$height.'px" name="'.$name.'" id="'.$id.'" class="'.$class.'">'.$content.'</textarea>';
+	$data = '<textarea name="'.$name.'" id="'.$id.'" class="'.$class.'">'.$content.'</textarea>';
 	eval(callHook('endShowAdminEditor'));
 	echo $data;
 }

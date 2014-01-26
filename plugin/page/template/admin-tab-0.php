@@ -17,12 +17,7 @@
 		<td><?php echo $pageItem['name']; ?></td>
 		<td><input type="text" value="<?php echo $coreConf['siteUrl']; ?>/<?php echo rewriteUrl('page', array('name' => $pageItem['name'], 'id' => $pageItem['id'])); ?>" /></td>
 		<td>
-         <!--a href="#" data-dropdown="drop" class="button dropdown">Actions</a><br>
-         <ul id="drop" data-dropdown-content class="f-dropdown">
-             <li><a href="#" data-reveal-id="<?php echo utilStrToUrl($pageItem['name']); ?>"><?php echo lang("Preview"); ?></a></li>
-             <li><a href="index.php?p=page&action=edit&id=<?php echo $pageItem['id']; ?>"><?php echo lang("Edit"); ?></a></li>
-             <?php if(!$pageItem['isHomepage']){ ?><li><a href="index.php?p=page&action=del&id=<?php echo $pageItem['id']; ?>&token=<?php echo $data['token']; ?>" onclick="if(!confirm('<?php echo lang("Delete this page ?"); ?>')) return false;"><?php echo lang("Delete"); ?></a></li><?php } ?>
-         </ul-->
+		 <!-- Boutons d'actions -->
          <ul class="button-group radius">
              <li><button class="tiny button secondary" data-reveal-id="<?php echo utilStrToUrl($pageItem['name']); ?>"><?php echo lang("Preview"); ?></button></li>
              <li><a class="tiny button success" href="index.php?p=page&action=edit&id=<?php echo $pageItem['id']; ?>"><?php echo lang("Edit"); ?></a></li>
@@ -92,7 +87,7 @@
   <div class="row">
     <div class="large-12 columns">
       <label><?php echo lang("Content"); ?></label>
-      <?php showAdminEditor('content', $data['pageContent'], '600', '400'); ?>
+      <?php showAdminEditor('content', $data['pageContent']); ?>
     </div>
   </div>
   	
