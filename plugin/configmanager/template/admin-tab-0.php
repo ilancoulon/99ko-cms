@@ -1,4 +1,5 @@
 <?php if(!defined('ROOT')) die(); ?>
+<br />
 <form id="configForm" method="post" action="index.php?p=configmanager&action=save">
     <?php showMsg($msg, 'error'); ?>
     <?php showAdminTokenField(); ?>
@@ -12,6 +13,18 @@
 	    <?php } ?>
       </select>
     </div>
+    <div class="large-2 columns">
+      <label><?php echo lang("Default plugin"); ?></label>
+      <select name="defaultPlugin">
+	    <?php foreach($plugins as $k=>$v) if($v['target'] && $v['activate'] && $v['frontFile']){ ?>
+	    <option <?php if($v['isDefaultPlugin']){ ?>selected<?php } ?> value="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
+	    <?php } ?>
+      </select>
+    </div>  
+    <div class="large-8 columns">
+      <label><?php echo lang("Title"); ?></label>
+      <input <?php if($config['hideTitles']){ ?>checked<?php } ?> type="checkbox" name="hideTitles" /> <label for="hideTitles"><?php echo lang("Hide pages titles"); ?></label>    
+    </div>      
   </div> 
   
   <div class="row">
@@ -26,7 +39,7 @@
   </div>
     
   <div class="row">
-    <div class="large-6 columns">
+    <div class="large-12 columns">
       <label><?php echo lang("Theme"); ?></label>
       <ul class="no-bullet">
       <?php foreach($themes as $k=>$v){ ?>
@@ -56,23 +69,8 @@
 	    <?php } ?>
       </ul>	    
     </div>
-    <div class="large-6 columns">
-      <label>Titres</label>
-      <input <?php if($config['hideTitles']){ ?>checked<?php } ?> type="checkbox" name="hideTitles" /> <label for="hideTitles"><?php echo lang("Hide pages titles"); ?></label>
-    </div>
   </div>
- 
-  <div class="row">
-    <div class="large-2 columns">
-      <label><?php echo lang("Default plugin"); ?></label>
-      <select name="defaultPlugin">
-	    <?php foreach($plugins as $k=>$v) if($v['target'] && $v['activate'] && $v['frontFile']){ ?>
-	    <option <?php if($v['isDefaultPlugin']){ ?>selected<?php } ?> value="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
-	    <?php } ?>
-      </select>
-    </div>
-  </div> 
-  
+
   <div class="row">
     <div class="large-6 columns">
       <label><?php echo lang("Admin mail"); ?></label>
@@ -90,5 +88,5 @@
       <input type="password" name="adminPwd2" value="" />
     </div>
   </div>
-
+  
   <button type="submit" class="button success radius"><?php echo lang("Save"); ?></button>

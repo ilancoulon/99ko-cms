@@ -1,4 +1,5 @@
    <?php if(!defined('ROOT')) die(); ?>
+<br />
    <?php showMsg(lang("Do not change advanced settings if you're not on what you're doing."), "error"); ?>   
    <div class="row">
     <div class="large-6 columns">
