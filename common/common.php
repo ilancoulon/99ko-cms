@@ -7,25 +7,20 @@
 # Copyright (c) 2010 Jonathan Coulet (j.coulet@gmail.com)
 ##########################################################################################################
 
-//error_reporting(E_ALL);
+#error_reporting(E_ALL);
 if(!defined('ROOT')) die();
-# Deboguage, décommenté pour déboguer
-# ini_set('display_errors',1);
-# ini_set('display_startup_errors',1);
-# error_reporting(-1);
-
 /*
 ** Préchauffage
 */
-
-
 session_start();
 // on check le fichier de configuration
 if(!file_exists(ROOT.'data/config.txt')){
 	header('location:'.ROOT.'install.php');
 	die();
 }
-// constantes
+/*
+** Constantes
+*/
 define('VERSION', '1.4 b');
 define('ACTION', ((isset($_GET['action'])) ? $_GET['action'] : '')); // inutile : voir $urlParams
 include(ROOT.'data/key.php');
@@ -50,13 +45,14 @@ define('DEFAULT_PLUGIN', getCoreConf('defaultPlugin'));
 define('PLUGIN', ((isset($_GET['p'])) ? $_GET['p'] : DEFAULT_PLUGIN)); // inutile : voir $runPlugin
 // fix magic quotes
 utilSetMagicQuotesOff();
-
-
+/*
+** Défini le fuseau horaire par défaut
+*/
+if (function_exists('date_default_timezone_set')) date_default_timezone_set(getCoreConf('siteTimezone')); 
+else putenv('TZ='.getCoreConf('siteTimezone'));
 /*
 ** Phase de traitement des plugins (chargement, installation, hooks...)
 */
-
-
 // On créé le manager de plugins via la méthode getInstance (singleton)
 $pluginsManager = pluginsManager::getInstance();
 
@@ -73,13 +69,9 @@ foreach($pluginsManager->getPlugins() as $plugin){
 		foreach($plugin->getHooks() as $hookName=>$function) $hooks[$hookName][] = $function;
 	}
 }
-
-
 /*
 ** Création de l'objet $runPLugin (plugin solicité)
 */
-
-
 // hook
 eval(callHook('startCreatePlugin'));
 // on cree l'instance du plugin solicite
