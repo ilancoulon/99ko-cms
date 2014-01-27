@@ -81,7 +81,7 @@
            </select>
         </div>
         <div class="small-3 columns">
-          <span class="postfix radius"><?php echo $config['siteTimezone']; ?></span>
+          <span class="postfix radius">✓ <?php echo $config['siteTimezone']; ?></span>
         </div>
       </div>
           
