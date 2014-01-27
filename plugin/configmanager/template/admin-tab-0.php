@@ -70,7 +70,25 @@
       </ul>	    
     </div>
   </div>
+  
+  <div class="row">
+    <div class="large-8 columns">
+      <label for="siteTimezone"><?php echo lang("Time zone"); ?></label>
+      <div class="row collapse">
+        <div class="small-9 columns">
+           <select class="form-control" name="siteTimezone"> 
+                <?php include(ROOT.'plugin/configmanager/other/Timezone.txt'); ?>
+           </select>
+        </div>
+        <div class="small-3 columns">
+          <span class="postfix radius"><?php echo $config['siteTimezone']; ?></span>
+        </div>
+      </div>
+          
 
+    </div>		     
+  </div>
+		  
   <div class="row">
     <div class="large-6 columns">
       <label><?php echo lang("Admin mail"); ?></label>
