@@ -4,7 +4,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8">	
-	<title>99ko - Administration</title>	
+	<title>99ko - <?php echo lang('Backend'); ?></title>	
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" href="css/foundation.min.css?v=5.0.3" media="all">
 	<link rel="stylesheet" href="css/99ko.min.css?v=1.0.2" />
@@ -55,7 +55,7 @@
   <hr>
 
   <ul class="off-canvas-list">
-    <li><label>Navigation</label></li>
+    <li><label><?php echo lang('Navigation'); ?></label></li>
 	<?php foreach($navigation as $k=>$v){ ?>
 	<li><a class="<?php if($v['isActive']){ ?>current<?php } ?>" href="<?php echo $v['url']; ?>"><?php echo lang($v['label']); ?></a></li>
 	<?php } ?>
@@ -72,13 +72,13 @@
               <div class="hide-for-small">
               <div class="sidebar">
   <form>
-    <label>Filtre de Recherche</label>
-    <input tabindex="1" id="autocomplete" type="search" placeholder="Rechercher">
+    <label><?php echo lang('Search Filter'); ?></label>
+    <input tabindex="1" id="autocomplete" type="search" placeholder="<?php echo lang('Search'); ?>&hellip;">
   </form>
 
   <nav>
     <ul class="side-nav">
-      <li class="heading">Navigation</li>
+      <li class="heading"><?php echo lang('Navigation'); ?></li>
 
 	  <?php foreach($navigation as $k=>$v){ ?>
 	  <li><a class="<?php if($v['isActive']){ ?>current<?php } ?>" href="<?php echo $v['url']; ?>"><?php echo lang($v['label']); ?></a></li>

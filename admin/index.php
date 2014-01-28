@@ -12,7 +12,7 @@ define('ROOT', '../');
 // on inclu le fichier common
 include_once(ROOT.'common/common.php');
 // on genere le jeton
-if(!isset($_SESSION['token'])) $_SESSION['token'] = uniqid();
+if(!isset($_SESSION['token'])) $_SESSION['token'] = sha1(uniqid(mt_rand()));
 // on check le jeton
 if(in_array(ACTION, array('delinstallfile', 'save', 'del', 'saveconfig', 'saveplugins', 'login', 'logout')) && $_REQUEST['token'] != $_SESSION['token']){	
 	include_once('login.php');
