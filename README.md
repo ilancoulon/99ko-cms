@@ -4,9 +4,9 @@
 Fast and lightweight cms, Json powered.
 We're just getting started, so if you have any questions, comments, bugs to report or enhancements that should be implemented, please do feel free to post those here on GitHub.
 
-Site: http://99ko.hellojo.fr
-Help & Support: http://99ko.hellojo.fr/forum
-Documentation:
+- Site: http://99ko.hellojo.fr
+- Help & Support: http://99ko.hellojo.fr/forum
+- Documentation:
 
 ===== Social =====
 * Twitter: http://twitter.com/_hellojo_
