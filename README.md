@@ -6,10 +6,7 @@ We're just getting started, so if you have any questions, comments, bugs to repo
 
 - Site: http://99ko.hellojo.fr
 - Help & Support: http://99ko.hellojo.fr/forum
-- Documentation:
-
-===== Social =====
-* Twitter: http://twitter.com/_hellojo_
+- Twitter: http://twitter.com/_hellojo_
 
 ## Getting Started
 - [Installation](#installation)
