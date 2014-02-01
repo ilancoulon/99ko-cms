@@ -15,6 +15,6 @@ We're just getting started, so if you have any questions, comments, bugs to repo
 
 ## License
 
-Copyright (c) 2011-2014 99Ko
+Copyright (c) 2011-2014 **99Ko
 
 Licence update....
