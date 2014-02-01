@@ -9,9 +9,14 @@ We're just getting started, so if you have any questions, comments, bugs to repo
 - Twitter: http://twitter.com/_hellojo_
 
 ## Getting Started
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [License](#license)
 
+## Requirements
+* Apache
+* PHP 5.2+
+ 
 ## Installation
 1. Download the latest version of 99ko [here on GitHub](https://github.com/99ko-project/99ko-cms/archive/master.zip).
 2. Extract "99ko-cms-master.zip", then upload "99ko-cms" to your web server wherever you would like 99ko to be installed. 
