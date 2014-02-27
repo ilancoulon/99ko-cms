@@ -16,7 +16,7 @@
   
   <body class="antialiased hide-extras">
 
-    <div class="marketing off-canvas-wrap">
+    <div class="nav off-canvas-wrap">
       <div class="inner-wrap">
 
 
@@ -47,7 +47,7 @@
   </a>
 </nav>
 
-<aside class="marketing-left-off-canvas-menu">
+<aside class="nav-left-off-canvas-menu">
 
   <ul class="off-canvas-list">
     <li><label class="first"><?php showSiteName(); ?></label></li>
@@ -85,7 +85,7 @@
 	  <?php foreach($navigation as $k=>$v){ ?>
 	  <li><a class="<?php if($v['isActive']){ ?>current<?php } ?>" href="<?php echo $v['url']; ?>"><?php echo lang($v['label']); ?></a></li>
 	  <?php } ?>
-
+	  
       <li class="divider"></li>
     </ul>
   </nav>
