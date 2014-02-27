@@ -1,12 +1,21 @@
 <?php
-##########################################################################################################
-# 99ko http://99ko.tuxfamily.org/
-#
-# Copyright (c) 2013 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon
-# Copyright (c) 2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
-# Copyright (c) 2010 Jonathan Coulet (j.coulet@gmail.com)
-##########################################################################################################
-
+/**
+ * 99ko cms
+ *
+ * This source file is part of the 99ko cms. More information,
+ * documentation and support can be found at http://99ko.hellojo.fr
+ *
+ * @package     99ko
+ *
+ * @author      Jonathan Coulet (j.coulet@gmail.com)
+ * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
+ * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
+ * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+defined('ROOT') OR exit('No direct script access allowed'); 
 /************************************************
 ** Classes responsables de la gestion des plugins
 ************************************************/
@@ -52,9 +61,10 @@ class pluginsManager{
 	*/
 	public function savePluginConfig($obj){
 		if($obj->getIsValid() && $path = $obj->getDataPath()){
-			if(@file_put_contents($path.'config.txt', json_encode($obj->getConfig()), 0666)) return true;
+		    return utilWriteJsonFile($path.'config.txt', $obj->getConfig());
+			//if(@file_put_contents($path.'config.txt', json_encode($obj->getConfig()), 0666)) return true;
 		}
-		return false;
+		//return false;
 	}
 	
 	/*
@@ -75,12 +85,12 @@ class pluginsManager{
 	** @return : true / false
 	*/
 	public function installPlugin($name){
-		@mkdir(ROOT.'data/plugin/'.$name.'/', 0777);
-		@chmod(ROOT.'data/plugin/'.$name.'/', 0777);
-		@file_put_contents(ROOT.'data/plugin/'.$name.'/config.txt', file_get_contents(ROOT.'plugin/'.$name.'/param/config.json'), 0666);
-		@chmod(ROOT.'data/plugin/'.$name.'/config.txt', 0666);
+		@mkdir(DATA_PLUGIN .$name.'/', 0777);
+		@chmod(DATA_PLUGIN .$name.'/', 0777);
+		@file_put_contents(DATA_PLUGIN .$name.'/config.txt', file_get_contents(PLUGINS .$name.'/param/config.json'), 0666);
+		@chmod(DATA_PLUGIN .$name.'/config.txt', 0666);
 		if(function_exists($name.'Install')) call_user_func($name.'Install');
-		if(!file_exists(ROOT.'data/plugin/'.$name.'/config.txt')) return false;
+		if(!file_exists(DATA_PLUGIN .$name.'/config.txt')) return false;
 		return true;
 	}
 	
@@ -93,11 +103,12 @@ class pluginsManager{
 	private function listPlugins(){
 		$data = array();
 		$dataNotSorted = array();
-		$items = utilScanDir(ROOT.'plugin/');
+		$items = utilScanDir(PLUGINS);
 		
 		foreach($items['dir'] as $dir){
 			// les plugins non installés ont une priorité faible
-			if(file_exists(ROOT.'data/plugin/'.$dir.'/config.txt')) $dataNotSorted[$dir] = json_decode(@file_get_contents(ROOT.'data/plugin/'.$dir.'/config.txt'), true);
+			if(file_exists(DATA_PLUGIN .$dir. '/config.txt')) $dataNotSorted[$dir] = utilReadJsonFile(DATA_PLUGIN .$dir. '/config.txt', true);
+			//if(file_exists(DATA_PLUGIN .$dir. '/config.txt')) $dataNotSorted[$dir] = json_decode(@file_get_contents(DATA_PLUGIN .$dir. '/config.txt'), true);
 			else $dataNotSorted[$dir]['priority'] = '10';
 		}
 		$dataSorted = utilSort2DimArray($dataNotSorted, 'priority', 'num');
@@ -113,10 +124,10 @@ class pluginsManager{
 	** @param : string (nom du plugin), array (configuration du plugin)
 	*/
 	private function createPlugin($name){
-		$infos = utilReadJsonFile(ROOT.'plugin/'.$name.'/param/infos.json');
-		$config = utilReadJsonFile(ROOT.'data/plugin/'.$name.'/config.txt');
-		$hooks = utilReadJsonFile(ROOT.'plugin/'.$name.'/param/hooks.json');
-		$initConfig = utilReadJsonFile(ROOT.'plugin/'.$name.'/param/config.json');
+		$infos = utilReadJsonFile(PLUGINS .$name. '/param/infos.json');
+		$config = utilReadJsonFile(DATA_PLUGIN .$name. '/config.txt');
+		$hooks = utilReadJsonFile(PLUGINS .$name. '/param/hooks.json');
+		$initConfig = utilReadJsonFile(PLUGINS .$name. '/param/config.json');
 		if(!is_array($config)) $config = array();
 		if(!is_array($hooks)) $hooks = array();
 		$plugin = new plugin($name, $config, $infos, $hooks, $initConfig);
@@ -199,21 +210,21 @@ class plugin{
 		$this->isDefaultPlugin = ($name == DEFAULT_PLUGIN) ? true : false;
 		$this->setTitleTag($infos['name']);
 		$this->setMainTitle($infos['name']);
-		$this->libFile = (file_exists(ROOT.'plugin/'.$this->name.'/'.$this->name.'.php')) ? ROOT.'plugin/'.$this->name.'/'.$this->name.'.php' : false;
-		$this->langFile = (file_exists(ROOT.'plugin/'.$this->name.'/lang/'.getCoreConf('siteLang').'.json')) ? ROOT.'plugin/'.$this->name.'/lang/'.getCoreConf('siteLang').'.json' : false;
+		$this->libFile = (file_exists(PLUGINS .$this->name.'/'.$this->name.'.php')) ? PLUGINS .$this->name.'/'.$this->name.'.php' : false;
+		$this->langFile = (file_exists(PLUGINS .$this->name.'/lang/'.getCoreConf('siteLang').'.json')) ? PLUGINS .$this->name.'/lang/'.getCoreConf('siteLang').'.json' : false;
 		$this->lang = ($this->langFile) ? utilReadJsonFile($this->langFile) : array();
-		$this->publicFile = (file_exists(ROOT.'plugin/'.$this->name.'/public.php')) ? ROOT.'plugin/'.$this->name.'/public.php' : false;
-		$this->adminFile = (file_exists(ROOT.'plugin/'.$this->name.'/admin.php')) ? ROOT.'plugin/'.$this->name.'/admin.php' : false;
-		$this->cssFile = (file_exists(ROOT.'plugin/'.$this->name.'/other/'.$this->name.'.css')) ? ROOT.'plugin/'.$this->name.'/other/'.$this->name.'.css' : false;
-		$this->jsFile = (file_exists(ROOT.'plugin/'.$this->name.'/other/'.$this->name.'.js')) ? ROOT.'plugin/'.$this->name.'/other/'.$this->name.'.js' : false;
+		$this->publicFile = (file_exists(PLUGINS .$this->name.'/public.php')) ? PLUGINS .$this->name.'/public.php' : false;
+		$this->adminFile = (file_exists(PLUGINS .$this->name.'/admin.php')) ? PLUGINS .$this->name.'/admin.php' : false;
+		$this->cssFile = (file_exists(PLUGINS .$this->name.'/other/'.$this->name.'.css')) ? PLUGINS .$this->name.'/other/'.$this->name.'.css' : false;
+		$this->jsFile = (file_exists(PLUGINS .$this->name.'/other/'.$this->name.'.js')) ? PLUGINS .$this->name.'/other/'.$this->name.'.js' : false;
 		$this->addToBreadcrumb($infos['name'], 'index.php?p='.$this->name);
 		if($this->isDefaultPlugin) $this->initBreadcrumb();
-		$this->dataPath = (is_dir(ROOT.'data/plugin/'.$this->name)) ? ROOT.'data/plugin/'.$this->name.'/' : false;
+		$this->dataPath = (is_dir(DATA_PLUGIN .$this->name)) ? DATA_PLUGIN .$this->name.'/' : false;
 		if(file_exists('theme/'.getCoreConf('theme').'/'.$this->name.'.php')) $this->publicTemplate = 'theme/'.getCoreConf('theme').'/'.$this->name.'.php';
-		elseif(file_exists(ROOT.'plugin/'.$this->name.'/template/public.php')) $this->publicTemplate = ROOT.'plugin/'.$this->name.'/template/public.php';
+		elseif(file_exists(PLUGINS .$this->name.'/template/public.php')) $this->publicTemplate = PLUGINS .$this->name.'/template/public.php';
 		else $this->publicTemplate = false;
-		$this->adminTemplate = (file_exists(ROOT.'plugin/'.$this->name.'/template/admin.php')) ? ROOT.'plugin/'.$this->name.'/template/admin.php' : false;
-		$this->configTemplate = (file_exists(ROOT.'plugin/'.$this->name.'/template/config.php')) ? ROOT.'plugin/'.$this->name.'/template/config.php': false;
+		$this->adminTemplate = (file_exists(PLUGINS .$this->name.'/template/admin.php')) ? PLUGINS .$this->name.'/template/admin.php' : false;
+		$this->configTemplate = (file_exists(PLUGINS .$this->name.'/template/config.php')) ? PLUGINS .$this->name.'/template/config.php': false;
 		$this->initConfig = $initConfig;
 		$this->navigation = array();
 		// tabs
@@ -221,9 +232,9 @@ class plugin{
 		if(isset($this->config['adminTabs']) && $this->config['adminTabs'] != '') $this->adminTabs = explode(',', $this->config['adminTabs']);
 		// admin multi templates (tabs)
 		foreach($this->adminTabs as $k=>$v){
-			if(file_exists(ROOT.'plugin/'.$this->name.'/template/admin-tab-'.$k.'.php')){
+			if(file_exists(PLUGINS .$this->name.'/template/admin-tab-'.$k.'.php')){
 				if(!is_array($this->adminTemplate)) $this->adminTemplate = array();
-				$this->adminTemplate[] = ROOT.'plugin/'.$this->name.'/template/admin-tab-'.$k.'.php';
+				$this->adminTemplate[] = PLUGINS .$this->name.'/template/admin-tab-'.$k.'.php';
 			}
 		}
 	}

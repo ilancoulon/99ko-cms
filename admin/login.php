@@ -1,46 +1,85 @@
-<!doctype html>  
-<!--[if IE 6 ]><html lang="fr" class="ie6"> <![endif]-->
-<!--[if IE 7 ]><html lang="fr" class="ie7"> <![endif]-->
-<!--[if IE 8 ]><html lang="fr" class="ie8"> <![endif]-->
-<html lang="<?php showSiteLang(); ?>">
-<head>
-	<meta charset="utf-8">
-	<title>99ko - <?php echo lang('Login'); ?></title>
-	<link rel="stylesheet" href="css/login.css" media="all">
-	<link rel="stylesheet" href="css/common.css" media="all">
-</head>
-<body>
+<!doctype html>
+<!--[if IE 9]><html class="lt-ie10" lang="<?php showSiteLang(); ?>" > <![endif]-->
+<html class="no-js" lang="<?php showSiteLang(); ?>">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">	
+	<title>99ko - <?php echo lang('Login'); ?></title>	
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="css/foundation.min.css?v=5.0.3" media="all">
+	<link rel="stylesheet" href="css/99ko.min.css?v=1.0.2" />
+	<?php showLinkTags(); ?>
+	<?php showScriptTags(); ?>
+	<?php eval(callHook('endAdminHead')); ?>	
+  </head>
+  
+  <body class="antialiased hide-extras">
+  <!-- Main Page Content and Sidebar -->
+ 
+  <div class="row">
+ 
+    <!-- Login Form -->
+    <div class="<?php if (isset($_SESSION['msg_install'])) { ?>large-7<?php } else { ?>login small-5<?php } ?> columns">
+ 
+      <h3><?php echo lang('Login'); ?></h3>
+      <hr>
+ 
+      <div class="section-container tabs" data-section>
+        <section class="section">
+          
+          <div class="content">
+           <?php showMsg($msg, 'error'); ?>
+           <form method="post" action="index.php?action=login">   
+           <?php showAdminTokenField(); ?>
+           
+              <div class="row collapse">
+                <div class="large-12 columns">
+                   <label for="adminEmail"><?php echo lang('Email'); ?></label>
+                   <input type="email" id="adminEmail" name="adminEmail" placeholder="your@mail.com" required>
+                </div>
+                <div class="large-12 columns">
+                   <label for="adminPwd"><?php echo lang('Password'); ?></label>
+                   <input type="password" id="adminPwd" name="adminPwd" placeholder="*******" required>
+                </div>
+              </div>                
+              
+              <div class="row">
+                 <div class="large-10 columns">
+                       <p class="left copy">
+                            <a title="<?php echo lang("NoDB CMS"); ?>" onclick="window.open(this.href);return false;" href="http://99ko.hellojo.fr"><?php echo lang("Just using <b>99ko</b>"); ?></a><a href="index.php?action=logout&token=<?php echo $token; ?>">.</a>
+                       </p>
+                 </div>
+                 <div class="large-2 columns">
+                       <p class="right"><button type="submit" class="radius button"><?php echo lang('Go'); ?></button></p>
+                 </div>
+              </div>              
+              
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+ 
+    <!-- End Login Form -->
+ 
+     
 	<?php if (isset($_SESSION['msg_install'])) { ?>
-	<div id="content">      
-		<section id="home">
-		       <?php showMsg($_SESSION['msg_install'], 'success'); ?>
-		</section>
-		<br />
-	</div>
+    <!-- Sidebar -->
+    <div class="large-5 columns"> 
+      <h3><?php echo lang('Installed !'); ?></h3>
+      <hr>    	
+        <?php showMsg(lang('99ko is installed').'<br />'.lang('Also, delete the install.php file'), 'success'); ?> 
+    </div>
+    <!-- End Sidebar -->      		     
 	<?php } ?>
-	<section id="login">
-		<div id="login_panel">
-			<?php showMsg($msg, 'error'); ?>
-			<form method="post" action="index.php?action=login">
-				<div class="login_fields">			
-					<div class="field">
-					    <?php showAdminTokenField(); ?>
-						<label for="adminEmail"><?php echo lang('Email'); ?></label>
-						<input type="text" name="adminEmail" id="adminEmail" tabindex="1" />			
-					</div>
-					<div class="field">
-					    <?php showAdminTokenField(); ?>
-						<label for="adminPwd"><?php echo lang('Password'); ?></label>
-						<input type="password" name="adminPwd" id="adminPwd" tabindex="1" />			
-					</div>
-				</div>
-				
-				<div class="login_actions">
-					<input type="submit" class="btn" tabindex="2" value="<?php echo lang('Go'); ?>" />
-					<em><?php echo lang('Just using'); ?> <a target="_blank" title="<?php echo lang('Just using'); ?>" href="http://99ko.tuxfamily.org/">99ko</a></em>
-				</div>
-			</form>
-		</div>		
-	</section>
+
+  </div>
+ 
+  <!-- End Main Content and Sidebar -->
+    <script src="js/all.js"></script>
+    <script src="js/scripts.js"></script>
+    <script>
+            $(document).foundation();
+    </script>  
 </body>
 </html>

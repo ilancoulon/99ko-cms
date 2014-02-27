@@ -1,39 +1,3 @@
-function addLink() {
-	var position = parseInt($('#linksList tr:last').attr('id'));
-	
-	$('#linksList tr:last .down').html('<img src="../plugin/menu/img/down.png" alt="descendre" onclick="downLink(' + position + ')" />')
-	
-	position += 1;
-	
-	$('#linksList').append(
-		'<tr id="' + position + '" class="added">'+
-			'<input type="hidden" name="id' + position + '" value="-1" />'+
-			'<input type="hidden" name="plugin' + position + '" value="menu" />'+
-			'<td class="label">'+
-				'<input type="text" name="label' + position + '" />'+
-			'</td>'+
-			'<td class="url">'+
-				'<input type="text" name="url' + position + '" />'+
-			'</td>'+
-			'<td class="target">'+
-				'<select name="target' + position + '">'+
-					'<option value="_self">Fenêtre courante</option>' +
-					'<option value="_blank">Nouvelle fenêtre</option>' +
-				'</select>' +
-			'</td>'+
-			'<td class="up">'+
-				'<img src="../plugin/menu/img/up.png" alt="monter" onclick="upLink(' + position + ')" />'+
-			'</td>'+
-			'<td class="down"></td>'+
-			'<td class="delete">'+
-				'<img src="../plugin/menu/img/delete.png" alt="supprimer" onclick="deleteLink(' + position + ')" />'+
-			'</td>'+
-		'</tr>'
-	);
-	
-	$('input[name=number]').attr('value', position + 1);
-}
-
 function upLink(id) {
 	var before = $('#'+id);
 	var after = $('#'+(id-1));

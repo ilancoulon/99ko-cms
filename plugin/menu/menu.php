@@ -1,10 +1,10 @@
 <?php
-if(!defined('ROOT')) die();
+defined('ROOT') OR exit('No direct script access allowed');
 
 ###### Déclaration
-define('MENU_DATAPATH', ROOT.'data/plugin/menu/');
-define('MENU_LINKS', ROOT.'data/plugin/menu/links/');
-define('MENU_PLUGINPATH', ROOT.'plugin/menu/');
+define('MENU_DATAPATH',   DATA_PLUGIN. 'menu/');
+define('MENU_LINKS',      DATA_PLUGIN. 'menu/links/');
+define('MENU_PLUGINPATH',     PLUGINS. 'menu/');
 
 ###### Classes
 require_once(MENU_PLUGINPATH.'lib/menu.class.php');

@@ -6,13 +6,15 @@
 	"Name" : "Nom",
 	"New page" : "Ajouter",
 	"Preview" : "Aperçu",
-	"Edit" : "Editer",
+	"Edit" : "Éditer",
 	"Delete" : "Supprimer",
 	"Page title (optional)" : "Titre de la page (Facultatif)",
 	"Meta description tag (optional)" : "Balise meta description (facultatif)",
 	"Link position in the menu" : "Position du lien dans la navigation",
 	"Use as homepage" : "Utiliser comme page d'accueil",
+	"This page does not appear in the menu" : "Cette page n'apparait pas dans le menu",
 	"Don't display in the menu" : "Ne pas afficher de lien vers cette page dans le menu",
+	"View on site" : "Afficher sur le site",
 	"Content" : "Contenu",
 	"Include a file instead of content (must be present in %s theme's folder)" : "Inclure un fichier à la place du contenu (doit être présent dans le dossier du thème %s)",
 	"Save" : "Enregistrer",
@@ -23,5 +25,8 @@
         "Add" : "Ajouter",
 	"The requested page does not exist." : "La page demandée n'existe pas.",
 	"Back to website" : "Retour au site",
-	"Hide pages titles" : "Masquer les titres de page"
+	"Titles Options" : "Options des Titres",
+	"Hide pages titles" : "Masquer les titres de page",
+	"An error occurred while saving the changes" : "Une erreur est survenue lors de l'enregistrement des modifications",
+	"The changes have been saved." : "Les modifications ont été enregistrées."
 }

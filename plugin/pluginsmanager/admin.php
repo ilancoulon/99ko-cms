@@ -1,8 +1,8 @@
 <?php
-if(!defined('ROOT')) die();
+defined('ROOT') OR exit('No direct script access allowed');
 
-$msg = '';
-$msgType = '';
+$msg = (isset($_GET['msg'])) ? urldecode($_GET['msg']) : '';
+$msgType = (isset($_GET['msgType'])) ? $_GET['msgType'] : '';
 
 switch(ACTION){
 	case '':
@@ -34,7 +34,6 @@ switch(ACTION){
 		);
 		break;
 	case 'save':
-		$error = false;
 		foreach($pluginsManager->getPlugins() as $k=>$v) {
 			if(!$v->getIsDefaultPlugin()){
 				if(isset($_POST['activate'][$v->getName()])){
@@ -45,15 +44,16 @@ switch(ACTION){
 			}
 			$v->setConfigVal('priority', intval($_POST['priority'][$v->getName()]));
 			if(!$pluginsManager->savePluginConfig($v)){
-				$error = true;
 				$msg = lang('An error occured while saving your modifications.');
 				$msgType = 'error';
 			}
+			else{
+				$msg = lang("The changes have been saved.");
+				$msgType = 'success';
+			}
 		}
-		if(!$error) {
-			header('location:index.php?p=pluginsmanager');
-			die();
-		}
+		header('location:index.php?p=pluginsmanager&msg='.urlencode($msg).'&msgType='.$msgType);
+		die();
 		break;
 }
 ?>

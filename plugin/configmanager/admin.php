@@ -1,7 +1,8 @@
 <?php
-if(!defined('ROOT')) die();
+defined('ROOT') OR exit('No direct script access allowed');
 
-$msg = '';
+$msg = (isset($_GET['msg'])) ? urldecode($_GET['msg']) : '';
+$msgType = (isset($_GET['msgType'])) ? $_GET['msgType'] : '';
 $error = false;
 
 $htaccess = @file_get_contents(ROOT.'.htaccess');
@@ -11,8 +12,12 @@ $temp = substr(strrchr($temp, '/'), 1);
 if($temp == '') $temp = '/';
 else $temp = '/'.$temp.'/';
 $rewriteBase = $temp;
+
+$timezone_list = include(PLUGINS. 'configmanager/other/Timezone.php');
+
 $themes = array();
 foreach(listThemes() as $k=>$theme){
+	$themes[$k]['screenshot'] = ($theme['screenshot'] == '') ? PLUGINS. 'configmanager/other/screenshot.jpg' : $theme['screenshot'];
 	$themes[$k]['name'] = $theme['name'];
 	$themes[$k]['author'] = $theme['author'];
 	$themes[$k]['authorEmail'] = $theme['authorEmail'];
@@ -35,32 +40,41 @@ switch(ACTION){
 		$config = array(
 			'siteName' => (trim($_POST['siteName']) != '') ? trim($_POST['siteName']) : 'Démo',
 			'siteDescription' => (trim($_POST['siteDescription']) != '') ? trim($_POST['siteDescription']) : 'Un site propulsé par 99Ko',
-			'adminEmail' => (utilIsEmail(trim($_POST['adminEmail']))) ? trim($_POST['adminEmail']) : 'you@domain.com',
+			'siteTimezone' => (trim($_POST['siteTimezone']) != '') ? trim($_POST['siteTimezone']) : 'Europe/Paris',
+			'adminEmail' => trim($_POST['adminEmail']),
 			'siteUrl' => (trim($_POST['siteUrl']) != '') ? trim($_POST['siteUrl']) : getSiteUrl(),
 			'theme' => $_POST['theme'],
 			'defaultPlugin' => $_POST['defaultPlugin'],
 			'urlRewriting' => (isset($_POST['urlRewriting'])) ? '1' : '0',
 			'siteLang' => $_POST['lang'],
 			'hideTitles' => (isset($_POST['hideTitles'])) ? '1' : '0',
+			'gzip' => (isset($_POST['gzip'])) ? '1' : '0',
 		);
 		if(trim($_POST['adminPwd']) != ''){
 			if(trim($_POST['adminPwd']) == trim($_POST['adminPwd2'])) {
 				$config['adminPwd'] = encrypt(trim($_POST['adminPwd']));
 				$_SESSION['admin'] = $config['adminPwd'];
-			} else {
+			}
+			else{
 				$msg = lang("The password is different from his confirmation.");
-				$error = true;
+				$msgType = 'error';
 			}
 		}
-		if(!saveConfig($config)){
-			$msg = lang("An error occurred while saving the changes.");
-			$error = true;
+		elseif(!utilIsEmail(trim($_POST['adminEmail']))){
+			$msg = lang("Invalid email.");
+			$msgType = 'error';
+		}
+		elseif(!saveConfig($config)){
+			$msg = lang("An error occurred while saving the changes");
+			$msgType = 'error';
+		}
+		else{
+			$msg = lang("The changes have been saved.");
+			$msgType = 'success';
 		}
 		@file_put_contents(ROOT.'.htaccess', str_replace('¶m', '&param', $_POST['htaccess']));
-		if(!$error){
-			header('location:index.php?p=configmanager');
-			die();
-		}
+		header('location:index.php?p=configmanager&msg='.urlencode($msg).'&msgType='.$msgType);
+		die();
 		break;
 }
 ?>

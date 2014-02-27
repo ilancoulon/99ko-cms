@@ -1,8 +1,11 @@
 <?php
-if(!defined('ROOT')) die();
+defined('ROOT') OR exit('No direct script access allowed');
 $data['pageMode'] = '';
-$data['pageMsg'] = '';
-$data['pageMsgType'] = '';
+
+$msg = (isset($_GET['msg'])) ? urldecode($_GET['msg']) : '';
+$msgType = (isset($_GET['msgType'])) ? $_GET['msgType'] : '';
+$error = false;
+
 $data['pageChangeOrder'] = (pluginsManager::isActivePlugin('menu')) ? false : true;
 $hideTitles = $runPlugin->getConfigVal('hideTitles');
 switch(ACTION){
@@ -17,15 +20,29 @@ switch(ACTION){
 		$pageItem->setIsHidden((isset($_POST['isHidden'])) ? 1 : 0);
 		$pageItem->setMainTitle($_POST['mainTitle']);
 		$pageItem->setMetaDescriptionTag($_POST['metaDescriptionTag']);
-		$page->save($pageItem);
-		header('location:index.php?p=page');
+		if($page->save($pageItem)){
+			$msg = lang("The changes have been saved.");
+			$msgType = 'success';
+		}
+		else{
+			$msg = lang("An error occurred while saving the changes.");
+			$msgType = 'error';
+		}
+		header('location:index.php?p=page&msg='.urlencode($msg).'&msgType='.$msgType);
 		die();
 		break;
 	case 'saveconfig':
 		$hideTitles = (isset($_POST['hideTitles'])) ? 1 : "0";
 		$runPlugin->setConfigVal('hideTitles', $hideTitles);
-		$pluginsManager->savePluginConfig($runPlugin);
-		header('location:index.php?p=page');
+		if($pluginsManager->savePluginConfig($runPlugin)){
+			$msg = lang("The changes have been saved.");
+			$msgType = 'success';
+		}
+		else{
+			$msg = lang("An error occurred while saving the changes.");
+			$msgType = 'error';
+		}
+		header('location:index.php?p=page&msg='.urlencode($msg).'&msgType='.$msgType);
 		die();
 		break;
 	case 'edit':
@@ -48,19 +65,21 @@ switch(ACTION){
 	case 'del':
 		$pageItem = $page->create($_GET['id']);
 		if($page->del($pageItem)){
-			header('location:index.php?p=page');
-			die();
+			$msg = lang("The changes have been saved.");
+			$msgType = 'success';
 		}
 		else{
-			$data['pageMsg'] = lang('Can\t delete');
-			$data['pageMsgType'] = 'error';
+			$msg = lang("An error occurred while saving the changes.");
+			$msgType = 'error';
 		}
+		header('location:index.php?p=page&msg='.urlencode($msg).'&msgType='.$msgType);
+		die();
 	default:
 		$pageItems = $page->getItems();
 		$data['pageMode'] = 'list';
 		if(!$page->createHomepage()){
-			$data['pageMsg'] = lang('No homepage defined');
-			$data['pageMsgType'] = 'error';
+			$msg = lang("No homepage defined");
+			$msgType = 'error';
 		}
 		$data['pageList'] = array();
 		foreach($pageItems as $k=>$pageItem){

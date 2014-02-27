@@ -10,7 +10,7 @@ function closePluginConfig() {
 }
 $(document).ready(function () {
 	$('#pluginConfigButton').click(openPluginConfig);
-	$('ul.tabs').each(function(){
+	$('.tabs').each(function(){
 		// Track l'onglet actif ainsi que sont contenu
 		var $active, $content, $links = $(this).find('a');
 		// Si le location.hash correspond ˆ l'un des liens, l'utiliser comme onglet actif.

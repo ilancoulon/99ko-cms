@@ -1,5 +1,5 @@
 <?php
-if(!defined('ROOT')) die();
+defined('ROOT') OR exit('No direct script access allowed');
 $id = (isset($urlParams[1])) ? $urlParams[1] : false;
 if(!$id) $pageItem = $page->createHomepage();
 elseif($pageItem = $page->create($id)){}
@@ -17,5 +17,5 @@ if($runPlugin->getIsDefaultPlugin() && $pageItem->getIsHomepage()) $runPlugin->i
 $data['pageId'] = $pageItem->getId();
 $data['pageName'] = $pageItem->getName();
 $data['pageContent'] = $pageItem->getContent();
-$data['pageFile'] = ($pageItem->getFile()) ? ROOT.'theme/'.getCoreConf('theme').'/'.$pageItem->getFile() : false;
+$data['pageFile'] = ($pageItem->getFile()) ? THEMES .getCoreConf('theme').'/'.$pageItem->getFile() : false;
 ?>
