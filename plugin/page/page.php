@@ -74,9 +74,7 @@ class page{
 			$dataNotSorted = array();
 			$items = utilScanDir(PAGE_DATAPATH, array('config.txt'));
 			foreach($items['file'] as $k=>$file){
-			    $temp = utilReadJsonFile(DATA_PLUGIN. 'page/'.$file, true);
-				//$temp = json_decode(@file_get_contents(DATA_PLUGIN. 'page/'.$file), true);
-				$dataNotSorted[] = $temp;
+				$dataNotSorted[] = utilReadJsonFile(DATA_PLUGIN. 'page/'.$file, true);
 			}
 			$dataSorted = utilSort2DimArray($dataNotSorted, 'position', 'num');
 			foreach($dataSorted as $pageItem){

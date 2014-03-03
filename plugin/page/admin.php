@@ -1,14 +1,15 @@
 <?php
 defined('ROOT') OR exit('No direct script access allowed');
-$data['pageMode'] = '';
 
+$mode = '';
+$action = (isset($_GET['action'])) ? urldecode($_GET['action']) : '';
 $msg = (isset($_GET['msg'])) ? urldecode($_GET['msg']) : '';
 $msgType = (isset($_GET['msgType'])) ? $_GET['msgType'] : '';
 $error = false;
-
-$data['pageChangeOrder'] = (pluginsManager::isActivePlugin('menu')) ? false : true;
+$changeOrder = (pluginsManager::isActivePlugin('menu')) ? false : true;
 $hideTitles = $runPlugin->getConfigVal('hideTitles');
-switch(ACTION){
+
+switch($action){
 	case 'save':
 		if($_POST['id'] != '') $pageItem = $page->create($_POST['id']);
 		else $pageItem = new pageItem();
@@ -48,19 +49,7 @@ switch(ACTION){
 	case 'edit':
 		if(isset($_GET['id'])) $pageItem = $page->create($_GET['id']);
 		else $pageItem = new pageItem();
-		$data['pageId'] = $pageItem->getId();
-		$data['pageName'] = $pageItem->getName();
-		$data['pagePosition'] = $pageItem->getPosition();
-		$data['pageIsHomepage'] = $pageItem->getIshomepage();
-		$data['pageContent'] = $pageItem->getContent();
-		$data['pageMode'] = 'edit';
-		$data['pageIsHomepageChecked'] = ($pageItem->getIshomepage()) ? 'checked' : '';
-		$data['pageFile'] = $pageItem->getFile();
-		$data['pageIsHidden'] = $pageItem->getIsHidden();
-		$data['pageFiles'] = $page->listFiles();
-		$data['pageMainTitle'] = $pageItem->getMainTitle();
-		$data['pageMetaDescriptionTag'] = $pageItem->getMetaDescriptionTag();
-		$data['pageTheme'] = getCoreConf('theme');
+		$mode = 'edit';
 		break;
 	case 'del':
 		$pageItem = $page->create($_GET['id']);
@@ -75,20 +64,10 @@ switch(ACTION){
 		header('location:index.php?p=page&msg='.urlencode($msg).'&msgType='.$msgType);
 		die();
 	default:
-		$pageItems = $page->getItems();
-		$data['pageMode'] = 'list';
+		$mode = 'list';
 		if(!$page->createHomepage()){
 			$msg = lang("No homepage defined");
 			$msgType = 'error';
-		}
-		$data['pageList'] = array();
-		foreach($pageItems as $k=>$pageItem){
-			$data['pageList'][$k]['id'] = $pageItem->getId();
-			$data['pageList'][$k]['name'] = $pageItem->getName();
-			$data['pageList'][$k]['position'] = $pageItem->getPosition();
-			$data['pageList'][$k]['isHomepage'] = $pageItem->getIshomepage();
-			$data['pageList'][$k]['content'] = $pageItem->getContent();
-			$data['pageList'][$k]['isHidden'] = $pageItem->getIsHidden();
 		}
 }
 ?>

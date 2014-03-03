@@ -2,7 +2,7 @@
     "name" : "Configuration",
     "description" : "Configuration management of 99ko",
     "author" : "Jonathan Coulet",
-    "authorEmail" : "j.coulet@gmail.com",
+    "authorEmail" : "99ko@hellojo.fr",
     "authorWebsite" : "http://99ko.hellojo.fr",
-    "version" : "2.4.1"
+    "version" : "2.4.2"
 }

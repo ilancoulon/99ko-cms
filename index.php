@@ -19,24 +19,14 @@
 $time = microtime(true);
 define('ROOT', './');
 include_once(ROOT.'common/common.php');
-/*
-** Hook
-*/
+// hook
 eval(callHook('startFrontIncludePluginFile'));
-// includes plugin courant
+// on inclu le plugin courant
 if($runPlugin->getPublicFile()){
 	include($runPlugin->getPublicFile());
-	// sidebar theme ?
-	$sidebar = false;
-	foreach($pluginsManager->getPlugins() as $k=>$plugin) if($plugin->getConfigval('activate') == 1){
-		if($plugin->getConfigVal('sidebarTitle') != '' && $plugin->getConfigVal('sidebarCallFunction') != ''){
-			$sidebar = true;
-		}
-	}
 	include($runPlugin->getPublicTemplate());
 }
-/*
-** Fin hook
-*/
+// hook
 eval(callHook('endFrontIncludePluginFile'));
+
 ?>

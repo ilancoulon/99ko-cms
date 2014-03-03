@@ -1,6 +1,7 @@
 {
 	"Configuration" : "Configuration",
 	"General configuration" : "Configuration générale",
+	"User account" : "Compte utilisateur",
 	"Advandced configuration" : "Configuration avançée",
 	"User account" : "Compte Utilisateur",
 	"Configuration management of 99ko" : "Gestion de la configuration de 99ko",
@@ -26,6 +27,8 @@
 	"Default plugin" : "Plugin par défaut",
 	"New admin password" : "Nouveau mot de passe admin",
 	"Confirm" : "Confirmation",
+	"Gravatar?" : "Gravatar ?",
+	"To view your profile image, create an account on gravatar.com" : "Pour afficher votre image de profil, créer un compte sur gravatar.com",
 	"Title" : "Titre",
 	"Hide pages titles" : "Masquer les titres de page",
 	"The changes have been saved." : "Les modifications ont été enregistrées.",

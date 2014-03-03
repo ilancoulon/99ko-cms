@@ -7,7 +7,7 @@
 	<meta charset="utf-8">	
 	<title>99ko - <?php echo lang('Backend'); ?></title>	
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="css/foundation.min.css?v=5.0.3" media="all">
+	<link rel="stylesheet" href="css/foundation.min.css?v=5.1.1" media="all">
 	<link rel="stylesheet" href="css/99ko.min.css?v=1.0.2" />
 	<?php showLinkTags(); ?>
 	<?php showScriptTags(); ?>
@@ -32,7 +32,7 @@
       <li class="divider"></li>
       <li>
         <a href="index.php?action=logout&token=<?php echo $token; ?>">
-           <?php echo profil_img($config['adminEmail'], '35', '', 'G'); ?>&nbsp;<?php echo lang('Logout'); ?>
+           <?php echo profil_img(getCoreConf('adminEmail'), '35', '', 'G'); ?>&nbsp;<?php echo lang('Logout'); ?>
         </a>
       </li>
       <li class="divider"></li>
@@ -85,7 +85,7 @@
 	  <?php foreach($navigation as $k=>$v){ ?>
 	  <li><a class="<?php if($v['isActive']){ ?>current<?php } ?>" href="<?php echo $v['url']; ?>"><?php echo lang($v['label']); ?></a></li>
 	  <?php } ?>
-	  
+
       <li class="divider"></li>
     </ul>
   </nav>
@@ -106,12 +106,6 @@
                 <noscript>
                      <?php showMsg(lang("Javascript must be enabled in your browser to take full advantage of features 99ko."), "error"); ?> 
                 </noscript> 		        
-		           <?php if($pluginConfigTemplate){ ?>
-			          <div id="pluginConfig">
-				       <?php include_once($pluginConfigTemplate); ?>
-				      <hr>
-			          </div>
-		           <?php } ?>
 		          <?php if($tabs){ ?>
                       <dl class="radius tabs" data-tab>
            	          <?php foreach($tabs as $k=>$v){ ?>

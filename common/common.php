@@ -15,119 +15,69 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-//error_reporting(E_ALL);
-defined('ROOT') OR exit('No direct script access allowed');
 
-/*
- *---------------------------------------------------------------
- * DEFINE CONSTANTS
- *---------------------------------------------------------------
- */
-define('VERSION',            '1.4.2 b'); 
-define('INACTIVITY_TIMEOUT',  1800); // Temps d'expiration d'une session en secondes (30 mins)
-define('COMMON',       ROOT. 'common/');
-define('LANG',       COMMON. 'lang/');
-define('DATA',         ROOT. 'data/');
-define('UPLOAD',       ROOT. 'data/upload/');
-define('DATA_PLUGIN',  ROOT. 'data/plugin/');
-define('THEMES',       ROOT. 'theme/');
-define('PLUGINS',      ROOT. 'plugin/');
-define('ADMIN_PATH',   ROOT. 'admin/'); // Path de l'administration
-define('ACTION', ((isset($_GET['action'])) ? $_GET['action'] : '')); // inutile : voir $urlParams
-/*
- *---------------------------------------------------------------
- * PRÉCHAUFFAGE
- *---------------------------------------------------------------
- */
+if(DEBUG) error_reporting(E_ALL);
+else error_reporting(E_ALL ^ E_NOTICE);
 session_start();
-/**
- * On limite la durée de session active
- */
-if(isset($_SESSION['timeout'])) {
-    # On calcule le nombre de secondes depuis la dernière visite 
-    # s'il est plus grand que le délai d'attente.
-    $duration = time() - (int)$_SESSION['timeout'];
-    if($duration > INACTIVITY_TIMEOUT) {
-        # Si on dépasse le temps, on détruit la session et on la redémarre.
-        session_destroy();
-        #session_start();
-    }
-}
-$_SESSION['timeout'] = time();
-
-# on check le fichier de configuration
+defined('ROOT') OR exit('No direct script access allowed');
+include_once(ROOT.'common/constants.php');
+include_once(COMMON.'core.lib.php');
+utilSetMagicQuotesOff();
+// plugin par defaut
+define('DEFAULT_PLUGIN', getCoreConf('defaultPlugin'));
+// on check l'existence du fichier de configuration
 if(!file_exists(DATA. 'config.txt')){
 	header('location:' .ROOT. 'install.php');
 	die();
 }
-
-include(DATA. 'key.php');
-# tableau des hooks
-$hooks = array();
-# on inclu les librairies
-include_once(COMMON. 'core.lib.php');
-# on charge la config du core
-$coreConf = getCoreConf();
-# on récupère les paramètres de l'URL
-$urlParams = getUrlParams();
-# Chargement des thèmes
-$themes = listThemes();
-# Chargement des langs
-$langs = listLangs();
-$lang = array();
-# On charge la langue du core
-$lang = utilReadJsonFile(LANG .getCoreConf('siteLang'). '.json');
-if(file_exists(THEMES .getCoreConf('theme'). '/lang/' .getCoreConf('siteLang'). '.json')) $lang = array_merge($lang, utilReadJsonFile(THEMES .getCoreConf('theme'). '/lang/' .getCoreConf('siteLang'). '.json'));
-# constantes
-define('DEFAULT_PLUGIN', getCoreConf('defaultPlugin'));
-define('PLUGIN', ((isset($_GET['p'])) ? $_GET['p'] : DEFAULT_PLUGIN)); // inutile : voir $runPlugin
-/**
- * Compress HTML with gzip
- */
-if (getCoreConf('gzip')) {
-    if (!ob_start("ob_gzhandler")) ob_start(); $compressed = lang('Gzip compression on');
-} else {
-    ob_start();
-}
-# fix magic quotes
-utilSetMagicQuotesOff();
-/*
-** Défini le fuseau horaire par défaut
-*/
+// fuseau horaire par defaut
 if (function_exists('date_default_timezone_set')) date_default_timezone_set(getCoreConf('siteTimezone')); 
 else putenv('TZ='.getCoreConf('siteTimezone'));
-/*
- *---------------------------------------------------------------
- * TRAITEMENT DES PLUGINS (CHARGEMENT, INSTALLATION, HOOKS...)
- *---------------------------------------------------------------
- */
-# On créé le manager de plugins via la méthode getInstance (singleton)
+// tableau des hooks a apeller
+$hooks = array();
+// tableau de config du core
+$coreConf = getCoreConf();
+// tableaux de parametres URL ($_GET)
+$urlParams = getUrlParams();
+// liste des themes
+$themes = listThemes();
+// liste es timezones
+$timezones = listTimezones();
+// liste des langues
+$langs = listLangs();
+// tableau langue courante
+$lang = array();
+// donnees langue core
+$lang = utilReadJsonFile(LANG .getCoreConf('siteLang'). '.json');
+// donnees langue du theme courant
+if(file_exists(THEMES .getCoreConf('theme'). '/lang/' .getCoreConf('siteLang'). '.json')) $lang = array_merge($lang, utilReadJsonFile(THEMES .getCoreConf('theme'). '/lang/' .getCoreConf('siteLang'). '.json'));
+// creation du pluginManager
 $pluginsManager = pluginsManager::getInstance();
-
-# on boucle les plugins pour charger les lib et les installer
+// on boucle les plugins
 foreach($pluginsManager->getPlugins() as $plugin){
-	# on inclu la librairie
+	// on inclu le fichier principal
 	include_once($plugin->getLibFile());
-	# on inclu la langue
-	if($plugin->getLang() != false) $lang = array_merge($lang, $plugin->getLang());
-	# installation
+	// on installe le plugin si besoin
 	if(!$plugin->isInstalled()) $pluginsManager->installPlugin($plugin->getName());
-	# on update le tableau des hooks
+	// on alimente le tableau de la langue courante
+	if($plugin->getLang() != false) $lang = array_merge($lang, $plugin->getLang());
+	// on alimente le tableau des hooks
 	if($plugin->getConfigVal('activate')){
 		foreach($plugin->getHooks() as $hookName=>$function) $hooks[$hookName][] = $function;
 	}
 }
-/*
- *---------------------------------------------------------------
- * CRÉATION DE L'OBJET $runPlugin (PLUGIN SOLICITÉ)
- *---------------------------------------------------------------
- */
-# hook
+// hook
 eval(callHook('startCreatePlugin'));
-# on cree l'instance du plugin solicite
-$runPlugin = $pluginsManager->getPlugin(PLUGIN);
-# erreur 404 si le plugin est introuvable ou inactif
+// creation de le l'instance du plugin en cours d'execution
+$runPlugin = $pluginsManager->getPlugin((isset($_GET['p'])) ? $_GET['p'] : DEFAULT_PLUGIN);
+// erreur 404
 if(!$runPlugin || $runPlugin->getConfigVal('activate') < 1) error404();
-# hook
+// hook
 eval(callHook('endCreatePlugin'));
+// compression gzip
+if(!DEBUG && getCoreConf('gzip')){
+    if(!ob_start("ob_gzhandler")) ob_start();
+    else ob_start();
+}
+
 ?>

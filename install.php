@@ -17,24 +17,9 @@
  */
 #error_reporting(E_ALL);
 session_start();
-/*
- *---------------------------------------------------------------
- * DEFINE CONSTANTS
- *---------------------------------------------------------------
- */
-define('VERSION',            '1.4 b'); 
-define('ROOT',               './');
-define('COMMON',       ROOT. 'common/');
-define('LANG',       COMMON. 'lang/');
-define('DATA',         ROOT. 'data/');
-define('UPLOAD',       ROOT. 'data/upload/');
-define('DATA_PLUGIN',  ROOT. 'data/plugin/');
-define('THEMES',       ROOT. 'theme/');
-define('PLUGINS',      ROOT. 'plugin/');
-define('DEFAULT_PLUGIN', 'page');
-
-include_once(COMMON. 'core.lib.php');
-include_once(COMMON. 'util.lib.php');
+define('ROOT', './');
+include_once(ROOT.'common/constants.php');
+include_once(COMMON.'core.lib.php');
 utilSetMagicQuotesOff();
 
 /*
@@ -47,7 +32,7 @@ if (isset($_POST['submit_lang'])) {
     $_SESSION['lang'] = isset($_POST['siteLang']) ? $_POST['siteLang'] : '';
     $lang = utilReadJsonFile(LANG. $_SESSION['lang'].'.json');
 }
-$timezone_list = include(PLUGINS. 'configmanager/other/Timezone.php');
+$timezones = listTimezones();
 $pluginsManager = new pluginsManager();
 $hooks = array();
 # Vérification que le fichier de configuration n'existe pas
@@ -344,7 +329,7 @@ if (isset($_POST['install_submit'])) {
 		     <div class="large-8 columns">
                  <label for="siteTimezone"><?php echo lang("Time zone"); ?> :</label>
                  <select name="siteTimezone">
-                     <?php foreach($timezone_list as $k=>$v){ ?>
+                     <?php foreach($timezones as $k=>$v){ ?>
                      <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
                      <?php } ?>
                  </select>  

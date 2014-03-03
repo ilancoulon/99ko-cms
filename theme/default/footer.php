@@ -4,9 +4,9 @@
       
       <!-- Sidebar -->
       
-      <?php if($sidebar){ ?>
+      <?php if(useSidebar()){ ?>
       <aside id="sidebar" class="large-3 columns">
-        <?php showSidebarItems('<div class="panel" id="[id]"><h2>[title]</h2>[content]</div>'); ?>
+        <?php show::showSidebarItems(); ?>
       </aside>
       <?php } ?>
       
@@ -24,12 +24,12 @@
             <hr />
             <div class="row">
               <div class="large-6 columns">
-                  <p>&copy; Copyright <?php echo date('Y') ?> <a title="<?php showSiteDescription(); ?>" href="<?php showSiteUrl(); ?>"><?php showSiteName(); ?></a> &middot; <?php echo lang('Generate in ');showExecTime(); ?>s</p>
+                  <p>&copy; Copyright <?php echo date('Y') ?> <a title="<?php show::showSiteDescription(); ?>" href="<?php show::showSiteUrl(); ?>"><?php show::showSiteName(); ?></a> &middot; <?php echo lang('Generate in ');show::showExecTime(); ?>s</p>
               </div>
  
               <div class="large-6 small-12 columns">
                   <ul class="inline-list right">
-                    <li><?php showTheme(); ?></li>
+                    <li><?php show::showTheme(); ?></li>
                     <li><a rel="nofollow" href="<?php echo ADMIN_PATH ?>"><?php echo lang('Administration') ?></a></li>
                     <li><?php echo lang("<a href='http://99ko.hellojo.fr' title='CMS sans base de données' onclick='window.open(this.href);return false;'>Just using 99ko</a>") ?></li>
                   </ul>

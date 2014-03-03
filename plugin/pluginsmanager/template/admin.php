@@ -14,33 +14,33 @@
 		</tr>
 	  </thead>
 	  <tbody>			  	
-		<?php foreach($plugins as $k=>$v){ ?>
+		<?php foreach($pluginsManager->getPlugins() as $plugin){ ?>
 		<tr>
 			<td>
-				<?php echo $v['name']; ?>
+				<?php echo $plugin->getName();; ?>
 			</td>
 			<td>
-			<?php if($v['target'] && $v['activate']){ ?><a class="button tiny radius secondary" href="<?php echo $v['target']; ?>"><?php echo lang("Go to plugin"); ?></a><?php } ?> 
-			<a href="#" data-reveal-id="<?php echo utilStrToUrl($v['name']); ?>" class="button tiny radius"><?php echo lang("About"); ?></a>
-	        <div id="<?php echo utilStrToUrl($v['name']); ?>" class="reveal-modal small" data-reveal>
-		        <h2><?php echo lang($v['name']); ?></h2>
-		        <blockquote><?php echo lang($v['description']); ?><cite><?php echo lang("Author: "); echo $v['author']; ?></cite></blockquote>
+			<?php if($plugin->getConfigVal('activate')){ ?><a class="button tiny radius secondary" href="<?php echo 'index.php?p='.$plugin->getName(); ?>"><?php echo lang("Go to plugin"); ?></a><?php } ?> 
+			<a href="#" data-reveal-id="<?php echo $plugin->getName(); ?>" class="button tiny radius"><?php echo lang("About"); ?></a>
+	        <div id="<?php echo $plugin->getName(); ?>" class="reveal-modal small" data-reveal>
+		        <h2><?php echo lang($plugin->getName()); ?></h2>
+		        <blockquote><?php echo lang($plugin->getInfoVal('description')); ?><cite><?php echo lang("Author"); echo $plugin->getInfoVal('author'); ?></cite></blockquote>
 		         <ul class="no-bullet">
 		            <?php
-                      if(!empty($v['authorEmail'])){
-                         echo '<li><strong>'.lang("Author Mail").'</strong> '.utilHideEmail($v['authorEmail']).'</li>';
+                      if($plugin->getInfoVal('authorEmail') != ''){
+                         echo '<li><strong>'.lang("Author Mail").'</strong> '.utilHideEmail($plugin->getInfoVal('authorEmail')).'</li>';
                       }
-                      if(!empty($v['authorWebsite'])){
-                         echo '<li><strong>'.lang("Author Site").'</strong> <a class="label secondary round" href="'.$v['authorWebsite'].'" onclick="window.open(this.href);return false;">'.$v['authorWebsite'].'</a></li>';
+                      if($plugin->getInfoVal('authorWebsite') != ''){
+                         echo '<li><strong>'.lang("Author Site").'</strong> <a class="label secondary round" href="'.$plugin->getInfoVal('authorWebsite').'" onclick="window.open(this.href);return false;">'.$plugin->getInfoVal('authorWebsite').'</a></li>';
                       }
                     ?>
 		         </ul>		        
 		        <a class="close-reveal-modal">&#215;</a>
 	        </div>
 			</td>
-			<td><?php echo $v['version']; ?></td>
-			<td><?php echo utilHtmlSelect($priority, $v['priority'], 'name="priority['.$v['id'].']" onchange="document.getElementById(\'pluginsmanagerForm\').submit();"'); ?></td>
-			<td><input onchange="document.getElementById('pluginsmanagerForm').submit();" <?php if($v['activate']){ ?>checked<?php } ?> type="checkbox" name="activate[<?php echo $v['id']; ?>]"<?php if($v['locked']){ ?> style="display:none;"<?php } ?> /></td>
+			<td><?php echo $plugin->getInfoVal('version'); ?></td>
+			<td><?php echo utilHtmlSelect($priority, $plugin->getconfigVal('priority'), 'name="priority['.$plugin->getName().']" onchange="document.getElementById(\'pluginsmanagerForm\').submit();"'); ?></td>
+			<td><input onchange="document.getElementById('pluginsmanagerForm').submit();" <?php if($plugin->getConfigVal('activate')){ ?>checked<?php } ?> type="checkbox" name="activate[<?php echo $plugin->getName(); ?>]" /></td>
 		</tr>
 		<?php } ?>
 	  </tbody>					

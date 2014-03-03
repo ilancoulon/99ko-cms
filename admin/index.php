@@ -15,27 +15,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-// on declare ROOT
+
 define('ROOT', '../');
-// on inclu le fichier common
 include_once(ROOT.'common/common.php');
 // on genere le jeton
 if(!isset($_SESSION['token'])) $_SESSION['token'] = sha1(uniqid(mt_rand()));
 // on check le jeton
-if(in_array(ACTION, array('delinstallfile', 'save', 'del', 'saveconfig', 'saveplugins', 'login', 'logout')) && $_REQUEST['token'] != $_SESSION['token']){	
+if(isset($urlParams[0]) && in_array($urlParams[0], array('delinstallfile', 'save', 'del', 'saveconfig', 'saveplugins', 'login', 'logout')) && $_REQUEST['token'] != $_SESSION['token']){	
 	include_once('login.php');
 	die();
 }
-// Variables de template
+// variables de template
 $msg = '';
 $msgType = '';
-$config = $coreConf;
-$data['msg'] = ''; // retro compatibilité
 $version = VERSION;
 $token = $_SESSION['token'];
-$data['token'] = $token; // retro compatibilité
 $pluginName = $runPlugin->getName();
-$data['pluginName'] = $pluginName; // retro compatibilité
 $navigation[-1]['label'] = lang('Home');
 $navigation[-1]['url'] = './';
 $navigation[-1]['isActive'] = (!isset($_GET['p'])) ? true : false;
@@ -44,7 +39,6 @@ foreach($pluginsManager->getPlugins() as $k=>$v) if($v->getConfigVal('activate')
 	$navigation[$k]['url'] = 'index.php?p='.$v->getName();
 	$navigation[$k]['isActive'] = (isset($_GET['p']) && $_GET['p'] == $v->getName()) ? true : false;
 }
-$pluginConfigTemplate = (!isset($_GET['p'])) ? false :$runPlugin->getConfigTemplate();
 $pageTitle = (!isset($_GET['p'])) ? lang('Welcome to 99ko') : $runPlugin->getInfoVal('name');
 $tabs = array();
 foreach($runPlugin->getAdminTabs() as $k=>$v){
@@ -52,8 +46,8 @@ foreach($runPlugin->getAdminTabs() as $k=>$v){
 	$tabs[$k]['url'] = '#tab-'.$k;
 }
 if(count($tabs) == 0 || !isset($_GET['p'])) $tabs = false;
-// Actions
-if(ACTION == 'login'){
+// actions
+if(isset($urlParams[0]) && $urlParams[0] == 'login'){
 	// hook
 	eval(callHook('startAdminLogin'));
 	if(isset($_SESSION['msg_install'])) unset($_SESSION['msg_install']);
@@ -75,17 +69,28 @@ if(ACTION == 'login'){
 	// hook
 	eval(callHook('endAdminLogin'));
 }
-elseif(ACTION == 'logout'){
+elseif(isset($urlParams[0]) && $urlParams[0] == 'logout'){
 	session_destroy();
 	header('location:index.php');
 	die();
 }
-elseif(ACTION == 'delinstallfile') @unlink('../install.php');
-// Login mode
+elseif(isset($urlParams[0]) && $urlParams[0] == 'delinstallfile') @unlink('../install.php');
+// limitation activite de session
+if(isset($_SESSION['timeout'])) {
+    // On calcule le nombre de secondes depuis la dernière visite 
+    // s'il est plus grand que le délai d'attente.
+    $duration = time() - (int)$_SESSION['timeout'];
+    if($duration > INACTIVITY_TIMEOUT) {
+        // Si on dépasse le temps, on détruit la session et on la redémarre.
+        session_destroy();
+    }
+}
+$_SESSION['timeout'] = time();
+// login mode
 if(!isset($_SESSION['admin']) || $_SESSION['admin'] != $coreConf['adminPwd']){
 	include_once('login.php');
 }
-// Homepage mode
+// homepage mode
 elseif(!isset($_GET['p'])){
 	if(!file_exists('../.htaccess')) $msg.= lang('The .htaccess file is missing !')."\n";
 	if(file_exists('../install.php')) $msg.= lang('The install.php file must be deleted !')."&nbsp;&nbsp;&nbsp;<a class=\"label secondary round\" href=\"index.php?action=delinstallfile&token=".$token."\">&#10007;&nbsp;".lang('Delete')."</a>\n";
@@ -93,7 +98,7 @@ elseif(!isset($_GET['p'])){
 	$newVersion = newVersion(getCoreConf('checkUrl'));
 	include_once('home.php');
 }
-// Plugin mode
+// plugin mode
 elseif(isset($_GET['p']) && $runPlugin->getAdminFile()){
 	// hook
 	eval(callHook('startAdminIncludePluginFile'));
@@ -114,4 +119,5 @@ elseif(isset($_GET['p']) && $runPlugin->getAdminFile()){
 	// hook
 	eval(callHook('endAdminIncludePluginFile'));
 }
+
 ?>

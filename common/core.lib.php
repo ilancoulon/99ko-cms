@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 99ko cms
  *
@@ -15,84 +16,66 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 defined('ROOT') OR exit('No direct script access allowed');
 
-include_once('util.lib.php');
-include_once('plugin.class.php');
-include_once('show.lib.php');
- /**
-  * Fonctions internes
-  */
-
-/**
- * Renvoie la configuration complète du core ou une valeur précise
- * @return : array
+/*
+ * lib core
+ * fonctions diversses
+ *
  */
+
+// includes
+include_once('util.class.php');
+include_once('pluginsManager.class.php');
+include_once('plugin.class.php');
+include_once('show.class.php');
+include_once('alias.lib.php');
+
+// retourne le tableau de configuration du core (complet ou une valeur sivant le parametre $k)
 function getCoreConf($k = ''){
 	global $coreConf;
-	$data = ($coreConf) ? $coreConf : utilReadJsonFile(DATA. 'config.txt', true);
-	//$data = ($coreConf) ? $coreConf : json_decode(@file_get_contents(DATA. 'config.txt'), true);
+	$data = ($coreConf) ? $coreConf : utilReadJsonFile(DATA.'config.txt', true);
 	if($k != '') return $data[$k];
 	else return $data;
 }
 
-/**
- * Enregistre la configuration du core
- * @param : $val (valeur a updater), $append (tableau de nouvelles valeurs)
- */
+// sauvagarde la configuration du core (prise en charge de nouvelles valeures via $append)
 function saveConfig($val, $append = array()){
-	$config = utilReadJsonFile(DATA. 'config.txt', true);   
-	//json_decode(@file_get_contents(DATA. 'config.txt'), true);
+	$config = utilReadJsonFile(DATA.'config.txt', true);   
 	$config = array_merge($config, $append);
 	foreach($config as $k=>$v) if(isset($val[$k])) $config[$k] = $val[$k];
-	return utilWriteJsonFile(DATA. 'config.txt', $config);
-	//if(@file_put_contents(DATA. 'config.txt', json_encode($config), 0666)) return true;
-	//return false;
+	return utilWriteJsonFile(DATA.'config.txt', $config);
 }
 
-/**
- * Appelle un hook
- * @param : $hook
- * @return : string (PHP)
- */
+// appelle un hook
 function callHook($hookName){
 	global $hooks;
 	$return = '';
-	if(isset($hooks[$hookName])) foreach($hooks[$hookName] as $function){
-		$return.= call_user_func($function);
-	}
+	if(isset($hooks[$hookName])) foreach($hooks[$hookName] as $function) $return.= call_user_func($function);
 	return $return;
 }
 
-/**
- * Ajoute un hook
- * @param : $hookName (nom du hook), $function (fonction a executer)
- */
+// ajoute un hook a appeller
 function addHook($hookName, $function){
 	global $hooks;
 	$hooks[$hookName][] = $function;
 }
 
-/**
- * liste le dossier theme
- * @return : array
- */
+// retourne la liste des themes
 function listThemes(){
 	$data = array();
 	$items = utilScanDir(THEMES);
 	foreach($items['dir'] as $file){
 		$data[$file] = getThemeInfos($file);
-		$screenshot = THEMES .$file. '/screenshot.jpg';
+		$screenshot = THEMES.$file.'/screenshot.jpg';
 		if(!file_exists($screenshot)) $screenshot = '';	
 		$data[$file]['screenshot'] = $screenshot;
 	}
 	return $data;
 }
 
-/**
- * Détecte l'url de base
- * @return : string (URL de base)
- */
+// detecte l'url de base
 function getSiteUrl(){
         $siteUrl = str_replace(array('install.php', '/admin/index.php'), array('', ''), $_SERVER['SCRIPT_NAME']);
         $isSecure = false;
@@ -105,24 +88,14 @@ function getSiteUrl(){
         return $siteUrl;
 }
 
-/**
- * Renvois les infos d'un thème
- * @param : string (nom du thème)
- * @return : array
- */
+// retourne les infos d'un theme
 function getThemeInfos($name){
-    $data = utilReadJsonFile(THEMES .$name. '/infos.json', true);
-	//$data = json_decode(@file_get_contents(THEMES .$name. '/infos.json'), true);
-	return $data;
+    return utilReadJsonFile(THEMES.$name.'/infos.json', true);
 }
 
-/**
- * Génère une URL réécrite ou standard
- * @param : $plugin (id plugin), $params (tableau de paramètres)
- * @return : URL (string)
- */
+// reecris une url ou retourne l'url originale suivant l'etat d'activation de l'url rewriting
 function rewriteUrl($plugin, $params = array()){
-	if(getCoreConf('urlRewriting')){
+	if(getCoreConf('urlRewriting') == 1){
 		$url = $plugin.'/';
 		if(count($params) > 0){
 			foreach($params as $k=>$v) $url.= utilStrToUrl($v).',';
@@ -137,33 +110,26 @@ function rewriteUrl($plugin, $params = array()){
 	return $url;
 }
 
-/**
- * Retourne les paramètres de l'URL dans un array
- * @param : string (nom du thème)
- * @return : array
- */
+// retourne les parametres de l'url ($_GET)
 function getUrlParams(){
 	$data = array();
-	if(getCoreConf('urlRewriting')){
+	if(getCoreConf('urlRewriting') == 1){
 		if(isset($_GET['param'])) $data = explode(',', $_GET['param']);
 	}
 	else{
-		foreach($_GET as $k=>$v) if($k != 'p') $data[] = $v;
+		foreach($_GET as $k=>$v) if($k != 'p'){
+			$data[] = $v;
+		}
 	}
 	return $data;
 }
 
-/**
- * hash
- */
+// hash une chaine
 function encrypt($data){
 	return hash_hmac('sha1', $data, KEY);
 }
 
-/**
- * liste le dossier lang
- * @return : array
- */
+// retourne la liste des langues
 function listLangs(){
 	$data = array('en');
 	$items = utilScanDir(LANG);
@@ -171,20 +137,15 @@ function listLangs(){
 	return $data;
 }
 
-/**
- * Formate les phrases
- */
+// formate une phrase suivant la lang
 function lang($k){
 	global $lang;
 	if(getCoreConf('siteLang') == 'en') return $k;
-	#elseif(array_key_exists($k, $lang)) return $lang[$k];
 	elseif (is_array($lang) && array_key_exists($k, $lang)) return $lang[$k];
 	else return $k;
 }
 
-/**
- * renvoie la page d'erreur 404
- */
+// retourne la page d'erreur 404
 function error404(){
 	header("HTTP/1.1 404 Not Found");
 	header("Status: 404 Not Found");
@@ -204,32 +165,41 @@ function error404(){
 	</html>';
 	die();
 }
-/*
- * Vérifie la version de 99ko
- */
+
+// detecte si une nouvelle version du core existe en ligne
 function newVersion($url){
-	if($last = @file_get_contents($url)){
-		if($last != VERSION) return $last;
-	}
+	if($last = @file_get_contents($url)) if($last != VERSION) return $last;
 	return false;
 }
-/**
- * Affiche le GRAVATAR
- * @email - Email address to show gravatar for 
- * @size - size of gravatar 
- * @default - URL of default gravatar to use 
- * @rating - rating of Gravatar(G, PG, R, X) 
- */ 
+
+// retourne la liste des timezones
+function listTimeZones(){
+	return utilReadJsonFile(TIMEZONES);
+}
+
+// determine si il faut afficher la sidebar dans le theme
+function useSidebar(){
+	global $pluginsManager;
+	$sidebar = false;
+	foreach($pluginsManager->getPlugins() as $k=>$plugin) if($plugin->getConfigval('activate') == 1){
+		if($plugin->getConfigVal('sidebarTitle') != '' && $plugin->getConfigVal('sidebarCallFunction') != ''){
+			$sidebar = true;
+		}
+	}
+	return $sidebar;
+}
+
+// affiche le gravatar
 function profil_img($email, $size, $default, $rating) {	
    $pic = explode('@',$email);
    # Récupère l'image en cache du profil.
-   $profile_image = UPLOAD .$pic[0] .'.jpg';
+   $profile_image = UPLOAD.$pic[0].'.jpg';
 	
    # On met en cache l'image si elle n'existe pas !
    if (!file_exists($profile_image)) {
     	 $image_url = 'https://secure.gravatar.com/avatar/' .md5(strtolower(trim($email))). '&default='.$default.'&size='.$size.'&rating='.$rating;
     	 $image = file_get_contents($image_url);
-    	 file_put_contents(UPLOAD .$pic[0].'.jpg', $image);
+    	 file_put_contents(UPLOAD.$pic[0].'.jpg', $image);
    }	
    # Retourne l'image.
    return '<img src="' .$profile_image. '" class="th radius" width="'.$size.'" height="'.$size.'" alt="profil" />';
