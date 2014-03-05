@@ -1,7 +1,7 @@
 <?php include_once(ROOT.'admin/header.php'); ?>
 
 <?php if ($data['menuMode'] == 'list') { ?>
-<a class="button round small" id="addLink" onclick="addLink()"><?php echo lang('New link'); ?></a>
+<a class="button round medium" id="addLink" onclick="addLink()"><?php echo lang('New link'); ?></a>
 <form method="post" action="index.php?p=menu&action=save">
 	<?php showAdminTokenField(); ?>
 	<table id="linksList" style="width:100%">
@@ -72,6 +72,43 @@
 		<button class="button secondary radius" onclick="window.location.reload();return false;"><?php echo lang('Cancel modifications'); ?></button>
 	</div>
 </form>
+<a class="button round medium" id="addLink" onclick="addLink()"><?php echo lang('New link'); ?></a>
 <?php } ?>
-
+<script>
+function addLink() {
+	var position = parseInt($('#linksList tr:last').attr('id'));
+	
+	$('#linksList tr:last .down').html('<a onclick="downLink(' + position + ')" data-tooltip class="has-tip tip-top" title="<?php echo lang('Down'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/down.png" alt="<?php echo lang('Down'); ?>" /></a>')
+	
+	position += 1;
+	
+	$('#linksList').append(
+		'<tr id="' + position + '" class="added">'+
+			'<input type="hidden" name="id' + position + '" value="-1" />'+
+			'<input type="hidden" name="plugin' + position + '" value="menu" />'+
+			'<td class="lab">'+
+				'<input type="text" name="label' + position + '" />'+
+			'</td>'+
+			'<td class="url">'+
+				'<input type="text" name="url' + position + '" />'+
+			'</td>'+
+			'<td class="target">'+
+				'<select name="target' + position + '">'+
+					'<option value="_self"><?php echo lang('Current page'); ?></option>' +
+					'<option value="_blank"><?php echo lang('New page'); ?></option>' +
+				'</select>' +
+			'</td>'+
+			'<td class="up">'+
+				'<a onclick="upLink(' + position + ')" data-tooltip class="has-tip tip-top" title="<?php echo lang('Up'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/up.png" alt="<?php echo lang('Up'); ?>" /></a>'+
+			'</td>'+
+			'<td class="down"></td>'+
+			'<td class="delete">'+
+				'<a onclick="deleteLink(' + position + ')" data-tooltip class="has-tip tip-top" title="<?php echo lang('Delete'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/delete.png" alt="<?php echo lang('Delete'); ?>" /></a>'+
+			'</td>'+
+		'</tr>'
+	);
+	
+	$('input[name=number]').attr('value', position + 1);
+}	
+</script>
 <?php include_once(ROOT.'admin/footer.php'); ?>

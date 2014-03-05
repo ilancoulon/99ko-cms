@@ -1,5 +1,5 @@
 <?php
-if(!defined('ROOT')) die();
+defined('ROOT') OR exit('No direct script access allowed');
 
 /*******************************************************************************************************
 ** Partie obligatoire
@@ -39,6 +39,15 @@ function pageInstall(){
 		$pageItem->setIsHidden(0);
 		$pageItem->setFile('');
 		$page->save($pageItem);
+		$page = new page();
+		$pageItem = new pageItem();
+		$pageItem->setName('Texte support');
+		$pageItem->setPosition(3);
+		$pageItem->setIsHomepage(0);
+		$pageItem->setContent("<p>Téléchargez une version plus récente, des plugins et des thèmes sur le site officiel<br>En cas de problème avec 99ko, rendez-vous sur le forum d'entraide.</p>");
+		$pageItem->setIsHidden(1);
+		$pageItem->setFile('');
+		$page->save($pageItem);
 	}
 }
 
@@ -48,7 +57,7 @@ function pageInstall(){
 ** Elle peut contenir des classes, des fonctions, hooks... ou encore du code à exécutter lors du chargement du plugin
 ********************************************************************************************************************/
 
-define('PAGE_DATAPATH', ROOT.'data/plugin/page/');
+define('PAGE_DATAPATH', DATA_PLUGIN. 'page/');
 $page = new page();
 
 foreach($page->getItems() as $k=>$pageItem) if(!$pageItem->getIsHidden()){
@@ -65,8 +74,7 @@ class page{
 			$dataNotSorted = array();
 			$items = utilScanDir(PAGE_DATAPATH, array('config.txt'));
 			foreach($items['file'] as $k=>$file){
-				$temp = json_decode(@file_get_contents(ROOT.'data/plugin/page/'.$file), true);
-				$dataNotSorted[] = $temp;
+				$dataNotSorted[] = utilReadJsonFile(DATA_PLUGIN. 'page/'.$file, true);
 			}
 			$dataSorted = utilSort2DimArray($dataNotSorted, 'position', 'num');
 			foreach($dataSorted as $pageItem){
@@ -124,7 +132,7 @@ class page{
 	}
 	public function listFiles(){
 		$data = array();
-		$items = utilScanDir(ROOT.'theme/'.getCoreConf('theme').'/', array('header.php', 'footer.php', 'style.css'));
+		$items = utilScanDir(THEMES .getCoreConf('theme').'/', array('header.php', 'footer.php', 'style.css'));
 		foreach($items['file'] as $file){
 			if(in_array(utilGetFileExtension($file), array('htm', 'html', 'txt', 'php'))) $data[] = $file;
 		}

@@ -1,40 +1,40 @@
-section.menu-admin table#linksList {
+table#linksList {
 	font-size : 12px;
 	font-family : Verdana,'Helvetica Neue',Helvetica,Arial,Geneva,sans-serif;
 }
 
-section.menu-admin table#linksList tr {
+table#linksList tr {
 	height : 37px;
 }
 
-section.menu-admin table#linksList td.lab,
-section.menu-admin table#linksList td.target {
+table#linksList td.lab,
+table#linksList td.target {
 	height : 37px;
 	padding-top : 0;
 	padding-bottom : 0;
 	vertical-align : middle;
 }
-section.menu-admin table#linksList td.up img,
-section.menu-admin table#linksList td.down img,
-section.menu-admin table#linksList td.delete img {
+table#linksList td.up img,
+table#linksList td.down img,
+table#linksList td.delete img {
     display: block;
-	height : 16px;
-	width: 16px;
+	height : 30px;
+	width: 30px;
 }
  
-section.menu-admin table#linksList td.lab input {
-	width : 150px;
+table#linksList td.lab input {
+	max-width : 150px;
 }
 
-section.menu-admin table#linksList td.target input {
-	width : 300px;
+table#linksList td.target input {
+	max-width : 300px;
 }
 
 
-section.menu-admin table#linksList tr.deleted {
+table#linksList tr.deleted {
 	background-color : #ffcccc;
 }
 
-section.menu-admin table#linksList tr.added {
+table#linksList tr.added {
 	background-color : #ccffcc;
 }

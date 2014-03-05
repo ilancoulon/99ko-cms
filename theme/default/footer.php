@@ -1,18 +1,37 @@
-    <!-- Footer -->
- 
+<?php defined('ROOT') OR exit('No direct script access allowed'); ?>
+    </div>
+    <!-- Fin Contenu -->
+      
+      <!-- Sidebar -->
+      
+      <?php if(useSidebar()){ ?>
+      <aside id="sidebar" class="large-3 columns">
+        <?php show::showSidebarItems(); ?>
+      </aside>
+      <?php } ?>
+      
+      <!-- Fin Sidebar -->
+      
+  </div>
+
+  <!-- Fin Contenu et Sidebar -->
+
+
+      <!-- Footer -->
+
       <footer class="row">
-        <div class="large-12 columns"><hr>
+        <div class="large-12 columns">
+            <hr />
             <div class="row">
- 
               <div class="large-6 columns">
-                  <p>&copy; Copyright <?php echo date('Y') ?> <a title="<?php showSiteDescription(); ?>" href="<?php showSiteUrl(); ?>"><?php showSiteName(); ?></a> &middot; <?php echo lang('Generate in ');showExecTime(); ?>s</p>
+                  <p>&copy; Copyright <?php echo date('Y') ?> <a title="<?php show::showSiteDescription(); ?>" href="<?php show::showSiteUrl(); ?>"><?php show::showSiteName(); ?></a> &middot; <?php echo lang('Generate in ');show::showExecTime(); ?>s</p>
               </div>
  
               <div class="large-6 small-12 columns">
                   <ul class="inline-list right">
-                    <li><?php showTheme(); ?></li>
-                    <li><a rel="nofollow" href="admin/"><?php echo lang('Administration') ?></a></li>
-                    <li><?php echo lang('Just using') ?></li>
+                    <li><?php show::showTheme(); ?></li>
+                    <li><a rel="nofollow" href="<?php echo ADMIN_PATH ?>"><?php echo lang('Administration') ?></a></li>
+                    <li><?php echo lang("<a href='http://99ko.hellojo.fr' title='CMS sans base de données' onclick='window.open(this.href);return false;'>Just using 99ko</a>") ?></li>
                   </ul>
               </div>
  
@@ -20,19 +39,13 @@
         </div>
       </footer>
  
-    <!-- End Footer -->
- 
-    </div>
-  </div>
+    <!-- Fin Footer <?php echo $compressed; ?> -->
   
     <!-- Scripts -->
-    <script src="admin/js/all.js"></script>
+    <script src="<?php echo ADMIN_PATH ?>js/all.js"></script>
     <script>
-      $(document).foundation();
-
-      var doc = document.documentElement;
-      doc.setAttribute('data-useragent', navigator.userAgent);
+      $(document).foundation();    
     </script>
-    <?php eval(callHook('endFrontBody')); ?>
+    <?php eval(callHook('endFrontBody'));   // Appel du hook pour les plugins dans le pied de page  ?>
   </body>
 </html>

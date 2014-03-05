@@ -1,10 +1,12 @@
 <?php
 
-if(!defined('ROOT')) die();
+defined('ROOT') OR exit('No direct script access allowed');
 
 $data['menuMode'] = '';
 
-switch (ACTION) {
+$action = (isset($_GET['action'])) ? $_GET['action'] : '';
+
+switch ($action) {
 	case 'save':
 		$links = array();
 		

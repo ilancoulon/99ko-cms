@@ -1,26 +1,12 @@
 <?php
-if(!defined('ROOT')) die();
+defined('ROOT') OR exit('No direct script access allowed');
 
-$msg = '';
-$msgType = '';
+$action = (isset($_GET['action'])) ? urldecode($_GET['action']) : '';
+$msg = (isset($_GET['msg'])) ? urldecode($_GET['msg']) : '';
+$msgType = (isset($_GET['msgType'])) ? $_GET['msgType'] : '';
 
-switch(ACTION){
+switch($action){
 	case '':
-		$plugins = array();
-		foreach($pluginsManager->getPlugins() as $k=>$v){
-			$plugins[$k]['id'] = $v->getName();
-			$plugins[$k]['locked'] = ($v->getIsDefaultPlugin() || $v->getName() == 'pluginsmanager') ? true : false;
-			$plugins[$k]['name'] = $v->getInfoVal('name');
-			$plugins[$k]['description'] = $v->getInfoVal('description');
-			$plugins[$k]['target'] = ($v->getAdminFile() && $v->getName() != 'pluginsmanager') ? 'index.php?p='.$v->getName() : false;
-			$plugins[$k]['activate'] = ($v->getConfigVal('activate')) ? true : false;
-			$plugins[$k]['priority'] = $v->getConfigVal('priority');
-			$plugins[$k]['version'] = $v->getInfoVal('version');
-			$plugins[$k]['author'] = $v->getInfoVal('author');
-			$plugins[$k]['authorEmail'] = $v->getInfoVal('authorEmail');
-			$plugins[$k]['authorWebsite'] = $v->getInfoVal('authorWebsite');
-			$plugins[$k]['frontFile'] = $v->getPublicFile();
-		}
 		$priority = array(
 			1 => 1,
 			2 => 2,
@@ -34,7 +20,6 @@ switch(ACTION){
 		);
 		break;
 	case 'save':
-		$error = false;
 		foreach($pluginsManager->getPlugins() as $k=>$v) {
 			if(!$v->getIsDefaultPlugin()){
 				if(isset($_POST['activate'][$v->getName()])){
@@ -45,15 +30,16 @@ switch(ACTION){
 			}
 			$v->setConfigVal('priority', intval($_POST['priority'][$v->getName()]));
 			if(!$pluginsManager->savePluginConfig($v)){
-				$error = true;
 				$msg = lang('An error occured while saving your modifications.');
 				$msgType = 'error';
 			}
+			else{
+				$msg = lang("The changes have been saved.");
+				$msgType = 'success';
+			}
 		}
-		if(!$error) {
-			header('location:index.php?p=pluginsmanager');
-			die();
-		}
+		header('location:index.php?p=pluginsmanager&msg='.urlencode($msg).'&msgType='.$msgType);
+		die();
 		break;
 }
 ?>

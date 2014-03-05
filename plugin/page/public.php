@@ -1,5 +1,5 @@
 <?php
-if(!defined('ROOT')) die();
+defined('ROOT') OR exit('No direct script access allowed');
 $id = (isset($urlParams[1])) ? $urlParams[1] : false;
 if(!$id) $pageItem = $page->createHomepage();
 elseif($pageItem = $page->create($id)){}
@@ -11,11 +11,8 @@ elseif($pageItem->getMetaDescriptionTag() == '' && $pageItem->getIsHomepage() &&
 $pageTitleTag = $pageItem->getName();
 if($pageItem->getMainTitle() != '') $pageTitleTag.= ' | '.$pageItem->getMainTitle();
 $runPlugin->setTitleTag($pageTitleTag);
-$runPlugin->removeToBreadcrumb(0);
-$runPlugin->addToBreadcrumb($pageItem->getName(), rewriteUrl('page', array('name' => $pageItem->getName(), 'id' => $pageItem->getId())));
-if($runPlugin->getIsDefaultPlugin() && $pageItem->getIsHomepage()) $runPlugin->initBreadcrumb();
 $data['pageId'] = $pageItem->getId();
 $data['pageName'] = $pageItem->getName();
 $data['pageContent'] = $pageItem->getContent();
-$data['pageFile'] = ($pageItem->getFile()) ? ROOT.'theme/'.getCoreConf('theme').'/'.$pageItem->getFile() : false;
+$data['pageFile'] = ($pageItem->getFile()) ? THEMES .getCoreConf('theme').'/'.$pageItem->getFile() : false;
 ?>

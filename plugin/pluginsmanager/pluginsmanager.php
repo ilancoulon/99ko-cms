@@ -1,5 +1,5 @@
 <?php
-if(!defined('ROOT')) die();
+defined('ROOT') OR exit('No direct script access allowed');
 
 /*
 ** Exécute du code lors de l'installation

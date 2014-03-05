@@ -1,35 +1,53 @@
 <?php
-##########################################################################################################
-# 99ko http://99ko.hellojo.fr/
-#
-# Copyright (c) 2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
-# Copyright (c) 2010-2011 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
-# Copyright (c) 2010 Jonathan Coulet (j.coulet@gmail.com)
-##########################################################################################################
-
+/**
+ * 99ko cms
+ *
+ * This source file is part of the 99ko cms. More information,
+ * documentation and support can be found at http://99ko.hellojo.fr
+ *
+ * @package     99ko
+ *
+ * @author      Jonathan Coulet (j.coulet@gmail.com)
+ * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
+ * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
+ * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+#error_reporting(E_ALL);
 session_start();
-define('VERSION', '1.4 b');
 define('ROOT', './');
-define('PLUGIN', ROOT.'plugin/');
-define('DEFAULT_PLUGIN', 'page');
-
-include_once(ROOT.'common/core.lib.php');
+include_once(ROOT.'common/constants.php');
+include_once(COMMON.'core.lib.php');
 utilSetMagicQuotesOff();
 
-# Chargement des langs
-$langs = listLangs();
-$lang = array();
-# On charge la langue du core
-$lang = utilReadJsonFile(ROOT.'common/lang/fr.json');
-
+/*
+ *---------------------------------------------------------------
+ * CHARGEMENT DE LA LANGUE (À DÉFINIR SUR LA PAGE D'INSTALLATION)
+ *---------------------------------------------------------------
+ */
+# $languages_array = array('fr'=> lang("French"), 'en' => lang("English"));
+if (isset($_POST['submit_lang'])) { 
+    $_SESSION['lang'] = isset($_POST['siteLang']) ? $_POST['siteLang'] : '';
+    $lang = utilReadJsonFile(LANG. $_SESSION['lang'].'.json');
+}
+$timezones = listTimezones();
 $pluginsManager = new pluginsManager();
 $hooks = array();
-if(file_exists(ROOT.'data/config.txt')) die(lang('Config file already exist !'));
-
+# Vérification que le fichier de configuration n'existe pas
+if(file_exists(DATA. 'config.txt')) die(lang('Config file already exist !'));
+/*
+ *---------------------------------------------------------------
+ * ON VÉRIFIE QUE LE SERVEUR PEUT FAIRE TOURNER 99KO
+ *---------------------------------------------------------------
+ */
 # Obtien un tableau avec les noms de tous les modules compilés et chargés
 $php_modules = get_loaded_extensions();
 # On initialise les erreurs
 $errors = array();
+$msg = '';
+$msgType = '';
 # Liste des répertoires à vérifier
 $dir_array = array('data', 'plugin', 'theme');
 # Vérification de la version de PHP
@@ -57,24 +75,26 @@ foreach ($dir_array as $dir) {
     }
 }
 /*
-** Créations des fichiers nécessaires a 99ko
-*/
+ *---------------------------------------------------------------
+ * CRÉATION DES FICHIERS NÉCESSAIRES A 99KO
+ *---------------------------------------------------------------
+ */
 @chmod(ROOT.'.htaccess', 0666);
 if(!file_exists(ROOT.'.htaccess')){
 	if(!@file_put_contents(ROOT.'.htaccess', "Options -Indexes", 0666)) $error = true;
 }
-if(!is_dir(ROOT.'data/') && (!@mkdir(ROOT.'data/') || !@chmod(ROOT.'data/', 0777))) $error = true;
-if(!file_exists(ROOT.'data/.htaccess')){
-	if(!@file_put_contents(ROOT.'data/.htaccess', "deny from all", 0666)) $error = true;
+if(!is_dir(DATA) && (!@mkdir(DATA) || !@chmod(DATA, 0777))) $error = true;
+if(!file_exists(DATA. '.htaccess')){
+	if(!@file_put_contents(DATA. '.htaccess', "deny from all", 0666)) $error = true;
 }
-if(!is_dir(ROOT.'data/plugin/') && (!@mkdir(ROOT.'data/plugin/') || !@chmod(ROOT.'data/plugin/', 0777))) $error = true;
-if(!is_dir(ROOT.'data/upload/') && (!@mkdir(ROOT.'data/upload/') || !@chmod(ROOT.'data/upload/', 0777))) $error = true;
-if(!file_exists(ROOT.'data/upload/.htaccess')){
-	if(!@file_put_contents(ROOT.'data/upload/.htaccess', "allow from all", 0666)) $error = true;
+if(!is_dir(DATA_PLUGIN) && (!@mkdir(DATA_PLUGIN) || !@chmod(DATA_PLUGIN, 0777))) $error = true;
+if(!is_dir(UPLOAD) && (!@mkdir(UPLOAD) || !@chmod(UPLOAD, 0777))) $error = true;
+if(!file_exists(UPLOAD. '.htaccess')){
+	if(!@file_put_contents(UPLOAD. '.htaccess', "allow from all", 0666)) $error = true;
 }
 $key = uniqid(true);
-if(!file_exists(ROOT.'data/key.php') && !@file_put_contents(ROOT.'data/key.php', "<?php define('KEY', '$key'); ?>", 0666)) $error = true;
-include(ROOT.'data/key.php');
+if(!file_exists(DATA. 'key.php') && !@file_put_contents(DATA. 'key.php', "<?php define('KEY', '$key'); ?>", 0666)) $error = true;
+include(DATA. 'key.php');
 
           foreach($pluginsManager->getPlugins() as $plugin){
 	          if($plugin->getLibFile()){
@@ -84,13 +104,14 @@ include(ROOT.'data/key.php');
           }
           foreach($pluginsManager->getPlugins() as $plugin){
 	        foreach($plugin->getHooks() as $hookName=>$function) $hooks[$hookName][] = $function;
-          }  
-         
+          } 
 /*
-** Lance l'installation quand on clique sur le bouton
-*/
+ *---------------------------------------------------------------
+ * PROCÉSSUS D'INSTALLATION LORS DU SUBMIT
+ *---------------------------------------------------------------
+ */                 
 if (isset($_POST['install_submit'])) {
-
+        $error = array();
     	$siteName = isset($_POST['siteName']) ? $_POST['siteName'] : '';
     	$siteDescription = isset($_POST['siteDescription']) ? $_POST['siteDescription'] : '';
     	$siteTimezone = isset($_POST['siteTimezone']) ? $_POST['siteTimezone'] : '';
@@ -109,29 +130,37 @@ if (isset($_POST['install_submit'])) {
            'siteDescription' => $siteDescription,
            'siteTimezone'    => $siteTimezone,
            'adminPwd'        => $adminPwd,
-           'adminEmail'      => $adminEmail,
+           'adminEmail'      => $adminEmail, # A SECURISER !!!!!
            'siteUrl'         => $siteUrl,        
            'urlRewriting'    => '0',
            'theme'           => 'default',
            'siteLang'        => $siteLang,
            'hideTitles'      => '0',
            'defaultPlugin'   => 'page',
+           'checkUrl'        => 'http://99ko.hellojo.fr/version',
+           'gzip'            => '1',        # Active ou désactive la compréssion Gzip (Optimisation)
         );  		
-        if(!@file_put_contents(ROOT.'data/config.txt', json_encode($config)) ||	!@chmod('data/config.txt', 0666)) $error = true;
+        if(!@file_put_contents(DATA. 'config.txt', json_encode($config)) ||	!@chmod(DATA. 'config.txt', 0666)) $error = true;
 
         if($error){
 	      $data['msg'] = lang('Problem when installing');
 	      $data['msgType'] = "error";
         }
+		elseif(!utilIsEmail(trim($_POST['adminEmail']))){
+			$msg = lang("Invalid email.");
+			$msgType = 'error';
+		}        
         else{              
-	      $data['msg'] = lang('99ko is installed') . '<br />' . lang('Also, delete the install.php file');
-	      $data['msgType'] = "success";
-	      eval(callHook('installSuccess'));
-	      $_SESSION['msg_install'] = $data['msg'];
+	      $_SESSION['msg_install'] = true;
 	      header('location:admin/index.php');
 	      die();
         }  
-}
+} 
+/*
+ *---------------------------------------------------------------
+ * RENDUS HTML DE LA PAGE D'INSTALLATION
+ *---------------------------------------------------------------
+ */ 
 ?>
 <!DOCTYPE html>
 <html>
@@ -187,17 +216,34 @@ if (isset($_POST['install_submit'])) {
   <body>
     <div class="container">
 	   <h1><img src="admin/images/logo.png" alt="99ko" /> 99ko</h1>
-	   
+		    <form role="form" method="post">  
+             <div class="row display"> 
+               <div class="large-6 columns"></div> 
+                           
+               <div class="large-6 columns">
+                 <div class="row collapse">
+                    <div class="small-8 columns">
+                       <select name="siteLang">
+                          <option value="fr"><?php echo lang("French"); ?></option>
+                          <option value="en"><?php echo lang("English"); ?></option>
+                       </select>	
+                    </div>
+                    <div class="small-4 columns">
+                       <input type="submit" name="submit_lang" class="button postfix" value="<?php echo lang("Go"); ?>">
+                   </div>
+                 </div>
+               </div>
+ 
+             </div>		    
+		    </form>		   
        <div class="row panel">
                 <noscript>
-                  <div class="alert-box warning radius">
-                     <h6><?php echo lang("Javascript must be enabled in your browser to take full advantage of features 99ko."); ?></h6>
-                     <a href="#" class="close">&times;</a>
-                  </div>
+                    <?php showMsg(lang("Javascript must be enabled in your browser to take full advantage of features 99ko."), "error"); ?> 
                 </noscript> 
+                <?php showMsg($msg, $msgType); // Affichage de toutes les Notifications ?>
                       
 		<div class="step-1">
-		    <h3 class="subheader"><?php echo lang("Verifying the installation"); ?></h3>
+		    <h3 class="subheader"><?php echo lang("Verifying the installation"); ?></h3>	    
 		    <hr />
  			<ul class="no-bullet">
             <?php
@@ -252,68 +298,75 @@ if (isset($_POST['install_submit'])) {
 
 
 		<div class="step-2 hide">		
-		<h3 class="subheader"><?php echo lang("99ko installer"); ?> <?php echo VERSION; ?></h3>
-		<hr />
+		<h3 class="subheader"><?php echo lang("99ko installer"); ?> <?php echo VERSION; ?></h3>	
+		<hr />	
 		<form role="form" method="post">
+		<?php showAdminTokenField(); ?>
 		
 		  <div class="row">
 		     <div class="large-12 columns">
-                 <label for="siteName"><?php echo lang("Site name"); ?></label>
-                 <input type="text" name="siteName" id="siteName" placeholder="<?php echo lang("Site name"); ?>" required>
+                 <label for="siteName"><?php echo lang("Site name"); ?> :</label>
+                 <input type="text" name="siteName" id="siteName" autocomplete="off" required />
 		     </div>
 		  </div>
 
 		  <div class="row">
 		     <div class="large-12 columns">
-                 <label for="siteDescription"><?php echo lang("Site description"); ?></label>
-                 <input type="text" name="siteDescription" id="siteDescription" placeholder="<?php echo lang("Site description"); ?>" required>
+                 <label for="siteDescription"><?php echo lang("Site description"); ?> :</label>
+                 <input type="text" name="siteDescription" id="siteDescription" autocomplete="off" required />
 		     </div>
 		  </div>
 		  		  		
 		  <div class="row">
 		     <div class="large-4 columns">
-                 <label for="siteLang"><?php echo lang("Lang"); ?></label>
+                 <label for="siteLang"><?php echo lang("Lang"); ?> :</label>
                  <select name="siteLang">
-                     <option value="fr">Français</option>
-                     <option value="en">English</option>
+                     <option value="fr"><?php echo lang("French"); ?></option>
+                     <option value="en"><?php echo lang("English"); ?></option>
                  </select>
 		     </div>
+		     
+		     <div class="large-8 columns">
+                 <label for="siteTimezone"><?php echo lang("Time zone"); ?> :</label>
+                 <select name="siteTimezone">
+                     <?php foreach($timezones as $k=>$v){ ?>
+                     <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
+                     <?php } ?>
+                 </select>  
+		     </div>			     
 		  </div>
 		  		  
 		  <div class="row">
 		     <div class="large-12 columns">
-                 <label for="siteUrl"><?php echo lang("URL of the site (no trailing slash)"); ?></label>
-                 <input type="text" name="siteUrl" id="siteUrl" placeholder="<?php echo getSiteUrl(); ?>" value="<?php echo getSiteUrl(); ?>" required>
+                 <label for="siteUrl"><?php echo lang("URL of the site (no trailing slash)"); ?> :</label>
+                 <input type="url" name="siteUrl" id="siteUrl" value="<?php echo getSiteUrl(); ?>" required />
 		     </div>
 		  </div>
 		  
 		  <div class="row">
 		     <div class="large-12 columns">
-                 <label for="adminEmail"><?php echo lang("Admin mail"); ?></label>
-                 <input type="text" name="adminEmail" id="adminEmail" placeholder="admin@mysite.com" required>
+                 <label for="adminEmail"><?php echo lang("Admin mail"); ?> :</label>
+                 <input type="email" name="adminEmail" id="adminEmail" autocomplete="off" required />
 		     </div>
 		  </div>
 		  
 		  <div class="row">
 		     <div class="large-12 columns">
-                 <label for="adminPwd"><?php echo lang('Password'); ?></label>
-                 <input type="password" name="adminPwd" id="adminPwd" placeholder="********" required>
+                 <label for="adminPwd"><?php echo lang('Password'); ?> :</label>
+                 <input type="password" name="adminPwd" id="adminPwd" autocomplete="off" required />
 		     </div>
 		  </div>		  		  
-
-		  <div class="row">
-		     <div class="large-12 columns">
-                 <label for="siteTimezone"><?php echo lang("Time zone"); ?></label>
-                 <select class="form-control" name="siteTimezone">
-                     <?php include(PLUGIN.'configmanager/other/Timezone.txt'); ?>
-                 </select>
-		     </div>		     
-		  </div>		  		  
+		  		  
 		  <input type="submit" name="install_submit" class="button success large radius right" value="<?php echo lang("Install"); ?>">
 		</form>
        		
 		</div>
-       </div> <!-- row & pannel Fin -->		
+       </div> <!-- row & pannel Fin -->	
+       
+       <p class="text-center">
+               <a title="<?php echo lang("NoDB CMS"); ?>" onclick="window.open(this.href);return false;" href="http://99ko.hellojo.fr"><?php echo lang("Just using <b>99ko</b>"); ?></a>
+       </p>	
+       
     </div>
   </body>
 </html>

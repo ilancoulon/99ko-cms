@@ -1,3 +1,4 @@
+<?php defined('ROOT') OR exit('No direct script access allowed'); ?>
 		          <?php if($tabs){ ?>
                          </div>
                       </div>
@@ -12,10 +13,11 @@
       </div> <!-- /inner-wrap -->
     </div> <!-- /marketing off-canvas-wrap -->
     
-    <script src="js/all.js"></script>
+    <script src="js/all.min.js?v=5.1.1"></script>
     <script src="js/scripts.js"></script>
     <script>
             $(document).foundation();
+            //$('.alert-box').fadeOut(5000);
     </script>
     <?php eval(callHook('endAdminBody')); ?>
   </body>

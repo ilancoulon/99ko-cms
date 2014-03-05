@@ -1,5 +1,5 @@
 <?php
-if(!defined('ROOT')) die();
+defined('ROOT') OR exit('No direct script access allowed');
 
 /*
 ** Exécute du code lors de l'installation
@@ -15,15 +15,9 @@ function extrasInstall(){
 ** Elle peut contenir des classes, des fonctions, hooks... ou encore du code à exécutter lors du chargement du plugin
 ********************************************************************************************************************/
 
-function extrasStartShowLinkTags(){
-    # $temp = "\$data.= str_replace('[file]', ROOT.'plugin/extras/other/normalize.css', \$format);";
-    # $temp.= "\$data.= str_replace('[file]', ROOT.'plugin/extras/other/foundation.min.css?v=5.0.3', \$format);";
-    # return $temp;
-}
-
 function extrasStartShowScriptTags(){
-    $temp = "\$data.= str_replace('[file]', ROOT.'plugin/extras/other/jquery.min.js?v=2.0.3', \$format);";
-    $temp.= "\$data.= str_replace('[file]', ROOT.'plugin/extras/other/modernizr.js?v=2.6.2', \$format);";
+    $temp = "\$data.= str_replace('[file]', PLUGINS. 'extras/other/jquery.min.js?v=2.0.3', \$format);";
+    $temp.= "\$data.= str_replace('[file]', PLUGINS. 'extras/other/modernizr.js?v=2.6.2', \$format);";
     return $temp;
 }
 ?>

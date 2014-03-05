@@ -1,5 +1,5 @@
-<?php if(!defined('ROOT')) die(); ?>
-<?php include_once(ROOT.'theme/'.$coreConf['theme'].'/header.php') ?>
+<?php defined('ROOT') OR exit('No direct script access allowed'); ?>
+<?php include_once(THEMES .$coreConf['theme'].'/header.php') ?>
 <?php
 if($data['pageFile']) include_once($data['pageFile']);
 else echo $data['pageContent'];
@@ -9,4 +9,4 @@ else echo $data['pageContent'];
     $(".page h1").hide();
 </script>
 <?php } ?>
-<?php include_once(ROOT.'theme/'.$coreConf['theme'].'/footer.php') ?>
+<?php include_once(THEMES .$coreConf['theme'].'/footer.php') ?>

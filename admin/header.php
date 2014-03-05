@@ -1,3 +1,4 @@
+<?php defined('ROOT') OR exit('No direct script access allowed'); ?>
 <!doctype html>
 <!--[if IE 9]><html class="lt-ie10" lang="<?php showSiteLang(); ?>" > <![endif]-->
 <html class="no-js" lang="<?php showSiteLang(); ?>">
@@ -6,7 +7,7 @@
 	<meta charset="utf-8">	
 	<title>99ko - <?php echo lang('Backend'); ?></title>	
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="css/foundation.min.css?v=5.0.3" media="all">
+	<link rel="stylesheet" href="css/foundation.min.css?v=5.1.1" media="all">
 	<link rel="stylesheet" href="css/99ko.min.css?v=1.0.2" />
 	<?php showLinkTags(); ?>
 	<?php showScriptTags(); ?>
@@ -15,7 +16,7 @@
   
   <body class="antialiased hide-extras">
 
-    <div class="marketing off-canvas-wrap">
+    <div class="nav off-canvas-wrap">
       <div class="inner-wrap">
 
 
@@ -31,7 +32,7 @@
       <li class="divider"></li>
       <li>
         <a href="index.php?action=logout&token=<?php echo $token; ?>">
-           <?php echo show_gravatar($config['adminEmail'], '35', '', 'G'); ?>&nbsp;<?php echo lang('Logout'); ?>
+           <?php echo profil_img(getCoreConf('adminEmail'), '35', '', 'G'); ?>&nbsp;<?php echo lang('Logout'); ?>
         </a>
       </li>
       <li class="divider"></li>
@@ -46,7 +47,7 @@
   </a>
 </nav>
 
-<aside class="marketing-left-off-canvas-menu">
+<aside class="nav-left-off-canvas-menu">
 
   <ul class="off-canvas-list">
     <li><label class="first"><?php showSiteName(); ?></label></li>
@@ -71,15 +72,16 @@
             <div class="large-3 medium-4 columns">
               <div class="hide-for-small">
               <div class="sidebar">
-  <form>
+  <!--form>
     <label><?php echo lang('Search Filter'); ?></label>
     <input tabindex="1" id="autocomplete" type="search" placeholder="<?php echo lang('Search'); ?>&hellip;">
-  </form>
-
+  </form-->
+  <p class="text-center">
+     <img src="images/logo.png" alt="logo" />
+  </p>
   <nav>
     <ul class="side-nav">
       <li class="heading"><?php echo lang('Navigation'); ?></li>
-
 	  <?php foreach($navigation as $k=>$v){ ?>
 	  <li><a class="<?php if($v['isActive']){ ?>current<?php } ?>" href="<?php echo $v['url']; ?>"><?php echo lang($v['label']); ?></a></li>
 	  <?php } ?>
@@ -88,7 +90,7 @@
     </ul>
   </nav>
 
-  <a onclick="window.open(this.href);return false;" href="http://99ko.hellojo.fr/" class="download button expand">Just using <b>99ko</b> <span class="label"><?php echo $version; ?></span></a>
+             <a title="<?php echo lang("NoDB CMS"); ?>" onclick="window.open(this.href);return false;" href="http://99ko.hellojo.fr" class="copyright button expand"><?php echo lang("Just using <b>99ko</b>"); ?></a>
 
               </div>  <!-- /sidebar -->
               </div> <!-- /hide-for-small -->
@@ -100,18 +102,10 @@
         
 		        <h2><?php echo lang($pageTitle); ?></h2>
 		        <hr>
+		        <?php showMsg($msg, $msgType); // Affichage de toutes les Notifications ?>
                 <noscript>
-                  <div class="alert-box warning radius">
-                     <h6><?php echo lang("Javascript must be enabled in your browser to take full advantage of features 99ko."); ?></h6>
-                     <a href="#" class="close">&times;</a>
-                  </div>
+                     <?php showMsg(lang("Javascript must be enabled in your browser to take full advantage of features 99ko."), "error"); ?> 
                 </noscript> 		        
-		           <?php if($pluginConfigTemplate){ ?>
-			          <div id="pluginConfig">
-				       <?php include_once($pluginConfigTemplate); ?>
-				      <hr>
-			          </div>
-		           <?php } ?>
 		          <?php if($tabs){ ?>
                       <dl class="radius tabs" data-tab>
            	          <?php foreach($tabs as $k=>$v){ ?>
