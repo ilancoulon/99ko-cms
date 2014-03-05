@@ -20,7 +20,7 @@
 				<?php echo $plugin->getName();; ?>
 			</td>
 			<td>
-			<?php if($plugin->getConfigVal('activate')){ ?><a class="button tiny radius secondary" href="<?php echo 'index.php?p='.$plugin->getName(); ?>"><?php echo lang("Go to plugin"); ?></a><?php } ?> 
+			<?php if($plugin->getConfigVal('activate') && $plugin->getAdminFile()){ ?><a class="button tiny radius secondary" href="<?php echo 'index.php?p='.$plugin->getName(); ?>"><?php echo lang("Go to plugin"); ?></a><?php } ?> 
 			<a href="#" data-reveal-id="<?php echo $plugin->getName(); ?>" class="button tiny radius"><?php echo lang("About"); ?></a>
 	        <div id="<?php echo $plugin->getName(); ?>" class="reveal-modal small" data-reveal>
 		        <h2><?php echo lang($plugin->getName()); ?></h2>

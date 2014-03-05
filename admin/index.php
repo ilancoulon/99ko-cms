@@ -21,7 +21,7 @@ include_once(ROOT.'common/common.php');
 // on genere le jeton
 if(!isset($_SESSION['token'])) $_SESSION['token'] = sha1(uniqid(mt_rand()));
 // on check le jeton
-if(isset($urlParams[0]) && in_array($urlParams[0], array('delinstallfile', 'save', 'del', 'saveconfig', 'saveplugins', 'login', 'logout')) && $_REQUEST['token'] != $_SESSION['token']){	
+if(isset($_GET['action']) && in_array($_GET['action'], array('delinstallfile', 'save', 'del', 'saveconfig', 'saveplugins', 'login', 'logout')) && $_REQUEST['token'] != $_SESSION['token']){	
 	include_once('login.php');
 	die();
 }
@@ -47,7 +47,7 @@ foreach($runPlugin->getAdminTabs() as $k=>$v){
 }
 if(count($tabs) == 0 || !isset($_GET['p'])) $tabs = false;
 // actions
-if(isset($urlParams[0]) && $urlParams[0] == 'login'){
+if(isset($_GET['action']) && $_GET['action'] == 'login'){
 	// hook
 	eval(callHook('startAdminLogin'));
 	if(isset($_SESSION['msg_install'])) unset($_SESSION['msg_install']);
@@ -69,12 +69,12 @@ if(isset($urlParams[0]) && $urlParams[0] == 'login'){
 	// hook
 	eval(callHook('endAdminLogin'));
 }
-elseif(isset($urlParams[0]) && $urlParams[0] == 'logout'){
+elseif(isset($_GET['action']) && $_GET['action'] == 'logout'){
 	session_destroy();
 	header('location:index.php');
 	die();
 }
-elseif(isset($urlParams[0]) && $urlParams[0] == 'delinstallfile') @unlink('../install.php');
+elseif(isset($_GET['action']) && $_GET['action'] == 'delinstallfile') @unlink('../install.php');
 // limitation activite de session
 if(isset($_SESSION['timeout'])) {
     // On calcule le nombre de secondes depuis la dernière visite 

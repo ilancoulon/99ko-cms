@@ -306,14 +306,14 @@ if (isset($_POST['install_submit'])) {
 		  <div class="row">
 		     <div class="large-12 columns">
                  <label for="siteName"><?php echo lang("Site name"); ?> :</label>
-                 <input type="text" name="siteName" id="siteName" placeholder="<?php echo lang("Site name"); ?>" required />
+                 <input type="text" name="siteName" id="siteName" autocomplete="off" required />
 		     </div>
 		  </div>
 
 		  <div class="row">
 		     <div class="large-12 columns">
                  <label for="siteDescription"><?php echo lang("Site description"); ?> :</label>
-                 <input type="text" name="siteDescription" id="siteDescription" placeholder="<?php echo lang("Site description"); ?>" required />
+                 <input type="text" name="siteDescription" id="siteDescription" autocomplete="off" required />
 		     </div>
 		  </div>
 		  		  		
@@ -339,21 +339,21 @@ if (isset($_POST['install_submit'])) {
 		  <div class="row">
 		     <div class="large-12 columns">
                  <label for="siteUrl"><?php echo lang("URL of the site (no trailing slash)"); ?> :</label>
-                 <input type="url" name="siteUrl" id="siteUrl" placeholder="<?php echo getSiteUrl(); ?>" value="<?php echo getSiteUrl(); ?>" required />
+                 <input type="url" name="siteUrl" id="siteUrl" value="<?php echo getSiteUrl(); ?>" required />
 		     </div>
 		  </div>
 		  
 		  <div class="row">
 		     <div class="large-12 columns">
                  <label for="adminEmail"><?php echo lang("Admin mail"); ?> :</label>
-                 <input type="email" name="adminEmail" id="adminEmail" placeholder="admin@mysite.com" required />
+                 <input type="email" name="adminEmail" id="adminEmail" autocomplete="off" required />
 		     </div>
 		  </div>
 		  
 		  <div class="row">
 		     <div class="large-12 columns">
                  <label for="adminPwd"><?php echo lang('Password'); ?> :</label>
-                 <input type="password" name="adminPwd" id="adminPwd" placeholder="********" required />
+                 <input type="password" name="adminPwd" id="adminPwd" autocomplete="off" required />
 		     </div>
 		  </div>		  		  
 		  		  
