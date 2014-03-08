@@ -14,7 +14,8 @@
 	      show::showScriptTags();          // Charge automatiquement les fichiers javascript (thème et plugins)
 	      eval(callHook('endFrontHead'));  // Appel du hook pour les plugins dans la balise head
 	?>
-	<style type="text/css">.<?php show::showPluginId(); ?>{padding-top: 80px;}</style>
+	<link rel="stylesheet" type="text/css" href="theme/<?php echo getCoreConf("theme"); ?>/99ko.css">
+	<style type="text/css">.<?php show::showPluginId(); ?>{padding-top: 40px;}</style>
   </head>
   <body>
   

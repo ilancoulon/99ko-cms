@@ -9,7 +9,7 @@
  * @package     99ko
  *
  * @author      Jonathan Coulet (j.coulet@gmail.com)
- * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / FréŽdéŽric Kaplon (frederic.kaplon@me.com)
+ * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
  * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
  * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
  *
@@ -177,7 +177,7 @@ class show{
      }
 
      // affiche le theme courant (theme)
-     public static function showTheme($format = '<a target="_blank" href="[authorWebsite]">[name]</a>') {
+     public static function showTheme($format = '<a onclick="window.open(this.href);return false;" href="[authorWebsite]">[name]</a>') {
      	global $themes;
      	eval(callHook('startShowTheme'));
      	$data = $format;

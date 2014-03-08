@@ -3,7 +3,7 @@
 	<?php if(!$newVersion){
              echo showMsg(lang("You are using the latest version of 99ko"). '&nbsp;&nbsp;&nbsp;<b>' .$version. '</b>', "info");
           } else {
-             echo showMsg(lang("A new version of 99ko is available"). '&nbsp;&nbsp;&nbsp;<b>' .$newVersion. '</b>', "success");
+             echo showMsg(lang("A new version of 99ko is available"). '&nbsp;&nbsp;&nbsp;<b>' .$newVersion. '</b>', "warning");
     } 
     ?>
 	<div class="panel"> 
