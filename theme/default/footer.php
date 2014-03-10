@@ -2,20 +2,16 @@
     </div>
     <!-- Fin Contenu -->
       
+    <?php if(useSidebar()){ ?>
       <!-- Sidebar -->
-      
-      <?php if(useSidebar()){ ?>
       <aside id="sidebar" class="large-3 columns">
         <?php show::showSidebarItems(); ?>
       </aside>
-      <?php } ?>
-      
       <!-- Fin Sidebar -->
-      
+    <?php } ?>      
   </div>
 
   <!-- Fin Contenu et Sidebar -->
-
 
       <!-- Footer -->
 
@@ -42,7 +38,7 @@
     <!-- Fin Footer <?php echo $compressed; ?> -->
   
     <!-- Scripts -->
-    <script src="<?php echo ADMIN_PATH ?>js/all.js"></script>
+    <script src="<?php echo ADMIN_PATH ?>assets/js/all.js"></script>
     <script>
       $(document).foundation();    
     </script>

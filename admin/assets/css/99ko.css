@@ -699,3 +699,6 @@ html, body, .nav-left-off-canvas-menu, .inner-wrap, section[role="main"] {
     box-shadow: #CCC 0 0 .25em;
 
 }  
+a.about:hover {
+    color: #333;	 
+} 

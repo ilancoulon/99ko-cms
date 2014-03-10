@@ -6,9 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8">	
 	<title>99ko - <?php echo lang('Backend'); ?></title>	
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="css/foundation.min.css?v=5.1.1" media="all">
-	<link rel="stylesheet" href="css/99ko.min.css?v=1.0.2" />
+	<link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="assets/css/minified.css.php?v=5.2.0" media="all">
 	<?php showLinkTags(); ?>
 	<?php showScriptTags(); ?>
 	<?php eval(callHook('endAdminHead')); ?>	
@@ -77,7 +76,7 @@
     <input tabindex="1" id="autocomplete" type="search" placeholder="<?php echo lang('Search'); ?>&hellip;">
   </form-->
   <p class="text-center">
-     <img src="images/logo.png" alt="logo" />
+     <img src="assets/logo.png" alt="logo" />
   </p>
   <nav>
     <ul class="side-nav">

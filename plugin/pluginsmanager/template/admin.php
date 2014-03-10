@@ -24,7 +24,7 @@
 			<a href="#" data-reveal-id="<?php echo $plugin->getName(); ?>" class="button tiny radius"><?php echo lang("About"); ?></a>
 	        <div id="<?php echo $plugin->getName(); ?>" class="reveal-modal small" data-reveal>
 		        <h2><?php echo lang($plugin->getName()); ?></h2>
-		        <blockquote><?php echo lang($plugin->getInfoVal('description')); ?><cite><?php echo lang("Author"); echo $plugin->getInfoVal('author'); ?></cite></blockquote>
+		        <blockquote><?php echo lang($plugin->getInfoVal('description')); ?><cite><?php echo lang("Author: "); echo $plugin->getInfoVal('author'); ?></cite></blockquote>
 		         <ul class="no-bullet">
 		            <?php
                       if($plugin->getInfoVal('authorEmail') != ''){
