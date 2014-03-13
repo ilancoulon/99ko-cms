@@ -8,7 +8,7 @@
  * @package     99ko
  *
  * @author      Jonathan Coulet (j.coulet@gmail.com)
- * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
+ * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
  * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
  * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
  *
@@ -18,6 +18,8 @@
 #error_reporting(E_ALL);
 session_start();
 define('ROOT', './');
+// plugin par defaut
+define('DEFAULT_PLUGIN', 'page');
 include_once(ROOT.'common/constants.php');
 include_once(COMMON.'core.lib.php');
 utilSetMagicQuotesOff();
@@ -94,7 +96,9 @@ if(!file_exists(UPLOAD. '.htaccess')){
 }
 $key = uniqid(true);
 if(!file_exists(DATA. 'key.php') && !@file_put_contents(DATA. 'key.php', "<?php define('KEY', '$key'); ?>", 0666)) $error = true;
-include(DATA. 'key.php');
+if(!file_exists(DATA. 'key.php')){
+	include(DATA. 'key.php');
+}
 
           foreach($pluginsManager->getPlugins() as $plugin){
 	          if($plugin->getLibFile()){
@@ -169,12 +173,11 @@ if (isset($_POST['install_submit'])) {
     <title><?php echo lang("99ko installer"); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="admin/css/foundation.min.css" rel="stylesheet">
+    <link href="admin/assets/css/foundation.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,900,400italic' type='text/css' rel='stylesheet' />
     <link href='http://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
     <script src="plugin/extras/other/modernizr.js"></script>
     <script src="plugin/extras/other/jquery.min.js"></script>	
-    <script src="admin/js/all.min.js"></script>
 	<style>
 		.container {
 			max-width: 600px;
@@ -215,7 +218,7 @@ if (isset($_POST['install_submit'])) {
   
   <body>
     <div class="container">
-	   <h1><img src="admin/images/logo.png" alt="99ko" /> 99ko</h1>
+	   <h1><img src="admin/assets/logo.png" alt="99ko" /> 99ko</h1>
 		    <form role="form" method="post">  
              <div class="row display"> 
                <div class="large-6 columns"></div> 
