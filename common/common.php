@@ -15,14 +15,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-if(DEBUG) error_reporting(E_ALL);
-else error_reporting(E_ALL ^ E_NOTICE);
 session_start();
 defined('ROOT') OR exit('No direct script access allowed');
 include_once(ROOT.'common/constants.php');
 include_once(COMMON.'core.lib.php');
 utilSetMagicQuotesOff();
+// Dev Mod
+if(DEBUG) error_reporting(E_ALL);
+else error_reporting(E_ALL ^ E_NOTICE);
 // plugin par defaut
 define('DEFAULT_PLUGIN', getCoreConf('defaultPlugin'));
 // on check l'existence du fichier de configuration
