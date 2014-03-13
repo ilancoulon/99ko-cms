@@ -39,9 +39,7 @@
   
     <!-- Scripts -->
     <script src="<?php echo ADMIN_PATH ?>assets/js/all.js"></script>
-    <script>
-      $(document).foundation();    
-    </script>
+    <script>$(document).foundation();</script>
     <?php eval(callHook('endFrontBody'));   // Appel du hook pour les plugins dans le pied de page  ?>
   </body>
 </html>
