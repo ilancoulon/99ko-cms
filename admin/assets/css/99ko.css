@@ -4,7 +4,7 @@
  *
  * Thème administration
  * Copyright 2011-2014, Frédéric Kaplon
- * Last Update 27/02/2014
+ * Last Update 14/03/2014
  *
  */
 pre {
@@ -161,7 +161,7 @@ hr.dashed {
 
 /* SIDEBAR */
 .sidebar {
-  background: #ecf0f1/*#fafafa*/;
+  background: #ecf0f1;
   padding: 32px 20px; }
 
 .sidebar.fixed, [data-magellan-expedition] {
@@ -176,11 +176,11 @@ hr.dashed {
 
 .side-nav li a {
   padding: 0.33333rem 0; }
-  .side-nav li a:hover {
+  .side-nav li a:hover, .side-nav li a.current {
     color: #004054; }
     .side-nav li a:hover span {
       background: #dadada;
-      color: black; }
+      color: black;	  }
 
 .side-nav .heading, .sidebar form {
   padding: 2px 0px; }
