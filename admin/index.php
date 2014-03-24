@@ -92,8 +92,16 @@ if(!isset($_SESSION['admin']) || $_SESSION['admin'] != $coreConf['adminPwd']){
 }
 // homepage mode
 elseif(!isset($_GET['p'])){
-	if(!file_exists('../.htaccess')) $msg.= lang('The .htaccess file is missing !')."\n";
-	if(file_exists('../install.php')) $msg.= lang('The install.php file must be deleted !')."&nbsp;&nbsp;&nbsp;<a class=\"label secondary round\" href=\"index.php?action=delinstallfile&token=".$token."\">&#10007;&nbsp;".lang('Delete')."</a>\n";
+	if(!file_exists('../.htaccess')) {
+		$msg.= lang('The .htaccess file is missing !')."\n";
+		$msgType = 'warning';
+	}
+
+	if(file_exists('../install.php')) {
+		$msg.= lang('The install.php file must be deleted !')."&nbsp;&nbsp;&nbsp;<a class=\"label secondary round\" href=\"index.php?action=delinstallfile&token=".$token."\">&#10007;&nbsp;".lang('Delete')."</a>\n";
+		$msgType = 'warning';
+	}
+
 	$checkSite = getCoreConf('checkUrl');
 	$newVersion = newVersion(getCoreConf('checkUrl'));
 	include_once('home.php');

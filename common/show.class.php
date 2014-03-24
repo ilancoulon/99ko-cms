@@ -35,6 +35,11 @@ class show{
      		'info'    => 'info',
      		'warning' => 'warning',
      	);
+
+          if (!isset($class[$type])) {
+               $type = 'info';
+          }
+
      	$data = '';
      	eval(callHook('startShowMsg'));
      	if($msg != '') $data = '<div data-alert class="alert-box '.$class[$type].' radius">
