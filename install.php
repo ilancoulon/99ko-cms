@@ -99,6 +99,9 @@ if(!file_exists(DATA. 'key.php') && !@file_put_contents(DATA. 'key.php', "<?php 
 if(!file_exists(DATA. 'key.php')){
 	include(DATA. 'key.php');
 }
+if(!file_exists(DATA. 'users.json')) {
+  if (!@file_put_contents(DATA. 'users.json', "")) $error = true;
+}
 
           foreach($pluginsManager->getPlugins() as $plugin){
 	          if($plugin->getLibFile()){
@@ -120,6 +123,7 @@ if (isset($_POST['install_submit'])) {
     	$siteDescription = isset($_POST['siteDescription']) ? $_POST['siteDescription'] : '';
     	$siteTimezone = isset($_POST['siteTimezone']) ? $_POST['siteTimezone'] : '';
     	$adminPwd = isset($_POST['adminPwd']) ? encrypt($_POST['adminPwd']) : ''; 
+      $adminUsername = isset($_POST['adminUsername']) ? $_POST['adminUsername'] : '';
     	$adminEmail = isset($_POST['adminEmail']) ? $_POST['adminEmail'] : '';
     	$siteUrl = isset($_POST['siteUrl']) ? $_POST['siteUrl'] : '';
     	$defaultPlugin = isset($_POST['defaultPlugin']) ? $_POST['defaultPlugin'] : '';
@@ -145,6 +149,13 @@ if (isset($_POST['install_submit'])) {
            'gzip'            => '1',        # Active ou désactive la compréssion Gzip (Optimisation)
         );  		
         if(!@file_put_contents(DATA. 'config.txt', json_encode($config)) ||	!@chmod(DATA. 'config.txt', 0666)) $error = true;
+
+        $users = array();
+        $users[$adminEmail] = array(
+          'username' => $adminUsername,
+          'password' => $adminPwd
+        );
+        if (!@file_put_contents(DATA. 'users.json', json_encode($users))) $error = true;
 
         if($error){
 	      $data['msg'] = lang('Problem when installing');
@@ -352,6 +363,13 @@ if (isset($_POST['install_submit'])) {
                  <input type="email" name="adminEmail" id="adminEmail" autocomplete="off" required />
 		     </div>
 		  </div>
+      
+      <div class="row">
+         <div class="large-12 columns">
+                 <label for="adminUsername"><?php echo lang("Admin username"); ?> :</label>
+                 <input type="text" name="adminUsername" id="adminUsername" autocomplete="off" required />
+         </div>
+      </div>
 		  
 		  <div class="row">
 		     <div class="large-12 columns">
