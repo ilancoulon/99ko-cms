@@ -13,12 +13,9 @@
       </div> <!-- /inner-wrap -->
     </div> <!-- /marketing off-canvas-wrap -->
     
-    <script src="js/all.min.js?v=5.1.1"></script>
-    <script src="js/scripts.js"></script>
-    <script>
-            $(document).foundation();
-            //$('.alert-box').fadeOut(5000);
-    </script>
+    <script src="assets/js/foundation.min.js?v=5.2.1"></script>
+    <script src="assets/js/scripts.js"></script>
+    <script>$(document).foundation();</script>
     <?php eval(callHook('endAdminBody')); ?>
   </body>
 </html>

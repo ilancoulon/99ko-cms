@@ -8,18 +8,22 @@
  * @package     99ko
  *
  * @author      Jonathan Coulet (j.coulet@gmail.com)
- * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
+ * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
  * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
  * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-#error_reporting(E_ALL);
 session_start();
 define('ROOT', './');
+// plugin par defaut
+define('DEFAULT_PLUGIN', 'page');
 include_once(ROOT.'common/constants.php');
 include_once(COMMON.'core.lib.php');
+# Gestion des erreurs PHP (Dev Mod)
+if(DEBUG) error_reporting(E_ALL);
+else error_reporting(E_ALL ^ E_NOTICE);
 utilSetMagicQuotesOff();
 
 /*
@@ -84,27 +88,38 @@ if(!file_exists(ROOT.'.htaccess')){
 	if(!@file_put_contents(ROOT.'.htaccess', "Options -Indexes", 0666)) $error = true;
 }
 if(!is_dir(DATA) && (!@mkdir(DATA) || !@chmod(DATA, 0777))) $error = true;
-if(!file_exists(DATA. '.htaccess')){
-	if(!@file_put_contents(DATA. '.htaccess', "deny from all", 0666)) $error = true;
-}
-if(!is_dir(DATA_PLUGIN) && (!@mkdir(DATA_PLUGIN) || !@chmod(DATA_PLUGIN, 0777))) $error = true;
-if(!is_dir(UPLOAD) && (!@mkdir(UPLOAD) || !@chmod(UPLOAD, 0777))) $error = true;
-if(!file_exists(UPLOAD. '.htaccess')){
-	if(!@file_put_contents(UPLOAD. '.htaccess', "allow from all", 0666)) $error = true;
-}
-$key = uniqid(true);
-if(!file_exists(DATA. 'key.php') && !@file_put_contents(DATA. 'key.php', "<?php define('KEY', '$key'); ?>", 0666)) $error = true;
-include(DATA. 'key.php');
 
-          foreach($pluginsManager->getPlugins() as $plugin){
-	          if($plugin->getLibFile()){
-		          include_once($plugin->getLibFile());
-		          if(!$plugin->isInstalled()) $pluginsManager->installPlugin($plugin->getName());
-	          }
-          }
-          foreach($pluginsManager->getPlugins() as $plugin){
-	        foreach($plugin->getHooks() as $hookName=>$function) $hooks[$hookName][] = $function;
-          } 
+if (!$error) {
+  if(!file_exists(DATA. '.htaccess')){
+  	if(!@file_put_contents(DATA. '.htaccess', "deny from all", 0666)) $error = true;
+  }
+  if(!is_dir(DATA_PLUGIN) && (!@mkdir(DATA_PLUGIN) || !@chmod(DATA_PLUGIN, 0777))) $error = true;
+  if(!is_dir(UPLOAD) && (!@mkdir(UPLOAD) || !@chmod(UPLOAD, 0777))) $error = true;
+  if(!file_exists(UPLOAD. '.htaccess')){
+  	if(!@file_put_contents(UPLOAD. '.htaccess', "allow from all", 0666)) $error = true;
+  }
+  # Chmodd sur le fichier install.php
+  if(!file_exists(__FILE__) || !@chmod(__FILE__, 0666)) $error = true;
+  # Encodage du robots.txt
+  $robots = 'VXNlci1hZ2VudDogKg0KRGlzYWxsb3c6IC9hZG1pbi8NCkRpc2FsbG93OiAvY29tbW9uLw0KRGlzYWxsb3c6IC9kYXRhLw0KRGlzYWxsb3c6IC9wbHVnaW4vDQpEaXNhbGxvdzogL3RoZW1lLw==';
+  if(!file_exists(ROOT.'robots.txt')){
+  	if(!@file_put_contents(ROOT.'robots.txt', base64_decode($robots), 0666)) $error = true;
+  }
+
+  $key = uniqid(true);
+  if(!file_exists(DATA. 'key.php') && !@file_put_contents(DATA. 'key.php', "<?php define('KEY', '$key'); ?>", 0666)) $error = true;
+  if(!file_exists(DATA. 'key.php')) include(DATA. 'key.php');
+
+            foreach($pluginsManager->getPlugins() as $plugin){
+  	          if($plugin->getLibFile()){
+  		          include_once($plugin->getLibFile());
+  		          if(!$plugin->isInstalled()) $pluginsManager->installPlugin($plugin->getName());
+  	          }
+            }
+            foreach($pluginsManager->getPlugins() as $plugin){
+  	        foreach($plugin->getHooks() as $hookName=>$function) $hooks[$hookName][] = $function;
+            }
+}
 /*
  *---------------------------------------------------------------
  * PROCÉSSUS D'INSTALLATION LORS DU SUBMIT
@@ -138,7 +153,7 @@ if (isset($_POST['install_submit'])) {
            'hideTitles'      => '0',
            'defaultPlugin'   => 'page',
            'checkUrl'        => 'http://99ko.hellojo.fr/version',
-           'gzip'            => '1',        # Active ou désactive la compréssion Gzip (Optimisation)
+           'gzip'            => '1',
         );  		
         if(!@file_put_contents(DATA. 'config.txt', json_encode($config)) ||	!@chmod(DATA. 'config.txt', 0666)) $error = true;
 
@@ -168,13 +183,11 @@ if (isset($_POST['install_submit'])) {
     <meta charset="utf-8">
     <title><?php echo lang("99ko installer"); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="admin/css/foundation.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo ADMIN_PATH ?>assets/css/minified.css.php?v=5.2.1" media="all">
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,900,400italic' type='text/css' rel='stylesheet' />
     <link href='http://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
     <script src="plugin/extras/other/modernizr.js"></script>
     <script src="plugin/extras/other/jquery.min.js"></script>	
-    <script src="admin/js/all.min.js"></script>
 	<style>
 		.container {
 			max-width: 600px;
@@ -215,9 +228,10 @@ if (isset($_POST['install_submit'])) {
   
   <body>
     <div class="container">
-	   <h1><img src="admin/images/logo.png" alt="99ko" /> 99ko</h1>
-		    <form role="form" method="post">  
-             <div class="row display"> 
+	   <h1><img src="admin/assets/logo.png" alt="99ko" /> 99ko</h1>
+	   
+	   <form role="form" method="post">  
+	   <div class="row"> 
                <div class="large-6 columns"></div> 
                            
                <div class="large-6 columns">
@@ -234,8 +248,9 @@ if (isset($_POST['install_submit'])) {
                  </div>
                </div>
  
-             </div>		    
-		    </form>		   
+       </div>		    
+	   </form>	
+	   	   
        <div class="row panel">
                 <noscript>
                     <?php showMsg(lang("Javascript must be enabled in your browser to take full advantage of features 99ko."), "error"); ?> 

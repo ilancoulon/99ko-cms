@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8">	
 	<title>99ko - <?php echo lang('Login'); ?></title>	
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="css/foundation.min.css?v=5.0.3" media="all">
-	<link rel="stylesheet" href="css/99ko.min.css?v=1.0.2" />
+	<link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="assets/css/minified.css.php?v=5.2.1" media="all">
 	<?php showLinkTags(); ?>
 	<?php showScriptTags(); ?>
 	<?php eval(callHook('endAdminHead')); ?>	
@@ -73,13 +72,11 @@
     <!-- End Sidebar -->      		     
 	<?php } ?>
 
-  </div>
- 
+  </div> 
   <!-- End Main Content and Sidebar -->
-    <script src="js/all.js"></script>
-    <script src="js/scripts.js"></script>
-    <script>
-            $(document).foundation();
-    </script>  
+  
+    <script src="assets/js/foundation.min.js?v=5.2.1"></script>
+    <script src="assets/js/scripts.js"></script>
+    <script>$(document).foundation();</script>  
 </body>
 </html>

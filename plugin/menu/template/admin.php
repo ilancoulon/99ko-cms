@@ -49,17 +49,17 @@
 				</td>
 				<td class="up">
 					<?php if ($position > 0) {?>
-						<a onclick="upLink(<?php echo $position; ?>)" data-tooltip class="has-tip tip-top" title="<?php echo lang('Up'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/up.png" alt="<?php echo lang('Up'); ?>" /></a>
+						<a onclick="upLink(<?php echo $position; ?>)"><span data-tooltip class="has-tip tip-top" title="<?php echo lang('Up'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/up.png" alt="<?php echo lang('Up'); ?>" /></span></a>
 					<?php } ?>
 				</td>
 				<td class="down">
 					<?php if ($position < count($data['menuLinks']) - 1) {?>
-						<a onclick="downLink(<?php echo $position; ?>)" data-tooltip class="has-tip tip-top" title="<?php echo lang('Down'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/down.png" alt="<?php echo lang('Down'); ?>" /></a>
+						<a onclick="downLink(<?php echo $position; ?>)"><span data-tooltip class="has-tip tip-top" title="<?php echo lang('Down'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/down.png" alt="<?php echo lang('Down'); ?>" /></span></a>
 					<?php } ?>
 				</td>
 				<td class="delete">
 					<?php if ($link->getPlugin() == 'menu') {?>
-						<a onclick="deleteLink(<?php echo $position; ?>)" data-tooltip class="has-tip tip-top" title="<?php echo lang('Delete'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/delete.png" alt="<?php echo lang('Delete'); ?>" /></a>
+						<a onclick="deleteLink(<?php echo $position; ?>)"><span data-tooltip class="has-tip tip-top" title="<?php echo lang('Delete'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/delete.png" alt="<?php echo lang('Delete'); ?>" /></span></a>
 					<?php } ?>
 				</td>
 			</tr>
@@ -78,7 +78,7 @@
 function addLink() {
 	var position = parseInt($('#linksList tr:last').attr('id'));
 	
-	$('#linksList tr:last .down').html('<a onclick="downLink(' + position + ')" data-tooltip class="has-tip tip-top" title="<?php echo lang('Down'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/down.png" alt="<?php echo lang('Down'); ?>" /></a>')
+	$('#linksList tr:last .down').html('<a onclick="downLink(' + position + ')"><span data-tooltip class="has-tip tip-top" title="<?php echo lang('Down'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/down.png" alt="<?php echo lang('Down'); ?>" /></span></a>')
 	
 	position += 1;
 	
@@ -99,11 +99,11 @@ function addLink() {
 				'</select>' +
 			'</td>'+
 			'<td class="up">'+
-				'<a onclick="upLink(' + position + ')" data-tooltip class="has-tip tip-top" title="<?php echo lang('Up'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/up.png" alt="<?php echo lang('Up'); ?>" /></a>'+
+				'<a onclick="upLink(' + position + ')"><span data-tooltip class="has-tip tip-top" title="<?php echo lang('Up'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/up.png" alt="<?php echo lang('Up'); ?>" /></span></a>'+
 			'</td>'+
 			'<td class="down"></td>'+
 			'<td class="delete">'+
-				'<a onclick="deleteLink(' + position + ')" data-tooltip class="has-tip tip-top" title="<?php echo lang('Delete'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/delete.png" alt="<?php echo lang('Delete'); ?>" /></a>'+
+				'<a onclick="deleteLink(' + position + ')"><span data-tooltip class="has-tip tip-top" title="<?php echo lang('Delete'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/delete.png" alt="<?php echo lang('Delete'); ?>" /></span></a>'+
 			'</td>'+
 		'</tr>'
 	);

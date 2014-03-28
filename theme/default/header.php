@@ -4,17 +4,20 @@
 <html class="no-js" lang="<?php show::showSiteLang(); ?>" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
   <head>
     <meta charset="utf-8" />
-	<title><?php show::showTitleTag(); ?></title>
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="dns-prefetch" href="<?php show::showSiteUrl(); ?>" />	
+    <title><?php show::showTitleTag(); ?></title>
     <meta name="description" content="<?php show::showMetaDescriptionTag(); ?>" />
-	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-	<link rel="icon" type="image/x-icon" href="theme/default/favicon.ico" />
-	<base href="<?php show::showSiteUrl(); ?>/" />
-	<?php
-	      show::showLinkTags();            // Charge automatiquement les feuilles de style (thème et plugins)
-	      show::showScriptTags();          // Charge automatiquement les fichiers javascript (thème et plugins)
-	      eval(callHook('endFrontHead'));  // Appel du hook pour les plugins dans la balise head
-	?>
-	<style type="text/css">.<?php show::showPluginId(); ?>{padding-top: 80px;}</style>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+    <link rel="icon" type="image/x-icon" href="theme/default/favicon.ico" />
+    <base href="<?php show::showSiteUrl(); ?>/" />
+    <?php
+	show::showLinkTags();            // Charge automatiquement les feuilles de style (thème et plugins)
+	show::showScriptTags();          // Charge automatiquement les fichiers javascript (thème et plugins)
+	eval(callHook('endFrontHead'));  // Appel du hook pour les plugins dans la balise head
+    ?>
+    <link type="text/css" rel="stylesheet" href="theme/<?php echo getCoreConf("theme"); ?>/99ko.css">
+    <style type="text/css">.<?php show::showPluginId(); ?>{padding-top: 40px;}</style>
   </head>
   <body>
   

@@ -12,8 +12,8 @@
   <tbody>
 	<?php foreach($page->getItems() as $pageItem){ ?>
 	<tr>
-		<td><?php if($pageItem->getIsHomepage()){ ?>&nbsp;<img data-tooltip class="has-tip tip-right" src="<?php echo PLUGINS; ?>page/other/house.png" alt="icon" title="<?php echo lang("Homepage"); ?>" /><?php } ?> 
-		    <?php if($pageItem->getIsHidden()){ ?>&nbsp;<img data-tooltip class="has-tip tip-right" src="<?php echo PLUGINS; ?>/page/other/ghost.png" alt="icon" title="<?php echo lang("This page does not appear in the menu"); ?>" /> 
+		<td style="vertical-align: middle;"><?php if($pageItem->getIsHomepage()){ ?>&nbsp;<span data-tooltip class="has-tip tip-right" title="<?php echo lang("Homepage"); ?>"><img src="<?php echo PLUGINS; ?>page/other/house.png" alt="icon" /></span><?php } ?> 
+		    <?php if($pageItem->getIsHidden()){ ?>&nbsp;<span data-tooltip class="has-tip tip-right" title="<?php echo lang("This page does not appear in the menu"); ?>"><img src="<?php echo PLUGINS; ?>/page/other/ghost.png" alt="icon" style="margin-bottom: 20px;" /></span> 
 		    <?php } ?>
 		</td>
 		<td><?php echo $pageItem->getName(); ?></td>

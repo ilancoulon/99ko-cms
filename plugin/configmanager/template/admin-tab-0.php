@@ -61,18 +61,20 @@
       <label><?php echo lang("Theme"); ?></label>
       <ul class="no-bullet">
       <?php foreach($themes as $k=>$v){ ?>
-	    <li><input type="radio" name="theme" <?php if($k == $config['theme']){ ?>checked<?php } ?> value="<?php echo $k; ?>" /> <label for="theme"><?php echo $v['name']; ?> <a href="#" data-reveal-id="<?php echo $k; ?>" class="label radius"><?php echo lang("About"); ?></a></label></li>
+	    <li><input type="radio" name="theme" <?php if($k == $config['theme']){ ?>checked<?php } ?> value="<?php echo $k; ?>" /> <label for="theme"><?php echo $v['name']; ?></label> <a href="#" data-reveal-id="<?php echo $k; ?>" class="about label radius"><?php echo lang("About"); ?></a></li>
+	    
+	    <!-- Reveal Modals begin -->
 	    <div id="<?php echo $k; ?>" class="reveal-modal small" data-reveal>
 		    <h2><?php echo $v['name']; ?></h2>
 		    <div class="row">
                <div class="large-3 columns">
                   <ul class="clearing-thumbs" data-clearing>
-                       <li><a data-tooltip class="th has-tip tip-right" title="<?php echo lang("Click to enlarge"); ?>" href="<?php echo $v['screenshot']; ?>"><img data-caption="<?php echo $v['name']; ?> : <?php echo $v['author']; ?>" src="<?php echo $v['screenshot']; ?>" alt="screenshot" /></a></li>
+                       <li><a class="th" href="<?php echo $v['screenshot']; ?>"><span data-tooltip class="has-tip tip-right" title="<?php echo lang("Click to enlarge"); ?>"><img data-caption="<?php echo $v['name']; ?> : <?php echo $v['author']; ?>" src="<?php echo $v['screenshot']; ?>" alt="screenshot" /></span></a></li>
                   </ul>             
                </div>
                <div class="large-9 columns">
 		         <ul class="no-bullet">
-		            <li><strong><?php echo lang("Author"); ?></strong> <?php echo $v['author']; ?></li>
+		            <li><strong><?php echo lang("Author: "); ?></strong> <?php echo $v['author']; ?></li>
 		            <?php
                       if(!empty($v['authorEmail'])){
                          echo '<li><strong>'.lang("Author Mail").'</strong> '.utilHideEmail($v['authorEmail']).'</li>';
@@ -85,7 +87,8 @@
                </div>
             </div>
 		    <a class="close-reveal-modal">&#215;</a>
-	    </div>
+	    </div>	
+        <!-- Reveal Modals end -->
 	    <?php } ?>
       </ul>	    
     </div>

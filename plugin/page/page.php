@@ -25,7 +25,7 @@ function pageInstall(){
 <p>N\'oubliez pas de modifier vos informations de connexion et de supprimer le fichier install de votre FTP.</p>
 </div>
 <div class="large-4 columns">
-	<img alt="99ko" src="admin/images/logo.png"/>
+	<img alt="99ko" src="admin/assets/logo.png"/>
 </div>');
 		$pageItem->setIsHidden(0);
 		$pageItem->setFile('home.php');

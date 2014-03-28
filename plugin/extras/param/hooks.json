@@ -1,3 +1,4 @@
 {
-    "startShowScriptTags" : "extrasStartShowScriptTags"
+    "startShowScriptTags" : "extrasStartShowScriptTags",
+    "endFrontHead" : "extrasEndFrontHead"
 }

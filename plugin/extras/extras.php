@@ -20,4 +20,10 @@ function extrasStartShowScriptTags(){
     $temp.= "\$data.= str_replace('[file]', PLUGINS. 'extras/other/modernizr.js?v=2.6.2', \$format);";
     return $temp;
 }
+
+function extrasEndFrontHead(){
+    $version = VERSION;
+    $cms = base64_decode('OTlrbyA=');
+    echo "\t".'<meta name="generator" content="'.$cms.$version.'" />'."\n";
+}
 ?>

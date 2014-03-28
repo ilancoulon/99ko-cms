@@ -6,7 +6,7 @@
 	"Enable" : "Activer",
 	"Go to plugin" : "Aller au plugin",
 	"About" : "À propos",
-	"Author" : "Auteur",
+	"Author: " : "Auteur: ",
 	"An error occured while saving your modifications." : "Une erreur est survenue lors de l'enregistrement des modifications.",
     "Version" : "Version",
     "The changes have been saved." : "Les modifications ont été enregistrées."

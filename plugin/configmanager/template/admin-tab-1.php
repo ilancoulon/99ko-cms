@@ -2,9 +2,11 @@
 <br />		  
   <div class="row">
     <div class="large-6 columns">
-      <a onclick="window.open(this.href);return false;" href="http://gravatar.com" data-tooltip class="has-tip tip-top" title="<?php echo lang('To view your profile image, create an account on gravatar.com'); ?>">
+      <a onclick="window.open(this.href);return false;" href="http://gravatar.com">
+        <span data-tooltip class="has-tip tip-top" title="<?php echo lang('To view your profile image, create an account on gravatar.com'); ?>">
           <label><?php echo lang("Gravatar?"); ?></label>
           <?php echo profil_img(getCoreConf('adminEmail'), '100', '', 'G'); ?>
+        </span>
       </a>
     </div>  
     <div class="large-6 columns">

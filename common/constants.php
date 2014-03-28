@@ -9,7 +9,7 @@
  * @package     99ko
  *
  * @author      Jonathan Coulet (j.coulet@gmail.com)
- * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Fr�d�ric Kaplon (frederic.kaplon@me.com)
+ * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
  * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
  * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
  *
@@ -20,36 +20,35 @@
 defined('ROOT') OR exit('No direct script access allowed');
 
 /*
- * define
- * constantes
+ * Définition des constantes
  *
  */
 
-// version du core
-define('VERSION',            '1.4.3');
-// permet d'activer le mode debug
-define('DEBUG', false);
-// temps d'activit� dans la zone admin avant logout force
+# Version de 99ko
+define('VERSION',            '1.4.3.27');
+# Permet d'activer le Débogage PHP @param true:false
+define('DEBUG',               false);
+# Défini la durée d'inactivité dans le panel d'administration avant déconnexion forcée
 define('INACTIVITY_TIMEOUT',  1800);
-// chemin dossier common
+# Emplacement des librairies (dossier)
 define('COMMON',       ROOT. 'common/');
-// chemin dossier lang core
+# Emplacement de la lang du core (dossier)
 define('LANG',       COMMON. 'lang/');
-// chemin dossier data core
+# Emplacement de stockage des données (dossier)
 define('DATA',         ROOT. 'data/');
-// chemin dossier upload
+# Emplacement des fichiers téléchargés (dossier)
 define('UPLOAD',       ROOT. 'data/upload/');
-// chemin dossier data plugins
+# Emplacement des données des plugins (dossier)
 define('DATA_PLUGIN',  ROOT. 'data/plugin/');
-// chemin dossier themes
+# Emplacement des thèmes (dossier)
 define('THEMES',       ROOT. 'theme/');
-// chemin dossier plugins
+# Emplacement des plugins (dossier)
 define('PLUGINS',      ROOT. 'plugin/');
-// chemin dossier admin
+# Emplacement de l'administration (dossier)
 define('ADMIN_PATH',   ROOT. 'admin/');
-// chemin fichier timezones
+# Emplacement de la liste des fuseaux horaires (fichier)
 define('TIMEZONES',       ROOT. 'common/timezones.json');
-// key genere lors de l'install
+# Inclusion de la clé générée lors de l'installation
 if(file_exists(DATA.'key.php')) include(DATA.'key.php');
 
 ?>

@@ -2,20 +2,16 @@
     </div>
     <!-- Fin Contenu -->
       
+    <?php if(useSidebar()){ ?>
       <!-- Sidebar -->
-      
-      <?php if(useSidebar()){ ?>
       <aside id="sidebar" class="large-3 columns">
         <?php show::showSidebarItems(); ?>
       </aside>
-      <?php } ?>
-      
       <!-- Fin Sidebar -->
-      
+    <?php } ?>      
   </div>
 
   <!-- Fin Contenu et Sidebar -->
-
 
       <!-- Footer -->
 
@@ -42,10 +38,8 @@
     <!-- Fin Footer <?php echo $compressed; ?> -->
   
     <!-- Scripts -->
-    <script src="<?php echo ADMIN_PATH ?>js/all.js"></script>
-    <script>
-      $(document).foundation();    
-    </script>
+    <script src="<?php echo ADMIN_PATH ?>assets/js/foundation.min.js?v=5.2.1"></script>
+    <script>$(document).foundation();</script>
     <?php eval(callHook('endFrontBody'));   // Appel du hook pour les plugins dans le pied de page  ?>
   </body>
 </html>
