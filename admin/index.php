@@ -30,6 +30,7 @@ $msg = '';
 $msgType = '';
 $version = VERSION;
 $token = $_SESSION['token'];
+$users = utilReadJsonFile(USERS, true);
 $pluginName = $runPlugin->getName();
 $navigation[-1]['label'] = lang('Home');
 $navigation[-1]['url'] = './';
@@ -56,8 +57,9 @@ if(isset($_GET['action']) && $_GET['action'] == 'login'){
 	$_SESSION['loginAttempt'] = $loginAttempt;
 	if($loginAttempt > 4 || !isset($_SESSION['loginAttempt'])) $msg = lang('Please wait before retrying');
 	else{
-		if(encrypt(trim($_POST['adminPwd'])) == $coreConf['adminPwd'] && mb_strtolower($_POST['adminEmail']) == mb_strtolower($coreConf['adminEmail'])){
-			$_SESSION['admin']        = $coreConf['adminPwd'];
+		if(isset($users[$_POST['adminEmail']]) && encrypt(trim($_POST['adminPwd'])) == $users[$_POST['adminEmail']]['password']){
+			$_SESSION['admin']        = $users[$_POST['adminEmail']]['password'];
+			$_SESSION['adminEmail']   = $_POST['adminEmail'];
 			$_SESSION['loginAttempt'] = 0;
 			$_SESSION['token']        = sha1(uniqid(mt_rand()));
 			$_SESSION['timeout']      = time();
@@ -87,7 +89,7 @@ if(isset($_SESSION['timeout'])) {
 }
 $_SESSION['timeout'] = time();
 // login mode
-if(!isset($_SESSION['admin']) || $_SESSION['admin'] != $coreConf['adminPwd']){
+if(!isset($_SESSION['admin']) || $_SESSION['admin'] != $users[$_SESSION['adminEmail']]['password']){
 	include_once('login.php');
 }
 // homepage mode

@@ -37,6 +37,8 @@ define('COMMON',       ROOT. 'common/');
 define('LANG',       COMMON. 'lang/');
 // chemin dossier data core
 define('DATA',         ROOT. 'data/');
+// chemin dossier data core
+define('USERS',        ROOT. 'data/users.json');
 // chemin dossier upload
 define('UPLOAD',       ROOT. 'data/upload/');
 // chemin dossier data plugins

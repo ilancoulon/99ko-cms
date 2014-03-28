@@ -137,8 +137,6 @@ if (isset($_POST['install_submit'])) {
            'siteName'        => $siteName,
            'siteDescription' => $siteDescription,
            'siteTimezone'    => $siteTimezone,
-           'adminPwd'        => $adminPwd,
-           'adminEmail'      => $adminEmail, # A SECURISER !!!!!
            'siteUrl'         => $siteUrl,        
            'urlRewriting'    => '0',
            'theme'           => 'default',
@@ -155,7 +153,7 @@ if (isset($_POST['install_submit'])) {
           'username' => $adminUsername,
           'password' => $adminPwd
         );
-        if (!@file_put_contents(DATA. 'users.json', json_encode($users))) $error = true;
+        if (!@file_put_contents(USERS, json_encode($users))) $error = true;
 
         if($error){
 	      $data['msg'] = lang('Problem when installing');
@@ -356,13 +354,6 @@ if (isset($_POST['install_submit'])) {
                  <input type="url" name="siteUrl" id="siteUrl" value="<?php echo getSiteUrl(); ?>" required />
 		     </div>
 		  </div>
-		  
-		  <div class="row">
-		     <div class="large-12 columns">
-                 <label for="adminEmail"><?php echo lang("Admin mail"); ?> :</label>
-                 <input type="email" name="adminEmail" id="adminEmail" autocomplete="off" required />
-		     </div>
-		  </div>
       
       <div class="row">
          <div class="large-12 columns">
@@ -370,6 +361,13 @@ if (isset($_POST['install_submit'])) {
                  <input type="text" name="adminUsername" id="adminUsername" autocomplete="off" required />
          </div>
       </div>
+		  
+		  <div class="row">
+		     <div class="large-12 columns">
+                 <label for="adminEmail"><?php echo lang("Admin mail"); ?> :</label>
+                 <input type="email" name="adminEmail" id="adminEmail" autocomplete="off" required />
+		     </div>
+		  </div>
 		  
 		  <div class="row">
 		     <div class="large-12 columns">
