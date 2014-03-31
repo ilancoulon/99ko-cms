@@ -219,6 +219,10 @@ class plugin{
 		$val = trim($val);
 		$this->mainTitle = $val;
 	}
+
+	public function addAdminTemplate($index, $tab) {
+		$this->adminTemplate[$index] = $tab;
+	}
 	
 	// ajoute un item menu
 	function addToNavigation($label, $target, $targetAttribut = '_self'){

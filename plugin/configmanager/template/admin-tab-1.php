@@ -4,12 +4,12 @@
     <div class="large-6 columns">
       <a onclick="window.open(this.href);return false;" href="http://gravatar.com" data-tooltip class="has-tip tip-top" title="<?php echo lang('To view your profile image, create an account on gravatar.com'); ?>">
           <label><?php echo lang("Gravatar?"); ?></label>
-          <?php echo profil_img(getCoreConf('adminEmail'), '100', '', 'G'); ?>
+          <?php echo profil_img($_SESSION['adminEmail'], '100', '', 'G'); ?>
       </a>
     </div>  
     <div class="large-6 columns">
       <label><?php echo lang("Admin mail"); ?></label>
-      <input type="email" name="adminEmail" value="<?php echo $config['adminEmail']; ?>" />
+      <input type="email" name="adminEmail" value="<?php echo $_SESSION['adminEmail']; ?>" />
     </div>
   </div>  
 
