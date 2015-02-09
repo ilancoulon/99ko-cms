@@ -1,0 +1,1 @@
+<?php echo lang("The requested page does not exist.", "core");?>
