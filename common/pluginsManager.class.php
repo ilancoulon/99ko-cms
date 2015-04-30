@@ -8,7 +8,8 @@
  * @package     99ko
  *
  * @author      Jonathan Coulet (j.coulet@gmail.com)
- * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
+ * @copyright   2015 Jonathan Coulet (j.coulet@gmail.com)  
+ * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
  * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
  * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
  *
@@ -62,13 +63,14 @@ class pluginsManager{
 	}
 
 	// installe un plugin
-	public function installPlugin($name){
+	public function installPlugin($name, $activate = false){
 		// creation du dossier data
 		@mkdir(DATA_PLUGIN .$name.'/', 0777);
 		@chmod(DATA_PLUGIN .$name.'/', 0777);
 		// creation du fichier de config
 		$config = util::readJsonFile(PLUGINS .$name.'/param/config.json');
-		$config['activate'] = "0";
+		if($activate) $config['activate'] = "1";
+		else $config['activate'] = "0";
 		@util::writeJsonFile(DATA_PLUGIN .$name.'/config.txt', $config);
 		@chmod(DATA_PLUGIN .$name.'/config.txt', 0666);
 		// appel de la fonction d'installation du plugin
@@ -114,7 +116,8 @@ class pluginsManager{
 		$plugin = new plugin($name, $config, $infos, $hooks, $initConfig);
 		// si le plugin n'est pas installe on l'installe
 		if(!$plugin->isInstalled()) {
-			$this->installPlugin($plugin->getName());
+			$activate = ($plugin->getIsDefaultPlugin()) ? true : false;
+			$this->installPlugin($plugin->getName(), $activate);
 		}
 		return $plugin;
 	}

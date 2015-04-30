@@ -107,6 +107,7 @@ class page{
 			'file' => $obj->getFile(),
 			'mainTitle' => $obj->getMainTitle(),
 			'metaDescriptionTag' => $obj->getMetaDescriptionTag(),
+			'metaTitleTag' => $obj->getMetaTitleTag(),
 		);
 		if($obj->getIsHomepage() > 0) $this->initIshomepageVal();
 		if(@file_put_contents(PAGE_DATAPATH.$id.'.txt', json_encode($data), 0666)){
@@ -169,6 +170,7 @@ class pageItem{
 	private $file;
 	private $mainTitle;
 	private $metaDescriptionTag;
+	private $metaTitleTag;
 	
 	public function __construct($val = array()){
 		if(count($val) > 0){
@@ -181,6 +183,7 @@ class pageItem{
 			$this->file = $val['file'];
 			$this->mainTitle = $val['mainTitle'];
 			$this->metaDescriptionTag = $val['metaDescriptionTag'];
+			$this->metaTitleTag = (isset($val['metaTitleTag']) ? $val['metaTitleTag'] : '');
 		}
 	}
 
@@ -212,6 +215,11 @@ class pageItem{
 		if(mb_strlen($val) > 150) $val = mb_strcut($val, 0, 150).'...';
 		$this->metaDescriptionTag = $val;
 	}
+	public function setMetaTitleTag($val){
+		$val = trim($val);
+		if(mb_strlen($val) > 65) $val = mb_strcut($val, 0, 65).'...';
+		$this->metaTitleTag = $val;
+	}
 
 	public function getId(){
 		return $this->id;
@@ -239,6 +247,9 @@ class pageItem{
 	}
 	public function getMetaDescriptionTag(){
 		return $this->metaDescriptionTag;
+	}
+	public function getMetaTitleTag(){
+		return $this->metaTitleTag;
 	}
 }
 

@@ -8,7 +8,8 @@
  * @package     99ko
  *
  * @author      Jonathan Coulet (j.coulet@gmail.com)
- * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
+ * @copyright   2015 Jonathan Coulet (j.coulet@gmail.com)  
+ * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
  * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
  * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
  *
@@ -25,6 +26,8 @@ if(isset($_GET['action']) && in_array($_GET['action'], array('delinstallfile', '
 	include_once('login.php');
 	die();
 }
+// cache
+clearCache();
 // variables de template
 $msg = '';
 $msgType = '';

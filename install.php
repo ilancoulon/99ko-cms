@@ -8,6 +8,7 @@
  * @package     99ko
  *
  * @author      Jonathan Coulet (j.coulet@gmail.com)
+ * @copyright   2015 Jonathan Coulet (j.coulet@gmail.com)  
  * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
  * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
  * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
@@ -102,6 +103,9 @@ if (!$error) {
   }
   # Chmodd sur le fichier install.php
   if(!file_exists(__FILE__) || !@chmod(__FILE__, 0666)) $error = true;
+  
+  # Cache
+  if(!file_exists(DATA. 'cache.json') && !@file_put_contents(DATA. 'cache.json', json_encode(array()), 0666)) $error = true;
 
   $key = uniqid(true);
   if(!file_exists(DATA. 'key.php') && !@file_put_contents(DATA. 'key.php', "<?php define('KEY', '$key'); ?>", 0666)) $error = true;
@@ -153,7 +157,7 @@ if (isset($_POST['install_submit'])) {
            'checkUrl'        => $checkUrl,
            'debug'           => '0',
         );  		
-        if(!@file_put_contents(DATA. 'config.txt', json_encode($config)) ||	!@chmod(DATA. 'config.txt', 0666)) $error = true;
+        if(!@util::writeJsonFile(DATA. 'config.txt', $config) ||	!@chmod(DATA. 'config.txt', 0666)) $error = true;
 
         if($error){
 	      $data['msg'] = lang('Problem when installing');

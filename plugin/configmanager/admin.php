@@ -7,11 +7,7 @@ $msgType = (isset($_GET['msgType'])) ? $_GET['msgType'] : '';
 $error = false;
 $htaccess = @file_get_contents(ROOT.'.htaccess');
 $htaccess = htmlspecialchars($htaccess, ENT_QUOTES, 'UTF-8');
-$temp = str_replace('http://', '', getCoreConf('siteUrl'));
-$temp = substr(strrchr($temp, '/'), 1);
-if($temp == '') $temp = '/';
-else $temp = '/'.$temp.'/';
-$rewriteBase = $temp;
+$rewriteBase = str_replace(array('index.php', 'install.php', 'admin/'), '', $_SERVER['PHP_SELF']);
 $config = $coreConf;
 $passwordError = false;
 

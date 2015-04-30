@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 99ko cms
  *
@@ -9,6 +8,7 @@
  * @package     99ko
  *
  * @author      Jonathan Coulet (j.coulet@gmail.com)
+ * @copyright   2015 Jonathan Coulet (j.coulet@gmail.com)  
  * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
  * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
  * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
@@ -19,15 +19,8 @@
 
 defined('ROOT') OR exit('No direct script access allowed');
 
-/*
- * Définition des constantes
- *
- */
-
 # Version de 99ko
-define('VERSION',            '1.6.1');
-# Permet d'activer le Débogage PHP @param true:false
-# define('DEBUG',               false);
+define('VERSION',            '1.6.2');
 # Emplacement des librairies (dossier)
 define('COMMON',       ROOT. 'common/');
 # Emplacement de la lang du core (dossier)
@@ -44,7 +37,8 @@ define('THEMES',       ROOT. 'theme/');
 define('PLUGINS',      ROOT. 'plugin/');
 # Emplacement de l'administration (dossier)
 define('ADMIN_PATH',   ROOT. 'admin/');
+# Cache (0 / 86400)
+define('CACHE_TIME', 0);
 # Inclusion de la clé générée lors de l'installation
 if(file_exists(DATA.'key.php')) include(DATA.'key.php');
-
 ?>

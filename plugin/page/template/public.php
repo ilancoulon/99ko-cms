@@ -1,12 +1,8 @@
 <?php defined('ROOT') OR exit('No direct script access allowed'); ?>
-<?php include_once(THEMES .$coreConf['theme'].'/header.php') ?>
+
+<?php include_once(THEMES.getCoreConf('theme').'/header.php') ?>
 <?php
-if($data['pageFile']) include_once($data['pageFile']);
-else echo $data['pageContent'];
+if($pageItem->getFile()) include_once(THEMES.getCoreConf('theme').'/'.$pageItem->getFile());
+else echo $pageItem->getContent();
 ?>
-<?php if(isset($hideTitles) && $hideTitles){ ?>
-<script type="text/javascript">
-    $(".page h1").hide();
-</script>
-<?php } ?>
-<?php include_once(THEMES .$coreConf['theme'].'/footer.php') ?>
+<?php include_once(THEMES.getCoreConf('theme').'/footer.php') ?>

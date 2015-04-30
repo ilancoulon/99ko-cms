@@ -19,7 +19,7 @@
 		<?php foreach($pluginsManager->getPlugins() as $plugin){ ?>
 		<tr>
 			<td>
-				<?php echo lang(ucfirst(strtolower($plugin->getName()))); ?>
+				<?php echo lang($plugin->getInfoVal('name')); ?>
 			</td>
 			<td>			
 			<?php echo lang($plugin->getInfoVal('description')); ?><br>

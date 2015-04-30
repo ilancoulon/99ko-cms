@@ -21,21 +21,8 @@ switch($action){
 		$pageItem->setIsHidden((isset($_POST['isHidden'])) ? 1 : 0);
 		$pageItem->setMainTitle($_POST['mainTitle']);
 		$pageItem->setMetaDescriptionTag($_POST['metaDescriptionTag']);
+		$pageItem->setMetaTitleTag($_POST['metaTitleTag']);
 		if($page->save($pageItem)){
-			$msg = lang("The changes have been saved.");
-			$msgType = 'success';
-		}
-		else{
-			$msg = lang("An error occurred while saving the changes.");
-			$msgType = 'error';
-		}
-		header('location:index.php?p=page&msg='.urlencode($msg).'&msgType='.$msgType);
-		die();
-		break;
-	case 'saveconfig':
-		$hideTitles = (isset($_POST['hideTitles'])) ? 1 : "0";
-		$runPlugin->setConfigVal('hideTitles', $hideTitles);
-		if($pluginsManager->savePluginConfig($runPlugin)){
 			$msg = lang("The changes have been saved.");
 			$msgType = 'success';
 		}

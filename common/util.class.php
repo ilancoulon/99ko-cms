@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 99ko cms
  *
@@ -9,7 +8,8 @@
  * @package     99ko
  *
  * @author      Jonathan Coulet (j.coulet@gmail.com)
- * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
+ * @copyright   2015 Jonathan Coulet (j.coulet@gmail.com)  
+ * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
  * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
  * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
  *
@@ -28,15 +28,17 @@ defined('ROOT') OR exit('No direct script access allowed');
 class util{
     
     public static function setMagicQuotesOff(){
-    	if(get_magic_quotes_gpc()){
-    		function stripslashes_gpc(&$value){
-    			$value = stripslashes($value);
-    		}
-    		array_walk_recursive($_GET, 'stripslashes_gpc');
-    		array_walk_recursive($_POST, 'stripslashes_gpc');
-    		array_walk_recursive($_COOKIE, 'stripslashes_gpc');
-    		array_walk_recursive($_REQUEST, 'stripslashes_gpc');
-    	}
+		if(phpversion() < 5.4){
+			if(get_magic_quotes_gpc()){
+				function stripslashes_gpc(&$value){
+					$value = stripslashes($value);
+				}
+				array_walk_recursive($_GET, 'stripslashes_gpc');
+				array_walk_recursive($_POST, 'stripslashes_gpc');
+				array_walk_recursive($_COOKIE, 'stripslashes_gpc');
+				array_walk_recursive($_REQUEST, 'stripslashes_gpc');
+			}
+		}
     }
     
     public static function sort2DimArray($data, $key, $mode){

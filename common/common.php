@@ -8,7 +8,8 @@
  * @package     99ko
  *
  * @author      Jonathan Coulet (j.coulet@gmail.com)
- * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
+ * @copyright   2015 Jonathan Coulet (j.coulet@gmail.com)  
+ * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
  * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
  * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
  *
@@ -36,6 +37,14 @@ $hooks = array();
 $coreConf = getCoreConf();
 # Tableaux des paramètres d'URL ($_GET)
 $urlParams = getUrlParams();
+# Cache (sauf en mode admin)
+if(CACHE_TIME > 0 && ROOT == './'){
+	$isInCache = readCache();
+	if(!is_numeric($isInCache)){
+		echo $isInCache;
+		die();
+	}
+}
 # Liste des thèmes
 $themes = listThemes();
 # Liste des langues
@@ -53,7 +62,10 @@ foreach($pluginsManager->getPlugins() as $plugin){
 	# On inclut le fichier principal
 	include_once($plugin->getLibFile());
 	# On installe le plugin si besoin
-	if(!$plugin->isInstalled()) $pluginsManager->installPlugin($plugin->getName());
+	if(!$plugin->isInstalled()){
+		$activate = ($plugin->getIsDefaultPlugin()) ? true : false;
+		$pluginsManager->installPlugin($plugin->getName(), $activate);
+	}
 	# On alimente le tableau de la langue courante
 	if($plugin->getLang() != false) $lang = array_merge($lang, $plugin->getLang());
 	# On alimente le tableau des hooks

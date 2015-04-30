@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 99ko cms
  *
@@ -9,7 +8,8 @@
  * @package     99ko
  *
  * @author      Jonathan Coulet (j.coulet@gmail.com)
- * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
+ * @copyright   2015 Jonathan Coulet (j.coulet@gmail.com)  
+ * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
  * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
  * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
  *
@@ -154,5 +154,45 @@ function error404(){
 function newVersion($url){
 	if($last = trim(@file_get_contents($url))) if($last != VERSION) return $last;
 	return false;
+}
+
+// cache
+function addToCache(){
+	global $urlParams;
+	if(!$data = util::readJsonFile(DATA.'cache.json', true)){
+		$data = array();
+		util::writeJsonFile(DATA. 'cache.json', $data);
+	}
+	$content = preg_replace(array('/ {2,}/', '/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'), array(' ', ''), ob_get_contents());
+	$key = $urlParams[0].'_'.md5(implode(',', array_values($urlParams)));
+	$time = time();
+	if(isset($data[$key])){
+		$data[$key]['expire'] = time() + CACHE_TIME;
+		$data[$key]['content'] = $content;
+	}
+	else{
+		$data[$key]['expire'] = time() + CACHE_TIME;
+		$data[$key]['content'] = $content;
+	}
+	return util::writeJsonFile(DATA. 'cache.json', $data);
+}
+
+function readCache(){
+	global $urlParams;
+	if($data = util::readJsonFile(DATA.'cache.json', true)){
+		$key = $urlParams[0].'_'.md5(implode(',', array_values($urlParams)));
+		if(!isset($data[$key])){
+			return -1;
+		}
+		if(time() > $data[$key]['expire']){
+			return 0;
+		}
+		return $data[$key]['content'];
+	}
+	return -1;
+}
+
+function clearCache(){
+	util::writeJsonFile(DATA. 'cache.json', array());
 }
 ?>

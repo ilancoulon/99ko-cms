@@ -1,3 +1,5 @@
+<?php include_once(ROOT.'admin/header.php'); ?>
+
 <?php if($mode == 'list'){ ?>
 <p><a class="button round medium" href="index.php?p=page&amp;action=edit"><?php echo lang("Add"); ?></a></p>
 <table style="width:100%">
@@ -60,6 +62,13 @@
   
   <div class="row">
     <div class="large-6 columns">
+      <label><?php echo lang("Meta title tag (optional)"); ?></label>
+      <input type="text" name="metaTitleTag" value="<?php echo $pageItem->getMetaTitleTag(); ?>" />
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="large-6 columns">
       <label><?php echo lang("Meta description tag (optional)"); ?></label>
       <input type="text" name="metaDescriptionTag" value="<?php echo $pageItem->getMetaDescriptionTag(); ?>" />
     </div>
@@ -109,3 +118,5 @@
 	<button type="submit" class="button success radius"><?php echo lang("Save"); ?></button>
 </form>
 <?php } ?>
+
+<?php include_once(ROOT.'admin/footer.php'); ?>
