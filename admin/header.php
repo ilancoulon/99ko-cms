@@ -28,6 +28,12 @@
   <!-- RETOUR SITE & DECONNEXION -->
   <section class="top-bar-section">
     <ul class="right">
+	  <li class="divider"></li> 
+	  <li>
+        <a href="#" data-reveal-id="notifs">
+           <?php echo lang('Notification'); ?> <span class="alert round label">3</span>
+        </a>
+      </li>
       <li class="divider"></li>
       <li>
         <a href="index.php?action=logout&token=<?php echo $token; ?>">

@@ -2,15 +2,16 @@
 <?php include_once(ROOT.'admin/header.php') ?>
 <?php eval(callHook('startAdminHome')); ?>
 
-	<?php
-	# On test si la directive allow_url_fopen est disponible
-    if (!ini_get('allow_url_fopen')) echo showMsg(lang("Unable to check for updates as 'allow_url_fopen' is disabled on this system."), "alert");
-    if(!$newVersion){	         
-             echo showMsg(lang("You are using the latest version of 99ko"). ' : <b>' .$version. '</b>', "info");
-          } else {
-             echo showMsg(lang("A new version of 99ko is available"). ' : <b>' .$newVersion. '</b>', "warning");
-    } 
-    ?>
+	<div id="notifs" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+			<h2 id="modalTitle">Notifications</h2>
+			<?php eval(callHook('notifsAdminHome')); ?>
+			<p>Nouveau hook 'notifsAdminHome', on pourrais donc compter le nombre de notifications en homepage de l'admin et indiquer ce nombre dans le menu (header.php). Cela permet une meilleur visibilité de cette page d'accueil dont on charge le plugin page par défaut.</p>
+			<p>Ensuite on pourrait remplacer le paramètre de la sidebar en config :<pre>    "sidebarTitle" : "",
+    "sidebarCallFunction" : "",</pre> par : <pre> "HomePage" : "1"</pre></p>
+    		<p>Quand penses-tu ?</p>
+			<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+	</div>
+
 	<div class="panel"> 
 	   <h3 class="subheader">
           <?php echo lang('Download a more recent version, plugins and themes on the site official.'); ?><br />
