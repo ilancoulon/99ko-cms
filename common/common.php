@@ -61,11 +61,6 @@ $pluginsManager = pluginsManager::getInstance();
 foreach($pluginsManager->getPlugins() as $plugin){
 	# On inclut le fichier principal
 	include_once($plugin->getLibFile());
-	# On installe le plugin si besoin
-	if(!$plugin->isInstalled()){
-		$activate = ($plugin->getIsDefaultPlugin()) ? true : false;
-		$pluginsManager->installPlugin($plugin->getName(), $activate);
-	}
 	# On alimente le tableau de la langue courante
 	if($plugin->getLang() != false) $lang = array_merge($lang, $plugin->getLang());
 	# On alimente le tableau des hooks

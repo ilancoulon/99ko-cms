@@ -31,7 +31,7 @@
 	  <li class="divider"></li> 
 	  <li>
         <a href="#" data-reveal-id="notifs">
-           <?php echo lang('Notification'); ?> <span class="alert round label">3</span>
+           <?php echo lang('Notifications'); ?> <span class="alert round label"><?php echo $nbNotifs; ?></span>
         </a>
       </li>
       <li class="divider"></li>

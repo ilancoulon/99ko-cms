@@ -1,8 +1,6 @@
 <?php defined('ROOT') OR exit('No direct script access allowed'); ?>
 <?php include_once(ROOT.'admin/header.php') ?>
 
-<?php pluginsmanagerStartAdminHome(); ?>
-
 <form method="post" action="index.php?p=pluginsmanager&action=save" id="pluginsmanagerForm">
 	<?php showAdminTokenField(); ?>
 	<table style="width:100%">
