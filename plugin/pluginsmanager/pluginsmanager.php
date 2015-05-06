@@ -15,7 +15,7 @@ function pluginsmanagerInstall(){
 ** Elle peut contenir des classes, des fonctions, hooks... ou encore du code à exécutter lors du chargement du plugin
 ********************************************************************************************************************/
 
-function pluginsmanagerStartAdminHome(){
+function pluginsmanagerAdminNotifications(){
     $pluginsManager = pluginsManager::getInstance();
     $list = '';
     foreach($pluginsManager->getPlugins() as $plugin){
@@ -23,4 +23,5 @@ function pluginsmanagerStartAdminHome(){
     }
     if($list != '') showMsg(lang("Plugins are inactive").' ('.trim($list, ', ').')', "info");
 }
+
 ?>

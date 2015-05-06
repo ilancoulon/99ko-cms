@@ -185,7 +185,7 @@ if (isset($_POST['install_submit'])) {
     <title><?php echo lang("99ko installer"); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo EXTRAS; ?>admin.css" media="all">
-    <link rel="stylesheet" href="<?php echo EXTRAS; ?>foundation.min.css?v=5.2.2" media="all">
+    <link rel="stylesheet" href="<?php echo EXTRAS; ?>foundation.min.css?v=5.5.2" media="all">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,900,400italic" type="text/css" rel="stylesheet" />
     <link href="http://fonts.googleapis.com/css?family=Audiowide" type="text/css" rel="stylesheet">
     <script src="<?php echo EXTRAS; ?>admin.js"></script>	

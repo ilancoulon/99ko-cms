@@ -1,7 +1,6 @@
 <?php defined('ROOT') OR exit('No direct script access allowed'); ?>
 <?php include_once(ROOT.'admin/header.php') ?>
 <?php eval(callHook('startAdminHome')); ?>
-
 	<div class="panel"> 
 	   <h3 class="subheader">
           <?php echo lang('Download a more recent version, plugins and themes on the site official.'); ?><br />
