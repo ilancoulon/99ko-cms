@@ -6886,3 +6886,8 @@ html, body, .nav-left-off-canvas-menu, .inner-wrap, section[role="main"] {
 a.about:hover {
     color: #333;	 
 } 
+
+.login {
+  margin: 15% 25% 0 25% }
+.copy {
+  margin-top: 25px }
