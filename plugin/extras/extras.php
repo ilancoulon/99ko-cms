@@ -19,7 +19,7 @@ function extrasInstall(){
  * Charge les fichiers javascript en pied de page du thème admin
  */
 function extrasEndAdminBody(){
-    $temp = "\t".'<script src="'.PLUGINS.'extras/other/foundation.min.js?v=5.2.2"></script>'."\n";
+    $temp = "\t".'<script src="'.PLUGINS.'extras/other/foundation.min.js?v=5.5.2"></script>'."\n";
     $temp.= "\t".'<script>$(document).foundation();</script>'."\n"; 
     echo $temp;
 }

@@ -94,8 +94,14 @@ elseif(!isset($_GET['p'])){
 	}
 	$newVersion = newVersion(getCoreConf('checkUrl'));
 	# On test si la directive allow_url_fopen est disponible
-	if (!ini_get('allow_url_fopen')) $msg.= lang("Unable to check for updates as 'allow_url_fopen' is disabled on this system.").$msgType = "alert";
-	if($newVersion)$msg.= lang("A new version of 99ko is available"). ' : <b>' .$newVersion. '</b>'.$msgType = "warning";
+	if (!ini_get('allow_url_fopen')) {
+		$msg.= lang("Unable to check for updates as 'allow_url_fopen' is disabled on this system.");
+		$msgType = "alert";
+	}
+	if($newVersion) {
+		$msg.= lang("A new version of 99ko is available"). ' : <b>' .$newVersion. '</b>';
+		$msgType = "warning";
+	}
 	
 	include_once('home.php');
 }

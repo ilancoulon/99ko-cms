@@ -29,6 +29,7 @@
   <section class="top-bar-section">
     <ul class="right">
 	  <li class="divider"></li> 
+	  <!-- notifications -->
 	  <li>
         <a href="#" data-reveal-id="notifs">
            <?php echo lang('Notification'); ?> <span class="alert round label">3</span>
@@ -66,6 +67,8 @@
 	<?php foreach($navigation as $k=>$v){ ?>
 	<li><a class="<?php if($v['isActive']){ ?>current<?php } ?>" href="<?php echo $v['url']; ?>"><?php echo lang($v['label']); ?></a></li>
 	<?php } ?>
+	<!-- notifications -->
+	<li><a href="#" data-reveal-id="notifs"><?php echo lang('Notification'); ?> <span class="alert round label">3</span></a></li>
     <li><a href="index.php?action=logout&token=<?php echo $token; ?>" class="tiny button alert"><?php echo lang('Logout'); ?></a></li>
     <li><a href="../" class="tiny button" onclick="window.open(this.href);return false;"><?php echo lang('Back to website'); ?></a></li>	
   </ul>
