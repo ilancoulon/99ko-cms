@@ -28,7 +28,7 @@
 			
 			<td><?php echo utilHtmlSelect($priority, $plugin->getconfigVal('priority'), 'name="priority['.$plugin->getName().']" onchange="document.getElementById(\'pluginsmanagerForm\').submit();"'); ?></td>
 			
-			<td><input onchange="document.getElementById('pluginsmanagerForm').submit();" <?php if($plugin->getConfigVal('activate')){ ?>checked<?php } ?> type="checkbox" name="activate[<?php echo $plugin->getName(); ?>]" /></td>
+			<td><br /><div class="switch tiny radius"><input onchange="document.getElementById('pluginsmanagerForm').submit();" id="activate[<?php echo $plugin->getName(); ?>]" type="checkbox" name="activate[<?php echo $plugin->getName(); ?>]" <?php if($plugin->getConfigVal('activate')){ ?>checked<?php } ?> /><label for="activate[<?php echo $plugin->getName(); ?>]"></label></div></td>
 		</tr>
 		<?php } ?>
 	  </tbody>					

@@ -20,7 +20,7 @@
 defined('ROOT') OR exit('No direct script access allowed');
 
 # Version de 99ko
-define('VERSION',            '1.6.2');
+define('VERSION',            '1.6.3');
 # Emplacement des librairies (dossier)
 define('COMMON',       ROOT. 'common/');
 # Emplacement de la lang du core (dossier)

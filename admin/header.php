@@ -28,13 +28,14 @@
   <!-- RETOUR SITE & DECONNEXION -->
   <section class="top-bar-section">
     <ul class="right">
-	  <li class="divider"></li> 
-	  <li>
-        <a href="#" data-reveal-id="notifs">
-           <?php echo lang('Notifications'); ?> <span class="alert round label"><?php echo $nbNotifs; ?></span>
-        </a>
-      </li>
-      <li class="divider"></li>
+	  <li class="divider notifsNumber"></li>
+	  <!-- notifications -->
+	  <li class="notifsNumber">
+		<a href="#" data-reveal-id="notifs">
+		   <?php echo lang('Notifications'); ?> <span class="alert round label"></span>
+		</a>
+	  </li>
+	  <li class="divider"></li>
       <li>
         <a href="index.php?action=logout&token=<?php echo $token; ?>">
            <?php echo lang('Logout'); ?>
@@ -66,6 +67,10 @@
 	<?php foreach($navigation as $k=>$v){ ?>
 	<li><a class="<?php if($v['isActive']){ ?>current<?php } ?>" href="<?php echo $v['url']; ?>"><?php echo lang($v['label']); ?></a></li>
 	<?php } ?>
+	<!-- notifications mobile -->
+	<?php if($nbNotifs > 0): ?>
+	<li><a href="#" data-reveal-id="notifs"><?php echo lang('Notifications'); ?> <span class="alert round label"><?php echo $nbNotifs; ?></span></a></li>
+	<?php endif; ?>
     <li><a href="index.php?action=logout&token=<?php echo $token; ?>" class="tiny button alert"><?php echo lang('Logout'); ?></a></li>
     <li><a href="../" class="tiny button" onclick="window.open(this.href);return false;"><?php echo lang('Back to website'); ?></a></li>	
   </ul>
