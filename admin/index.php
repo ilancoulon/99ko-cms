@@ -72,6 +72,11 @@ if($newVersion){
 	$notif4Type = "warning";
 	$nbNotifs++;
 }
+if(getCoreConf('debug')){
+	$notif5 = lang("The debug mode is activated!");
+	$notif5Type = "info";
+	$nbNotifs++;
+}
 /*foreach($hooks['adminNotifications'] as $k=>$v){
 	if(call_user_func($v) != '') $nbNotifs++;
 }*/

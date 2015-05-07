@@ -12,6 +12,7 @@
 				  				echo showMsg($notif2, $notif2Type);
 				  				echo showMsg($notif3, $notif3Type);
 				  				echo showMsg($notif4, $notif4Type);
+				  				echo showMsg($notif5, $notif5Type);
 							?>
 							<?php eval(callHook('adminNotifications')); ?>
 							<a class="close-reveal-modal" aria-label="Close">&#215;</a>
