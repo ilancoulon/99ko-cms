@@ -58,18 +58,18 @@ if(!file_exists('../.htaccess')) {
 }
 if(file_exists('../install.php')) {
 	$notif2 = lang('The install.php file must be deleted !')."&nbsp;&nbsp;&nbsp;<a class=\"label secondary round\" href=\"index.php?action=delinstallfile&token=".$token."\">&#10007;&nbsp;".lang('Delete')."</a>\n";
-	$notif2Type = 'warning';
+	$notif2Type = 'error';
 	$nbNotifs++;
 }
 $newVersion = newVersion(getCoreConf('checkUrl'));
 if (!ini_get('allow_url_fopen')){
 	$notif3 = lang("Unable to check for updates as 'allow_url_fopen' is disabled on this system.");
-	$notif3Type = "alert";
+	$notif3Type = "error";
 	$nbNotifs++;
 }
 if($newVersion){
 	$notif4 = lang("A new version of 99ko is available"). ' : <b>' .$newVersion. '</b>';
-	$notif4Type = "warning";
+	$notif4Type = "success";
 	$nbNotifs++;
 }
 if(getCoreConf('debug')){
