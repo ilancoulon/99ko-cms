@@ -107,7 +107,7 @@ class show{
      // affiche un input hidden contenant le token (admin)
      public static function showAdminTokenField() {
      	eval(callHook('startShowAdminTokenField'));
-     	$output = '<input type="hidden" name="token" value="'.$_SESSION['token'].'" />';
+     	$output = '<input type="hidden" name="token" value="' .util::generateToken(true). '" />';
      	eval(callHook('endShowAdminTokenField'));
      	echo $output;
      }

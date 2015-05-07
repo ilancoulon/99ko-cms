@@ -20,9 +20,10 @@
 define('ROOT', '../');
 include_once(ROOT.'common/common.php');
 // on genere le jeton
-if(!isset($_SESSION['token'])) $_SESSION['token'] = sha1(uniqid(mt_rand()));
+$token = util::generateToken();
 // on check le jeton
-if(isset($_GET['action']) && in_array($_GET['action'], array('delinstallfile', 'save', 'del', 'saveconfig', 'saveplugins', 'login', 'logout')) && $_REQUEST['token'] != $_SESSION['token']){	
+$array_actions = array('delinstallfile', 'save', 'del', 'saveconfig', 'saveplugins', 'login', 'logout');
+if(isset($_GET['action']) && in_array($_GET['action'], $array_actions) && !util::checkToken($token)){	
 	include_once('login.php');
 	die();
 }
@@ -32,7 +33,6 @@ clearCache();
 $msg = '';
 $msgType = '';
 $version = VERSION;
-$token = $_SESSION['token'];
 $pluginName = $runPlugin->getName();
 $navigation[-1]['label'] = lang('Home');
 $navigation[-1]['url'] = './';
@@ -88,7 +88,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'login'){
 		if(encrypt(trim($_POST['adminPwd'])) == $coreConf['adminPwd'] && mb_strtolower($_POST['adminEmail']) == mb_strtolower($coreConf['adminEmail'])){
 			$_SESSION['admin']        = $coreConf['adminPwd'];
 			$_SESSION['loginAttempt'] = 0;
-			$_SESSION['token']        = sha1(uniqid(mt_rand()));
 			header('location:index.php');
 			die();
 		}

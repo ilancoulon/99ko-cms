@@ -16,7 +16,6 @@
  * file that was distributed with this source code.
  */
 session_start();
-$_SESSION['token'] = sha1(uniqid(mt_rand()));
 define('ROOT', './');
 define('EXTRAS', ROOT.'plugin/extras/other/');
 # plugin par defaut
@@ -27,6 +26,8 @@ include_once(COMMON.'core.lib.php');
 if(DEBUG) error_reporting(E_ALL).ini_set('display_errors', 1);
 else error_reporting(E_ALL ^ E_NOTICE);
 utilSetMagicQuotesOff();
+// Très important de déclarer le jeton !!!
+$token = util::generateToken();
 
 /*
  *---------------------------------------------------------------
@@ -127,7 +128,7 @@ if (!$error) {
  * PROCÉSSUS D'INSTALLATION LORS DU SUBMIT
  *---------------------------------------------------------------
  */                 
-if (isset($_POST['install_submit'])) {
+if (isset($_POST['install_submit']) && util::checkToken($token)) {
         $error = array();
     	$siteName = isset($_POST['siteName']) ? $_POST['siteName'] : '';
     	$siteDescription = isset($_POST['siteDescription']) ? $_POST['siteDescription'] : '';
@@ -143,17 +144,17 @@ if (isset($_POST['install_submit'])) {
     	
         # Ecriture du fichier de configuration
     	$config = array(
-           'siteName'        => $siteName,
-           'siteDescription' => $siteDescription,
-           'adminPwd'        => $adminPwd,
-           'adminEmail'      => $adminEmail, # A SECURISER !!!!!
-           'siteUrl'         => $siteUrl,        
+           'siteName'        => util::strCheck($siteName),
+           'siteDescription' => util::strCheck($siteDescription),
+           'adminPwd'        => util::strCheck($adminPwd),
+           'adminEmail'      => util::strCheck($adminEmail),
+           'siteUrl'         => util::strCheck($siteUrl),        
            'urlRewriting'    => '0',
            'theme'           => 'default',
-           'siteLang'        => $siteLang,
+           'siteLang'        => util::strCheck($siteLang),
            'hideTitles'      => '0',
            'defaultPlugin'   => 'page',
-           'checkUrl'        => $checkUrl,
+           'checkUrl'        => util::strCheck($checkUrl),
            'debug'           => '0',
         );  		
         if(!@file_put_contents(DATA. 'config.txt', json_encode($config)) ||	!@chmod(DATA. 'config.txt', 0666)) $error = true;

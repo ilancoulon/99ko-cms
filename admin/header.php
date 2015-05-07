@@ -28,16 +28,14 @@
   <!-- RETOUR SITE & DECONNEXION -->
   <section class="top-bar-section">
     <ul class="right">
-	  <?php if($nbNotifs > 0): ?>  
+	  <li class="divider notifsNumber"></li>
+	  <!-- notifications -->
+	  <li class="notifsNumber">
+		<a href="#" data-reveal-id="notifs">
+		   <?php echo lang('Notifications'); ?> <span class="alert round label"></span>
+		</a>
+	  </li>
 	  <li class="divider"></li>
-	  <!-- notifications --> 
-	  <li>
-        <a href="#" data-reveal-id="notifs">
-           <?php echo lang('Notifications'); ?> <span class="alert round label"><?php echo $nbNotifs; ?></span>
-        </a>
-      </li>
-      <?php endif; ?>
-      <li class="divider"></li>
       <li>
         <a href="index.php?action=logout&token=<?php echo $token; ?>">
            <?php echo lang('Logout'); ?>
@@ -131,5 +129,5 @@
 			          <?php } ?>
                       </dl>
                       <div class="tabs-content">
-                         <div class="contentlarge active">
+                         <div class="panel radius active">
 		          <?php } ?>
