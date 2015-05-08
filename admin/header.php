@@ -68,9 +68,9 @@
 	<li><a class="<?php if($v['isActive']){ ?>current<?php } ?>" href="<?php echo $v['url']; ?>"><?php echo lang($v['label']); ?></a></li>
 	<?php } ?>
 	<!-- notifications mobile -->
-	<?php if($nbNotifs > 0): ?>
-	<li><a href="#" data-reveal-id="notifs"><?php echo lang('Notifications'); ?> <span class="alert round label"><?php echo $nbNotifs; ?></span></a></li>
-	<?php endif; ?>
+	<li class="notifsNumber">
+		<a href="#" data-reveal-id="notifs"><?php echo lang('Notifications'); ?> <span class="alert round label"></span></a>
+	</li>
     <li><a href="index.php?action=logout&token=<?php echo $token; ?>" class="tiny button alert"><?php echo lang('Logout'); ?></a></li>
     <li><a href="../" class="tiny button" onclick="window.open(this.href);return false;"><?php echo lang('Back to website'); ?></a></li>	
   </ul>
