@@ -3,6 +3,7 @@
 	"Plugins manager" : "Gestionnaire de plugins",
 	"Advanced configuration" : "Configuration avancée",
 	"Name" : "Nom",
+	"Description" : "Description",
 	"Priority" : "Priorité",
 	"Enable" : "Activer",
 	"An error occured while saving your modifications." : "Une erreur est survenue lors de l'enregistrement des modifications.",

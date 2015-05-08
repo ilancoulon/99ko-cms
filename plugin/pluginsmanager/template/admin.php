@@ -6,18 +6,18 @@
 	<table style="width:100%">
 	  <thead>
 		<tr>
-			<th><?php echo lang("Name"); ?></th>
-			<th></th>
-			<th><?php echo lang("Version"); ?></th>
-			<th><?php echo lang("Priority"); ?></th>
-			<th><?php echo lang("Enable"); ?></th>
+			<th style="width:30%"><?php echo lang("Name"); ?></th>
+			<th style="width:50%"><?php echo lang("Description"); ?></th>
+			<th style="width:3%"><?php echo lang("Version"); ?></th>
+			<th style="width:3%"><?php echo lang("Priority"); ?></th>
+			<th style="width:4%"><?php echo lang("Enable"); ?></th>
 		</tr>
 	  </thead>
 	  <tbody>			  	
 		<?php foreach($pluginsManager->getPlugins() as $plugin){ ?>
 		<tr>
 			<td>
-				<?php echo lang($plugin->getInfoVal('name')); ?>
+				<h6><?php echo lang($plugin->getInfoVal('name')); ?></h6>
 			</td>
 			<td>			
 			<?php echo lang($plugin->getInfoVal('description')); ?><br>
