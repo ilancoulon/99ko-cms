@@ -59,7 +59,7 @@ class show{
      	$data = '';
      	eval(callHook('startShowMsg'));
      	if($msg != '') $data = '<div data-alert class="alert-box '.$class[$type].' radius">
-     	                                <h6>'.nl2br($msg).'</h6><a href="#" class="close">&times;</a>
+     	                                <p>'.nl2br($msg).'</p><a href="#" class="close">&times;</a>
      	                        </div>';
       }
      	eval(callHook('endShowMsg'));
