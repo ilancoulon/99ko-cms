@@ -1200,44 +1200,45 @@ select {
   transition: opacity 300ms ease-out;
   background-color: #008CBA;
   border-color: #0078a0;
-  color: #FFFFFF; }
+  color: #FFFFFF;
+  text-rendering: optimizelegibility; }
   .alert-box .close {
     right: 0.22222rem;
     background: inherit;
-    color: #333333;
+    color: #FFFFFF;
     font-size: 1.22222rem;
     line-height: .9;
     margin-top: -0.61111rem;
-    opacity: 0.3;
+    opacity: 1;
     padding: 0 6px 4px;
     position: absolute;
     top: 50%; }
     .alert-box .close:hover, .alert-box .close:focus {
-      opacity: 0.5; }
+      opacity: 0.8; }
   .alert-box.radius {
     border-radius: 3px; }
   .alert-box.round {
     border-radius: 1000px; }
   .alert-box.success {
-    background-color: #43AC6A;
-    border-color: #3a945b;
+    background-color: #45B6B0;
+    border-color: #45B6B0;
     color: #FFFFFF; }
   .alert-box.alert {
-    background-color: #f04124;
-    border-color: #de2d0f;
+    background-color: #F20556;
+    border-color: #F20556;
     color: #FFFFFF; }
   .alert-box.secondary {
     background-color: #e7e7e7;
     border-color: #c7c7c7;
     color: #4f4f4f; }
   .alert-box.warning {
-    background-color: #f08a24;
-    border-color: #de770f;
+    background-color: #F39C12;
+    border-color: #F39C12;
     color: #FFFFFF; }
   .alert-box.info {
-    background-color: #a0d3e8;
-    border-color: #74bfdd;
-    color: #4f4f4f; }
+    background-color: #0ABAEF;
+    border-color: #0ABAEF;
+    color: #FFFFFF; }
   .alert-box.alert-close {
     opacity: 0; }
 
@@ -6853,26 +6854,6 @@ html, body, .nav-left-off-canvas-menu, .inner-wrap, section[role="main"] {
 .tabs a.active {
 	background-color: white;
 }    
-.contentlarge {
-  margin-top: 50px;
-}     
-/*
-.tabs-content{
-	clear: left;
-    position: relative;
-    z-index: 2;
-    padding: 0 1.2em;
-    border: 1px solid #CCC;
-    background: #FFF;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: #CCC 0 0 .25em;
-    -moz-box-shadow: #CCC 0 0 .25em;
-    box-shadow: #CCC 0 0 .25em;
-
-}  
-*/
 a.about:hover {
     color: #333;	 
 } 
@@ -6881,3 +6862,16 @@ a.about:hover {
   margin: 15% 25% 0 25% }
 .copy {
   margin-top: 25px }
+/* Notifications bulle */
+.notif {
+    background: none repeat scroll 0% 0% #ff0000;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: #fff;
+    height: 25px;
+    width: 25px;
+    line-height: 13px;
+    font-weight: bold;
+    font-size: 0.8em;
+    text-align: center;
+    border-radius: 50%;
+}

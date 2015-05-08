@@ -32,7 +32,7 @@
 	  <!-- notifications -->
 	  <li class="notifsNumber">
 		<a href="#" data-reveal-id="notifs">
-		   <?php echo lang('Notifications'); ?> <span class="alert round label"></span>
+		   <?php echo lang('Notifications'); ?> <span class="notif round label">1</span>
 		</a>
 	  </li>
 	  <li class="divider"></li>
@@ -69,7 +69,7 @@
 	<?php } ?>
 	<!-- notifications mobile -->
 	<li class="notifsNumber">
-		<a href="#" data-reveal-id="notifs"><?php echo lang('Notifications'); ?> <span class="alert round label"></span></a>
+		<a href="#" data-reveal-id="notifs"><?php echo lang('Notifications'); ?> <span class="notif round label"></span></a>
 	</li>
     <li><a href="index.php?action=logout&token=<?php echo $token; ?>" class="tiny button alert"><?php echo lang('Logout'); ?></a></li>
     <li><a href="../" class="tiny button" onclick="window.open(this.href);return false;"><?php echo lang('Back to website'); ?></a></li>	
