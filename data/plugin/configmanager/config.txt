@@ -1,0 +1,1 @@
+{"priority":"1","activate":"1","adminTabs":"General configuration,User account,Advanced configuration"}
