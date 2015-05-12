@@ -1,1 +1,0 @@
-{"siteName":"test","siteDescription":"test","adminPwd":"ab708fa43150781f633a258a6a03ef27a9e63a11","adminEmail":"99ko@hellojo.fr","siteUrl":"http:\/\/99ko.hellojo.fr\/_dev\/99ko_2.0","urlRewriting":"0","theme":"default","siteLang":"fr","hideTitles":"0","defaultPlugin":"page","checkUrl":"http:\/\/99ko.hellojo.fr\/version","debug":"1"}
