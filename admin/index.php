@@ -20,9 +20,10 @@
 define('ROOT', '../');
 include_once(ROOT.'common/common.php');
 // on genere le jeton
-if(!isset($_SESSION['token'])) $_SESSION['token'] = sha1(uniqid(mt_rand()));
+$token = util::generateToken();
 // on check le jeton
-if(isset($_GET['action']) && in_array($_GET['action'], array('delinstallfile', 'save', 'del', 'saveconfig', 'saveplugins', 'login', 'logout')) && $_REQUEST['token'] != $_SESSION['token']){	
+$array_actions = array('delinstallfile', 'save', 'del', 'saveconfig', 'saveplugins', 'login', 'logout');
+if(isset($_GET['action']) && in_array($_GET['action'], $array_actions) && !util::checkToken($token)){	
 	include_once('login.php');
 	die();
 }
@@ -32,7 +33,6 @@ clearCache();
 $msg = '';
 $msgType = '';
 $version = VERSION;
-$token = $_SESSION['token'];
 $pluginName = $runPlugin->getName();
 $navigation[-1]['label'] = lang('Home');
 $navigation[-1]['url'] = './';
@@ -49,6 +49,37 @@ foreach($runPlugin->getAdminTabs() as $k=>$v){
 	$tabs[$k]['url'] = '#tab-'.$k;
 }
 if(count($tabs) == 0 || !isset($_GET['p'])) $tabs = false;
+// notifications
+$nbNotifs = 0;
+if(!file_exists('../.htaccess')) {
+	$notif1 = lang('The .htaccess file is missing !')."\n";
+	$notifsType = 'warning';
+	$nbNotifs++;
+}
+if(file_exists('../install.php')) {
+	$notif2 = lang('The install.php file must be deleted !')."&nbsp;&nbsp;&nbsp;<a class=\"label secondary round\" href=\"index.php?action=delinstallfile&token=".$token."\">&#10007;&nbsp;".lang('Delete')."</a>\n";
+	$notif2Type = 'error';
+	$nbNotifs++;
+}
+$newVersion = newVersion(getCoreConf('checkUrl'));
+if (!ini_get('allow_url_fopen')){
+	$notif3 = lang("Unable to check for updates as 'allow_url_fopen' is disabled on this system.");
+	$notif3Type = "error";
+	$nbNotifs++;
+}
+if($newVersion){
+	$notif4 = lang("A new version of 99ko is available"). ' : <b>' .$newVersion. '</b>';
+	$notif4Type = "success";
+	$nbNotifs++;
+}
+if(getCoreConf('debug')){
+	$notif5 = lang("The debug mode is activated!");
+	$notif5Type = "info";
+	$nbNotifs++;
+}
+/*foreach($hooks['adminNotifications'] as $k=>$v){
+	if(call_user_func($v) != '') $nbNotifs++;
+}*/
 // actions
 if(isset($_GET['action']) && $_GET['action'] == 'login'){
 	// hook
@@ -62,7 +93,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'login'){
 		if(encrypt(trim($_POST['adminPwd'])) == $coreConf['adminPwd'] && mb_strtolower($_POST['adminEmail']) == mb_strtolower($coreConf['adminEmail'])){
 			$_SESSION['admin']        = $coreConf['adminPwd'];
 			$_SESSION['loginAttempt'] = 0;
-			$_SESSION['token']        = sha1(uniqid(mt_rand()));
 			header('location:index.php');
 			die();
 		}
@@ -83,16 +113,6 @@ if(!isset($_SESSION['admin']) || $_SESSION['admin'] != $coreConf['adminPwd']){
 }
 // homepage mode
 elseif(!isset($_GET['p'])){
-	if(!file_exists('../.htaccess')) {
-		$msg.= lang('The .htaccess file is missing !')."\n";
-		$msgType = 'warning';
-	}
-
-	if(file_exists('../install.php')) {
-		$msg.= lang('The install.php file must be deleted !')."&nbsp;&nbsp;&nbsp;<a class=\"label secondary round\" href=\"index.php?action=delinstallfile&token=".$token."\">&#10007;&nbsp;".lang('Delete')."</a>\n";
-		$msgType = 'warning';
-	}
-	$newVersion = newVersion(getCoreConf('checkUrl'));
 	include_once('home.php');
 }
 // plugin mode

@@ -8,7 +8,6 @@
  * @package     99ko
  *
  * @author      Jonathan Coulet (j.coulet@gmail.com)
- * @copyright   2015 Jonathan Coulet (j.coulet@gmail.com)  
  * @copyright   2013-2014 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com) / Frédéric Kaplon (frederic.kaplon@me.com)
  * @copyright   2010-2012 Florent Fortat (florent.fortat@maxgun.fr) / Jonathan Coulet (j.coulet@gmail.com)
  * @copyright   2010 Jonathan Coulet (j.coulet@gmail.com)  
@@ -17,7 +16,6 @@
  * file that was distributed with this source code.
  */
 session_start();
-$_SESSION['token'] = sha1(uniqid(mt_rand()));
 define('ROOT', './');
 define('EXTRAS', ROOT.'plugin/extras/other/');
 # plugin par defaut
@@ -25,19 +23,24 @@ define('DEFAULT_PLUGIN', 'page');
 include_once(ROOT.'common/constants.php');
 include_once(COMMON.'core.lib.php');
 # Gestion des erreurs PHP (Dev Mod)
-if(DEBUG) error_reporting(E_ALL);
+if(DEBUG) error_reporting(E_ALL).ini_set('display_errors', 1);
 else error_reporting(E_ALL ^ E_NOTICE);
 utilSetMagicQuotesOff();
+// Très important de déclarer le jeton !!!
+$token = util::generateToken();
 
 /*
  *---------------------------------------------------------------
  * CHARGEMENT DE LA LANGUE (À DÉFINIR SUR LA PAGE D'INSTALLATION)
  *---------------------------------------------------------------
  */
-# $languages_array = array('fr'=> lang("French"), 'en' => lang("English"));
+$langs_select = array('fr'=> 'French', 'en' => 'English');
 if (isset($_POST['submit_lang'])) { 
     $_SESSION['lang'] = isset($_POST['siteLang']) ? $_POST['siteLang'] : '';
     $lang = utilReadJsonFile(LANG. $_SESSION['lang'].'.json');
+} else {
+	$_SESSION['lang'] = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+	$lang = $_SESSION['lang'];
 }
 $pluginsManager = new pluginsManager();
 $hooks = array();
@@ -57,7 +60,7 @@ $msgType = '';
 # Liste des répertoires à vérifier
 $dir_array = array('data', 'plugin', 'theme');
 # Vérification de la version de PHP
-if (version_compare(PHP_VERSION, "5.1.2", "<")) {
+if (version_compare(PHP_VERSION, '5.2', '<')) {
     $errors['php'] = 'error';
 }
 # Vérification si mod_rewrite est disponible
@@ -103,9 +106,6 @@ if (!$error) {
   }
   # Chmodd sur le fichier install.php
   if(!file_exists(__FILE__) || !@chmod(__FILE__, 0666)) $error = true;
-  
-  # Cache
-  if(!file_exists(DATA. 'cache.json') && !@file_put_contents(DATA. 'cache.json', json_encode(array()), 0666)) $error = true;
 
   $key = uniqid(true);
   if(!file_exists(DATA. 'key.php') && !@file_put_contents(DATA. 'key.php', "<?php define('KEY', '$key'); ?>", 0666)) $error = true;
@@ -128,7 +128,7 @@ if (!$error) {
  * PROCÉSSUS D'INSTALLATION LORS DU SUBMIT
  *---------------------------------------------------------------
  */                 
-if (isset($_POST['install_submit'])) {
+if (isset($_POST['install_submit']) && util::checkToken($token)) {
         $error = array();
     	$siteName = isset($_POST['siteName']) ? $_POST['siteName'] : '';
     	$siteDescription = isset($_POST['siteDescription']) ? $_POST['siteDescription'] : '';
@@ -138,32 +138,32 @@ if (isset($_POST['install_submit'])) {
     	$defaultPlugin = isset($_POST['defaultPlugin']) ? $_POST['defaultPlugin'] : '';
     	$urlRewriting = isset($_POST['urlRewriting']) ? $_POST['urlRewriting'] : '';
     	$theme = isset($_POST['theme']) ? $_POST['theme'] : '';
-    	$siteLang = isset($_POST['siteLang']) ? $_POST['siteLang'] : '';
+    	$siteLang = isset($lang) ? $lang : '';
     	$hideTitles = isset($_POST['hideTitles']) ? $_POST['hideTitles'] : '';
     	$checkUrl = base64_decode('aHR0cDovLzk5a28uaGVsbG9qby5mci92ZXJzaW9u');
     	
         # Ecriture du fichier de configuration
     	$config = array(
-           'siteName'        => $siteName,
-           'siteDescription' => $siteDescription,
-           'adminPwd'        => $adminPwd,
-           'adminEmail'      => $adminEmail, # A SECURISER !!!!!
-           'siteUrl'         => $siteUrl,        
+           'siteName'        => util::strCheck($siteName),
+           'siteDescription' => util::strCheck($siteDescription),
+           'adminPwd'        => util::strCheck($adminPwd),
+           'adminEmail'      => util::strCheck($adminEmail),
+           'siteUrl'         => util::strCheck($siteUrl),        
            'urlRewriting'    => '0',
            'theme'           => 'default',
-           'siteLang'        => $siteLang,
+           'siteLang'        => util::strCheck($siteLang),
            'hideTitles'      => '0',
            'defaultPlugin'   => 'page',
-           'checkUrl'        => $checkUrl,
+           'checkUrl'        => util::strCheck($checkUrl),
            'debug'           => '0',
         );  		
-        if(!@util::writeJsonFile(DATA. 'config.txt', $config) ||	!@chmod(DATA. 'config.txt', 0666)) $error = true;
+        if(!@file_put_contents(DATA. 'config.txt', json_encode($config)) ||	!@chmod(DATA. 'config.txt', 0666)) $error = true;
 
         if($error){
 	      $data['msg'] = lang('Problem when installing');
 	      $data['msgType'] = "error";
         }
-		elseif(!utilIsEmail(trim($_POST['adminEmail']))){
+		elseif(!util::isEmail(trim($_POST['adminEmail']))){
 			$msg = lang("Invalid email.");
 			$msgType = 'error';
 		}        
@@ -186,7 +186,7 @@ if (isset($_POST['install_submit'])) {
     <title><?php echo lang("99ko installer"); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo EXTRAS; ?>admin.css" media="all">
-    <link rel="stylesheet" href="<?php echo EXTRAS; ?>foundation.min.css?v=5.2.2" media="all">
+    <link rel="stylesheet" href="<?php echo EXTRAS; ?>foundation.min.css?v=5.5.2" media="all">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,900,400italic" type="text/css" rel="stylesheet" />
     <link href="http://fonts.googleapis.com/css?family=Audiowide" type="text/css" rel="stylesheet">
     <script src="<?php echo EXTRAS; ?>admin.js"></script>	
@@ -195,44 +195,43 @@ if (isset($_POST['install_submit'])) {
     body {font-family: "Source Sans Pro","Helvetica","Arial",sans-serif; font-size: 16px; line-height: 26px; color: #333;}
     h1 {font-size: 126px; font-family: 'Audiowide', cursive; color: #333;}
     h1 img {padding: 0 20px 20px 0}
-    .step-1 ul li {-webkit-font-smoothing: subpixel-antialiased; -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.13); box-shadow: 0 1px 3px rgba(0,0,0,.13); margin-bottom: 15px; padding: 5px;}
+    .panel {-webkit-font-smoothing: subpixel-antialiased; -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.13); box-shadow: 0 1px 3px rgba(0,0,0,.13); margin-bottom: 15px;}
 	</style>
   </head>
   
   <body>
     <div class="container">
 	   <h1><img src="admin/assets/logo.png" alt="99ko" /> 99ko</h1>
-	   
-	   <form role="form" method="post">  
-	   <div class="row"> 
+
+	   <div class="row">	   
+	   <form role="form" method="post">   
                <div class="large-6 columns"></div> 
                            
                <div class="large-6 columns">
                  <div class="row collapse">
                     <div class="small-8 columns">
-                       <select name="siteLang">
-                          <option value="fr"><?php echo lang("French"); ?></option>
-                          <option value="en"><?php echo lang("English"); ?></option>
-                       </select>	
+						<select name="siteLang">
+							<?php foreach($langs_select as $k => $v) { ?>
+							<option <?php if($k == $lang){ ?>selected="selected"<?php } ?> value="<?php echo $k; ?>"><?php echo lang($v); ?></option>
+							<?php }?>			
+	  					</select>	                    	
                     </div>
                     <div class="small-4 columns">
                        <input type="submit" name="submit_lang" class="button postfix" value="<?php echo lang("Go"); ?>">
                    </div>
                  </div>
                </div>
- 
-       </div>		    
-	   </form>	
+ 	   </form>
+       </div>		    	
 	   	   
        <div class="row panel">
                 <noscript>
                     <?php showMsg(lang("Javascript must be enabled in your browser to take full advantage of features 99ko."), "error"); ?> 
                 </noscript> 
                 <?php showMsg($msg, $msgType); // Affichage de toutes les Notifications ?>
-
-		<div class="step-2">		
+		
 		<h3 class="subheader"><?php echo lang("99ko installer"); ?> <?php echo VERSION; ?></h3>	
-		<hr />	
+		<hr />		
 		<form role="form" method="post">
 		<?php showAdminTokenField(); ?>
 		
@@ -248,17 +247,6 @@ if (isset($_POST['install_submit'])) {
                  <label for="siteDescription"><?php echo lang("Site description"); ?> :</label>
                  <input type="text" name="siteDescription" id="siteDescription" autocomplete="off" required />
 		     </div>
-		  </div>
-		  		  		
-		  <div class="row">
-		     <div class="large-4 columns">
-                 <label for="siteLang"><?php echo lang("Lang"); ?> :</label>
-                 <select name="siteLang">
-                     <option value="fr"><?php echo lang("French"); ?></option>
-                     <option value="en"><?php echo lang("English"); ?></option>
-                 </select>
-		     </div>
-		     			     
 		  </div>
 		  		  
 		  <div class="row">
@@ -284,8 +272,7 @@ if (isset($_POST['install_submit'])) {
 		  		  
 		  <input type="submit" name="install_submit" class="button success large radius right" value="<?php echo lang("Install"); ?>">
 		</form>
-       		
-		</div>
+
        </div> <!-- row & pannel Fin -->	
        
        <p class="text-center">

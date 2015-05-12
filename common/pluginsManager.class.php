@@ -114,11 +114,6 @@ class pluginsManager{
 		if(!is_array($config)) $config = array();
 		if(!is_array($hooks)) $hooks = array();
 		$plugin = new plugin($name, $config, $infos, $hooks, $initConfig);
-		// si le plugin n'est pas installe on l'installe
-		if(!$plugin->isInstalled()) {
-			$activate = ($plugin->getIsDefaultPlugin()) ? true : false;
-			$this->installPlugin($plugin->getName(), $activate);
-		}
 		return $plugin;
 	}
 	

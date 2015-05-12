@@ -1,6 +1,4 @@
 {
     "priority" : "1",
-    "activate" : "1",
-    "sidebarTitle" : "",
-    "sidebarCallFunction" : ""
+    "activate" : "1"
 }

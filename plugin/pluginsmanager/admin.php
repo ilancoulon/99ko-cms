@@ -23,19 +23,22 @@ switch($action){
 		foreach($pluginsManager->getPlugins() as $k=>$v) {
 			if(!$v->getIsDefaultPlugin()){
 				if(isset($_POST['activate'][$v->getName()])){
-					$v->setConfigVal('activate', 1);
+					if(!$v->isInstalled()) $pluginsManager->installPlugin($v->getName(), true);
+					else $v->setConfigVal('activate', 1);
 				}else {
 					$v->setConfigVal('activate', 0);
 				}
 			}
-			$v->setConfigVal('priority', intval($_POST['priority'][$v->getName()]));
-			if(!$pluginsManager->savePluginConfig($v)){
-				$msg = lang('An error occured while saving your modifications.');
-				$msgType = 'error';
-			}
-			else{
-				$msg = lang("The changes have been saved.");
-				$msgType = 'success';
+			if($v->isInstalled()){
+				$v->setConfigVal('priority', intval($_POST['priority'][$v->getName()]));
+				if(!$pluginsManager->savePluginConfig($v)){
+					$msg = lang('An error occured while saving your modifications.');
+					$msgType = 'error';
+				}
+				else{
+					$msg = lang("The changes have been saved.");
+					$msgType = 'success';
+				}
 			}
 		}
 		header('location:index.php?p=pluginsmanager&msg='.urlencode($msg).'&msgType='.$msgType);

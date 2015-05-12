@@ -1,16 +1,6 @@
 <?php defined('ROOT') OR exit('No direct script access allowed'); ?>
 <?php include_once(ROOT.'admin/header.php') ?>
 <?php eval(callHook('startAdminHome')); ?>
-
-	<?php
-	# On test si la directive allow_url_fopen est disponible
-    if (!ini_get('allow_url_fopen')) echo showMsg(lang("Unable to check for updates as 'allow_url_fopen' is disabled on this system."), "alert");
-    if(!$newVersion){	         
-             echo showMsg(lang("You are using the latest version of 99ko"). ' : <b>' .$version. '</b>', "info");
-          } else {
-             echo showMsg(lang("A new version of 99ko is available"). ' : <b>' .$newVersion. '</b>', "warning");
-    } 
-    ?>
 	<div class="panel"> 
 	   <h3 class="subheader">
           <?php echo lang('Download a more recent version, plugins and themes on the site official.'); ?><br />

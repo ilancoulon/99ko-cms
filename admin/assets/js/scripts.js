@@ -40,4 +40,16 @@ $(document).ready(function () {
 			e.preventDefault();
 		});
 	});
+	// Compteur de notifications
+	var nbNotifs = 0;
+	$("#notifs .alert-box").each(function(){
+		nbNotifs++;
+	});
+	if(nbNotifs == 0){
+		$(".notifsNumber").hide();
+	}
+	else{
+		$(".notifsNumber span").html(nbNotifs);
+		$(".notifsNumber").show();
+	}
 });
