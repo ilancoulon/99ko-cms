@@ -242,7 +242,7 @@ class plugin{
 	## Détermine si le plugin est installé
 	public function isInstalled(){
 		$currentConfig = implode(',', array_keys($this->config));
-		$initConfig = implode(',', array_keys($this->initConfig));
+		$initConfig = @implode(',', array_keys($this->initConfig));
 		if(count($this->config) < 1 || $currentConfig != $initConfig) return false;
 		elseif(isset($currentConfig['adminTabs'])){
 			if($currentConfig['adminTabs'] != $initConfig['adminTabs']) return false;

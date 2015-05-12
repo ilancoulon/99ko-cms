@@ -65,9 +65,10 @@
   <hr>
   <ul class="off-canvas-list">
     <li><label><?php echo $core->lang('Navigation'); ?></label></li>
-	<?php foreach($navigation as $k=>$v){ ?>
-	<li><a class="<?php if($v['isActive']){ ?>current<?php } ?>" href="<?php echo $v['url']; ?>"><?php echo $core->lang($v['label']); ?></a></li>
-	<?php } ?>
+	<li><a href="./"><?php echo $core->lang('Home'); ?></a></li>
+              	  <?php foreach($pluginsManager->getPlugins() as $k=>$v) if($v->getConfigVal('activate') && $v->getAdminFile()){ ?>
+              	  <li><a class="" href="index.php?p=<?php echo $v->getName(); ?>"><?php echo $core->lang($v->getInfoVal('name')); ?></a></li>
+              	  <?php } ?>
 	<!-- notifications mobile -->
 	<li class="notifsNumber">
 		<a href="#" data-reveal-id="notifs"><?php echo $core->lang('Notifications'); ?> <span class="notif round label"></span></a>
@@ -80,17 +81,13 @@
 <a class="exit-off-canvas"></a>
 
         <!-- CONTENU & SIDEBAR NAVIGATION PRINCIPALE -->
-        <section role="main" class="<?php echo $pluginName; ?>-admin">        
+        <section role="main" class="<?php echo $runPlugin->getName(); ?>-admin">        
           <div class="row">
             
             <!-- SIDEBAR -->
             <div class="large-3 medium-4 columns">
               <div class="hide-for-small">
               <div class="sidebar">
-                <!--form>
-                  <label><?php echo $core->lang('Search Filter'); ?></label>
-                  <input tabindex="1" id="autocomplete" type="search" placeholder="<?php echo $core->lang('Search'); ?>&hellip;">
-                </form-->
                 <p class="text-center">
                    <img src="assets/logo.png" alt="logo" />
                 </p>
@@ -99,8 +96,9 @@
                 <nav>
                   <ul class="side-nav">
                     <li class="heading"><?php echo $core->lang('Navigation'); ?></li>
-              	  <?php foreach($navigation as $k=>$v){ ?>
-              	  <li><a class="<?php if($v['isActive']){ ?>current<?php } ?>" href="<?php echo $v['url']; ?>"><?php echo $core->lang($v['label']); ?></a></li>
+		    <li><a href="./"><?php echo $core->lang('Home'); ?></a></li>
+              	  <?php foreach($pluginsManager->getPlugins() as $k=>$v) if($v->getConfigVal('activate') && $v->getAdminFile()){ ?>
+              	  <li><a class="" href="index.php?p=<?php echo $v->getName(); ?>"><?php echo $core->lang($v->getInfoVal('name')); ?></a></li>
               	  <?php } ?>
 
                     <li class="divider"></li>
@@ -123,10 +121,10 @@
                 <noscript>
                      <?php show::showMsg($core->lang("Javascript must be enabled in your browser to take full advantage of features 99ko."), "error"); ?> 
                 </noscript> 		        
-		          <?php if($tabs){ ?>
+		          <?php if(is_array($runPlugin->getAdminTemplate())){ ?>
                       <dl class="radius tabs" data-tab>
-           	          <?php foreach($tabs as $k=>$v){ ?>
-			            <dd><a href="<?php echo $v['url']; ?>"><?php echo $core->lang($v['label']); ?></a></dd>
+           	          <?php foreach($runPlugin->getAdminTabs() as $k=>$v){ ?>
+			            <dd><a href="#tab-<?php echo $k; ?>"><?php echo $core->lang($v); ?></a></dd>
 			          <?php } ?>
                       </dl>
                       <div class="tabs-content">

@@ -1,5 +1,5 @@
 <?php defined('ROOT') OR exit('No direct script access allowed'); ?>
-		          <?php if($tabs){ ?>
+		          <?php if(is_array($runPlugin->getAdminTemplate())){ ?>
                          </div>
                       </div>
 		          <?php } ?>
@@ -7,13 +7,9 @@
 		            <!-- NOTICATIONS -->
 				  	<div id="notifs" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 				  			<h2 id="modalTitle"><?php echo $core->lang('Notifications center'); ?></h2>
-				  			<?php
-				  				echo show::showMsg($notif1, $notif1Type);
-				  				echo show::showMsg($notif2, $notif2Type);
-				  				echo show::showMsg($notif3, $notif3Type);
-				  				echo show::showMsg($notif4, $notif4Type);
-				  				echo show::showMsg($notif5, $notif5Type);
-							?>
+				  			<?php foreach($core->check() as $k=>$v){ ?>
+							<?php echo show::showMsg($v['msg'], $v['type']); ?>
+							<?php } ?>
 							<?php eval($core->callHook('adminNotifications')); ?>
 							<a class="close-reveal-modal" aria-label="Close">&#215;</a>
 					</div>

@@ -8,8 +8,8 @@
 	   </h3>
 	</div>
 	<ul class="button-group radius">
-	    <li><a class="button secondary" href="http://99ko.hellojo.fr" onclick="window.open(this.href);return false;"><?php echo lang('Official site'); ?></a></li> 
-	    <li><a class="button" href="http://99ko.hellojo.fr/forum" onclick="window.open(this.href);return false;"><?php echo lang('Board support'); ?></a></li>
+	    <li><a class="button secondary" href="http://99ko.hellojo.fr" onclick="window.open(this.href);return false;"><?php echo $core->lang('Official site'); ?></a></li> 
+	    <li><a class="button" href="http://99ko.hellojo.fr/forum" onclick="window.open(this.href);return false;"><?php echo $core->lang('Board support'); ?></a></li>
    </ul>
    <?php eval($core->callHook('endAdminHome')); ?>
 <?php include_once(ROOT.'admin/footer.php') ?>

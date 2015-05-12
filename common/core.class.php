@@ -135,6 +135,32 @@ class core{
         else return false;
     }
     
+    ## Lance un check et retourne les alertes
+    public function check(){
+        $data = array();
+        if(!file_exists(ROOT.'.htaccess')){
+            $data[0]['msg'] = $this->lang('The .htaccess file is missing !');
+            $data[0]['type'] = 'warning';
+        }
+        if(file_exists(ROOT.'install.php')){
+            $data[1]['msg'] = $this->lang('The install.php file must be deleted !');
+            $data[1]['type'] = 'warning';
+        }
+        if(!ini_get('allow_url_fopen')){
+            $data[2]['msg'] = $this->lang("Unable to check for updates as 'allow_url_fopen' is disabled on this system.");
+            $data[2]['type'] = 'error';
+        }
+        if($this->detectNewVersion()){
+            $data[3]['msg'] = $this->lang("A new version of 99ko is available"). ' : <b>'.$this->detectNewVersion().'</b>';
+            $data[3]['type'] = 'success';
+        }
+        if($this->getConfigVal('debug')){
+            $data[4]['msg'] = $this->lang("The debug mode is activated!");
+            $data[4]['type'] = 'warning';
+        }
+        return $data;
+    }
+    
     ## Détecte s'il existe une nouvelle version de 99ko
     public function detectNewVersion(){
         if($last = trim(@file_get_contents($this->getConfigVal('checkUrl')))) if($last != VERSION) return $last;
