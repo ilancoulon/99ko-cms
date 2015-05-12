@@ -1,0 +1,8 @@
+{
+    "name" : "Extras",
+    "description" : "Add jQuery, Modernizr, Fundation",
+    "author" : "Jonathan Coulet",
+    "authorEmail" : "99ko@hellojo.fr",
+    "authorWebsite" : "http://99ko.hellojo.fr",
+    "version" : "3.1"
+}
