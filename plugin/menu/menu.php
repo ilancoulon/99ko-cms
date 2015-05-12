@@ -15,8 +15,8 @@ function menuInstall() {
 	$index = array("current" => 0, "links" => array());
 	
 	mkdir(MENU_LINKS);
-	utilWriteJsonFile(MENU_LINKS.'index.json', $index);
-	utilWriteJsonFile(MENU_DATAPATH.'menu.json', array());
+	util::writeJsonFile(MENU_LINKS.'index.json', $index);
+	util::writeJsonFile(MENU_DATAPATH.'menu.json', array());
 	
 	menuCheckLinks('menu');
 }

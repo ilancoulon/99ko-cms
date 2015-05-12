@@ -1,26 +1,28 @@
 <?php
 defined('ROOT') OR exit('No direct script access allowed');
 
-/*
-** Exécute du code lors de l'installation
-** Le code présent dans cette fonction sera exécuté lors de l'installation
-** Le contenu de cette fonction est facultatif
-*/
+## Traitements à effecturer lors de l'installation du plugin
 function extrasInstall(){
 }
 
-/********************************************************************************************************************
-** Code relatif au plugin
-** La partie ci-dessous est réservé au code du plugin 
-** Elle peut contenir des classes, des fonctions, hooks... ou encore du code à exécutter lors du chargement du plugin
-********************************************************************************************************************/
-
-/**
- * Charge les fichiers javascript en pied de page du thème admin
- */
+## Hook (footer admin)
 function extrasEndAdminBody(){
-    $temp = "\t".'<script src="'.PLUGINS.'extras/other/foundation.min.js?v=5.5.2"></script>'."\n";
-    $temp.= "\t".'<script>$(document).foundation();</script>'."\n"; 
-    echo $temp;
+    $data = '<script src="'.PLUGINS.'extras/other/foundation.min.js?v=5.5.2"></script>'."\n";
+    $data.= '<script>$(document).foundation();</script>'."\n"; 
+    echo $data;
+}
+
+## Hook (header admin)
+function extrasAdminHead(){
+    $data = '<script src="'.PLUGINS.'extras/other/jquery.js"></script>'."\n";
+    $data.= '<link href="'.PLUGINS.'extras/other/normalize.css" type="text/css" />'."\n";
+    echo $data;
+}
+
+## Hook (header thème)
+function extrasFrontHead(){
+    $data = '<script src="'.PLUGINS.'extras/other/jquery.js"></script>'."\n";
+    $data.= '<link href="'.PLUGINS.'extras/other/normalize.css" type="text/css" />'."\n";
+    echo $data;
 }
 ?>

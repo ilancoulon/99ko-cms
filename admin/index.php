@@ -34,7 +34,7 @@ $msg = '';
 $msgType = '';
 $version = VERSION;
 $pluginName = $runPlugin->getName();
-$navigation[-1]['label'] = lang('Home');
+$navigation[-1]['label'] = $core->lang('Home');
 $navigation[-1]['url'] = './';
 $navigation[-1]['isActive'] = (!isset($_GET['p'])) ? true : false;
 foreach($pluginsManager->getPlugins() as $k=>$v) if($v->getConfigVal('activate') && $v->getAdminFile()){
@@ -42,7 +42,7 @@ foreach($pluginsManager->getPlugins() as $k=>$v) if($v->getConfigVal('activate')
 	$navigation[$k]['url'] = 'index.php?p='.$v->getName();
 	$navigation[$k]['isActive'] = (isset($_GET['p']) && $_GET['p'] == $v->getName()) ? true : false;
 }
-$pageTitle = (!isset($_GET['p'])) ? lang('Welcome to 99ko') : $runPlugin->getInfoVal('name');
+$pageTitle = (!isset($_GET['p'])) ? $core->lang('Welcome to 99ko') : $runPlugin->getInfoVal('name');
 $tabs = array();
 foreach($runPlugin->getAdminTabs() as $k=>$v){
 	$tabs[$k]['label'] = $v;
@@ -52,54 +52,51 @@ if(count($tabs) == 0 || !isset($_GET['p'])) $tabs = false;
 // notifications
 $nbNotifs = 0;
 if(!file_exists('../.htaccess')) {
-	$notif1 = lang('The .htaccess file is missing !')."\n";
+	$notif1 = $core->lang('The .htaccess file is missing !')."\n";
 	$notifsType = 'warning';
 	$nbNotifs++;
 }
 if(file_exists('../install.php')) {
-	$notif2 = lang('The install.php file must be deleted !')."&nbsp;&nbsp;&nbsp;<a class=\"label secondary round\" href=\"index.php?action=delinstallfile&token=".$token."\">&#10007;&nbsp;".lang('Delete')."</a>\n";
+	$notif2 = $core->lang('The install.php file must be deleted !')."&nbsp;&nbsp;&nbsp;<a class=\"label secondary round\" href=\"index.php?action=delinstallfile&token=".$token."\">&#10007;&nbsp;".$core->lang('Delete')."</a>\n";
 	$notif2Type = 'error';
 	$nbNotifs++;
 }
-$newVersion = newVersion(getCoreConf('checkUrl'));
+$newVersion = $core->detectNewVersion();
 if (!ini_get('allow_url_fopen')){
-	$notif3 = lang("Unable to check for updates as 'allow_url_fopen' is disabled on this system.");
+	$notif3 = $core->lang("Unable to check for updates as 'allow_url_fopen' is disabled on this system.");
 	$notif3Type = "error";
 	$nbNotifs++;
 }
 if($newVersion){
-	$notif4 = lang("A new version of 99ko is available"). ' : <b>' .$newVersion. '</b>';
+	$notif4 = $core->lang("A new version of 99ko is available"). ' : <b>' .$newVersion. '</b>';
 	$notif4Type = "success";
 	$nbNotifs++;
 }
-if(getCoreConf('debug')){
-	$notif5 = lang("The debug mode is activated!");
+if($core->getConfigVal('debug')){
+	$notif5 = $core->lang("The debug mode is activated!");
 	$notif5Type = "info";
 	$nbNotifs++;
 }
-/*foreach($hooks['adminNotifications'] as $k=>$v){
-	if(call_user_func($v) != '') $nbNotifs++;
-}*/
 // actions
 if(isset($_GET['action']) && $_GET['action'] == 'login'){
 	// hook
-	eval(callHook('startAdminLogin'));
+	eval($core->callHook('startAdminLogin'));
 	if(isset($_SESSION['msg_install'])) unset($_SESSION['msg_install']);
 	$loginAttempt = (isset($_SESSION['loginAttempt'])) ? $_SESSION['loginAttempt'] : 0;
 	$loginAttempt++;
 	$_SESSION['loginAttempt'] = $loginAttempt;
-	if($loginAttempt > 4 || !isset($_SESSION['loginAttempt'])) $msg = lang('Please wait before retrying');
+	if($loginAttempt > 4 || !isset($_SESSION['loginAttempt'])) $msg = $core->lang('Please wait before retrying');
 	else{
-		if(encrypt(trim($_POST['adminPwd'])) == $coreConf['adminPwd'] && mb_strtolower($_POST['adminEmail']) == mb_strtolower($coreConf['adminEmail'])){
-			$_SESSION['admin']        = $coreConf['adminPwd'];
+		if(encrypt(trim($_POST['adminPwd'])) == $core->getConfigVal('adminPwd') && mb_strtolower($_POST['adminEmail']) == mb_strtolower($core->getConfigVal('adminEmail'))){
+			$_SESSION['admin']        = $core->getConfigVal('adminPwd');
 			$_SESSION['loginAttempt'] = 0;
 			header('location:index.php');
 			die();
 		}
-		else $msg = lang('Incorrect password');
+		else $msg = $core->lang('Incorrect password');
 	}
 	// hook
-	eval(callHook('endAdminLogin'));
+	eval($core->callHook('endAdminLogin'));
 }
 elseif(isset($_GET['action']) && $_GET['action'] == 'logout'){
 	session_destroy();
@@ -108,7 +105,7 @@ elseif(isset($_GET['action']) && $_GET['action'] == 'logout'){
 }
 elseif(isset($_GET['action']) && $_GET['action'] == 'delinstallfile') @unlink('../install.php');
 // login mode
-if(!isset($_SESSION['admin']) || $_SESSION['admin'] != $coreConf['adminPwd']){
+if(!isset($_SESSION['admin']) || $_SESSION['admin'] != $core->getConfigVal('adminPwd')){
 	include_once('login.php');
 }
 // homepage mode
@@ -118,7 +115,7 @@ elseif(!isset($_GET['p'])){
 // plugin mode
 elseif(isset($_GET['p']) && $runPlugin->getAdminFile()){
 	// hook
-	eval(callHook('startAdminIncludePluginFile'));
+	eval($core->callHook('startAdminIncludePluginFile'));
 	include($runPlugin->getAdminFile());
 	// mode standard
 	if(!is_array($runPlugin->getAdminTemplate())) include($runPlugin->getAdminTemplate());
@@ -127,14 +124,14 @@ elseif(isset($_GET['p']) && $runPlugin->getAdminFile()){
 		include_once(ROOT.'admin/header.php');
 		foreach($runPlugin->getAdminTemplate() as $k=>$v){
 			echo '<div class="tab" id="tab-'.$k.'">';
-			echo '<h3>'.lang($tabs[$k]['label']).'</h3>';
+			echo '<h3>'.$core->lang($tabs[$k]['label']).'</h3>';
 			include_once($v);
 			echo '</div>';
 		}
 		include_once(ROOT.'admin/footer.php');
 	}
 	// hook
-	eval(callHook('endAdminIncludePluginFile'));
+	eval($core->callHook('endAdminIncludePluginFile'));
 }
 
 ?>

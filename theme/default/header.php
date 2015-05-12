@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="<?php show::showSiteLang(); ?>">
 <head>
+	<?php eval($core->callHook('frontHead')); ?>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?php show::showTitleTag(); ?></title>
 	<base href="<?php show::showSiteUrl(); ?>/" />
@@ -10,7 +11,7 @@
 	<link rel="icon" href="theme/<?php show::showTheme("[id]"); ?>/flower.png" />
 	<?php show::showLinkTags(); ?>
 	<?php show::showScriptTags(); ?>
-	<?php eval(callHook('endFrontHead')); ?>
+	<?php eval($core->callHook('endFrontHead')); ?>
 </head>
 <body>
 <div id="container">

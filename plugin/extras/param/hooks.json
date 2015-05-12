@@ -1,3 +1,5 @@
 {
-    "endAdminBody" : "extrasEndAdminBody"
+    "endAdminBody" : "extrasEndAdminBody",
+    "frontHead" : "extrasFrontHead",
+    "adminHead" : "extrasAdminHead"
 }

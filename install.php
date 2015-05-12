@@ -189,7 +189,7 @@ if (isset($_POST['install_submit']) && util::checkToken($token)) {
     <link rel="stylesheet" href="<?php echo EXTRAS; ?>foundation.min.css?v=5.5.2" media="all">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,900,400italic" type="text/css" rel="stylesheet" />
     <link href="http://fonts.googleapis.com/css?family=Audiowide" type="text/css" rel="stylesheet">
-    <script src="<?php echo EXTRAS; ?>admin.js"></script>	
+    <script src="<?php echo EXTRAS; ?>jquery.js"></script>	
 	<style>
 	.container {max-width: 600px; margin: 100px auto 40px auto;}
     body {font-family: "Source Sans Pro","Helvetica","Arial",sans-serif; font-size: 16px; line-height: 26px; color: #333;}

@@ -16,28 +16,38 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+## Préchauffage...
 session_start();
 defined('ROOT') OR exit('No direct script access allowed');
-include_once(ROOT.'common/constants.php');
+define('VERSION', '1.6.3');
+define('COMMON',  ROOT.'common/');
+define('LANG', COMMON.'lang/');
+define('DATA', ROOT.'data/');
+define('UPLOAD', ROOT.'data/upload/');
+define('DATA_PLUGIN', ROOT.'data/plugin/');
+define('THEMES', ROOT.'theme/');
+define('PLUGINS', ROOT.'plugin/');
+define('ADMIN_PATH', ROOT.'admin/');
+define('CACHE_TIME', 0);
+if(file_exists(DATA.'key.php')) include(DATA.'key.php');
 include_once(COMMON.'core.lib.php');
-utilSetMagicQuotesOff();
-# Gestion des erreurs PHP (Dev Mod)
-if(getCoreConf('debug')) error_reporting(E_ALL);
-else error_reporting(E_ALL ^ E_NOTICE);
-# Plugin par défaut
-define('DEFAULT_PLUGIN', getCoreConf('defaultPlugin'));
-# Vérifie la présence du fichier de configuration
-if(!file_exists(DATA. 'config.txt')){
+include_once(COMMON.'util.class.php');
+include_once(COMMON.'core.class.php');
+include_once(COMMON.'pluginsManager.class.php');
+include_once(COMMON.'plugin.class.php');
+include_once(COMMON.'show.class.php');
+## Création de l'instance core
+$core = core::getInstance();
+## Plugin par défaut du mode public
+define('DEFAULT_PLUGIN', $core->getConfigVal('defaultPlugin'));
+// else...
+## Si le core n'est pas installé on redirige vers le script d'installation
+if(!$core->isInstalled()){
 	header('location:' .ROOT. 'install.php');
 	die();
 }
-# Tableau des hooks à appeler
-$hooks = array();
-# Tableau de config du core
-$coreConf = getCoreConf();
-# Tableaux des paramètres d'URL ($_GET)
-$urlParams = getUrlParams();
-# Cache (sauf en mode admin)
+## Gestion du cache HTML (bêta)
 if(CACHE_TIME > 0 && ROOT == './'){
 	$isInCache = readCache();
 	if(!is_numeric($isInCache)){
@@ -45,35 +55,27 @@ if(CACHE_TIME > 0 && ROOT == './'){
 		die();
 	}
 }
-# Liste des thèmes
-$themes = listThemes();
-# Liste des langues
-$langs = listLangs();
-# Tableau langue courante
-$lang = array();
-# Données langue du core
-$lang = utilReadJsonFile(LANG .getCoreConf('siteLang'). '.json');
-# Données langue du thème courant
-if(file_exists(THEMES .getCoreConf('theme'). '/lang/' .getCoreConf('siteLang'). '.json')) $lang = array_merge($lang, utilReadJsonFile(THEMES .getCoreConf('theme'). '/lang/' .getCoreConf('siteLang'). '.json'));
-# Création du pluginManager
+## Création de l'istance pluginsManager
 $pluginsManager = pluginsManager::getInstance();
-# On boucle les plugins
+## On boucle sur les plugins
 foreach($pluginsManager->getPlugins() as $plugin){
-	# On inclut le fichier principal
+	// On inclut le fichier PHP principal
 	include_once($plugin->getLibFile());
-	# On alimente le tableau de la langue courante
-	if($plugin->getLang() != false) $lang = array_merge($lang, $plugin->getLang());
-	# On alimente le tableau des hooks
+	// Le core charge le fichier langue du plugin
+	$core->loadPluginLang($plugin->getName());
+	// Le core alimente le tableau des hooks
 	if($plugin->getConfigVal('activate')){
-		foreach($plugin->getHooks() as $hookName=>$function) $hooks[$hookName][] = $function;
+		foreach($plugin->getHooks() as $name=>$function){
+			$core->addHook($name, $function);
+		}
 	}
 }
-# Début d'appel du Hook
-eval(callHook('startCreatePlugin'));
-# Création de le l'instance du plugin en cours d'exécution
+## Hook
+eval($core->callHook('startCreatePlugin'));
+## Création de l'instance runPlugin, objet qui représente le plugin en cours d'execution
 $runPlugin = $pluginsManager->getPlugin((isset($_GET['p'])) ? $_GET['p'] : DEFAULT_PLUGIN);
-# Erreur 404
-if(!$runPlugin || $runPlugin->getConfigVal('activate') < 1) error404();
-# Fin d'appel du hook
-eval(callHook('endCreatePlugin'));
+## Gestion des erreurs 404
+if(ROOT == './' && (!$runPlugin || $runPlugin->getConfigVal('activate') < 1)) error404();
+## Hook
+eval($core->callHook('endCreatePlugin'));
 ?>

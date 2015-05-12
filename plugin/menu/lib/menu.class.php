@@ -18,13 +18,13 @@ class menu {
 		$links = array();
 
 		if ($plugin == '') {
-			$index = utilReadJsonFile(MENU_LINKS.'index.json');
+			$index = util::readJsonFile(MENU_LINKS.'index.json');
 		
 			foreach ($index['links'] as $link) {
 				$links[] = new menuLink($link['id']);
 			}
 		} else {
-			$index = utilReadJsonFile(MENU_LINKS.'index.json');
+			$index = util::readJsonFile(MENU_LINKS.'index.json');
 		
 			foreach ($index['links'] as $link) {
 				if ($link['plugin'] == $plugin) {
@@ -37,7 +37,7 @@ class menu {
 	}
 	
 	public static function getMenu() {
-		return utilReadJsonFile(MENU_DATAPATH.'menu.json');
+		return util::readJsonFile(MENU_DATAPATH.'menu.json');
 	}
 	
 	public static function deleteLink($link) {
@@ -45,7 +45,7 @@ class menu {
 			unlink(MENU_LINKS.$link->getId().'.json');
 		}
 
-		$index = utilReadJsonFile(MENU_LINKS.'index.json');
+		$index = util::readJsonFile(MENU_LINKS.'index.json');
 
 		foreach ($index['links'] as $position=>$currentlink) {
 			if ($currentlink['id'] == $link->getId()) {
@@ -55,7 +55,7 @@ class menu {
 			}
 		}
 
-		utilWriteJsonFile(MENU_LINKS.'index.json', $index);
+		util::writeJsonFile(MENU_LINKS.'index.json', $index);
 	}
 	
 	public static function updateLink($id, $label, $url, $plugin, $target = '_self') {
@@ -116,7 +116,7 @@ class menu {
 	}
 	
 	public static function saveLinks($plugin, $links) {
-		$index = utilReadJsonFile(MENU_LINKS.'index.json');
+		$index = util::readJsonFile(MENU_LINKS.'index.json');
 		
 		foreach ($links as $link) {
 			$index['links'][] = array(
@@ -125,11 +125,11 @@ class menu {
 			);
 		}
 		
-		utilWriteJsonFile(MENU_LINKS.'index.json', $index);
+		util::writeJsonFile(MENU_LINKS.'index.json', $index);
 	}
 	
 	public static function saveMenu() {
-		$index = utilReadJsonFile(MENU_LINKS.'index.json');
+		$index = util::readJsonFile(MENU_LINKS.'index.json');
 		$menu = array();
 		
 		foreach ($index['links'] as $link) {
@@ -141,7 +141,7 @@ class menu {
 			);
 		}
 		
-		utilWriteJsonFile(MENU_DATAPATH.'menu.json', $menu);
+		util::writeJsonFile(MENU_DATAPATH.'menu.json', $menu);
 	}
 }
 

@@ -16,7 +16,7 @@ class menuLink {
 			$this->target = '_self';
 			$this->plugin = '';
 		} else {
-			$link = utilReadJsonFile(MENU_LINKS.$id.'.json');
+			$link = util::readJsonFile(MENU_LINKS.$id.'.json');
 
 			$this->label = $link['label'];
 			$this->url = $link['url'];

@@ -19,33 +19,12 @@
 
 defined('ROOT') OR exit('No direct script access allowed');
 
-/*
- * classe util
- * methodes dites "utilitaires"
- *
- */
-
 class util{
+	
+	## Token
+	
     protected static $security_token_name = 'security_token';
-    /**
-     * Generate and store a unique token which can be used to help prevent
-     * [CSRF](http://wikipedia.org/wiki/Cross_Site_Request_Forgery) attacks.
-     *
-     *  <code>
-     *      $token = util::generateToken();
-     *  </code>
-     *
-     * You can insert this token into your forms as a hidden field:
-     *
-     *  <code>
-     *      <input type="hidden" name="token" value="<?php echo util::generateToken(); ?>">
-     *  </code>
-     *
-     * This provides a basic, but effective, method of preventing CSRF attacks.
-     *
-     * @param  boolean $new force a new token to be generated?. Default is false
-     * @return string
-     */
+
     public static function generateToken($new = false) {
         # Get the current token
         if (isset($_SESSION[(string) util::$security_token_name])) $token = $_SESSION[(string) util::$security_token_name]; else $token = null;
@@ -59,21 +38,13 @@ class util{
         # Return token
         return $token;
     }
-    /**
-     * Check that the given token matches the currently stored security token.
-     *
-     *  <code>
-     *     if (util::checkToken($token)) {
-     *         // Pass
-     *     }
-     *  </code>
-     *
-     * @param  string  $token token to check
-     * @return boolean
-     */
+
     public static function checkToken($token) {
         return util::generateToken() === $token;
-    }    
+    }
+	
+	## End token
+	
     public static function setMagicQuotesOff(){
 		if(phpversion() < 5.4){
 			if(get_magic_quotes_gpc()){
@@ -107,15 +78,8 @@ class util{
     	return strtolower(trim($str,'-'));
     }
 
-	/**
-	 * Méthode qui retourne une chaine de caractères formatée en fonction du charset
-	 *
-	 * @param	str			chaine de caractères
-	 * @return	string		chaine de caractères tenant compte du charset
-	 **/
 	public static function strCheck($str) {
-
-		return htmlspecialchars($str,ENT_QUOTES);
+		return htmlspecialchars($str, ENT_QUOTES);
 	}
 	
     public static function isEmail($email){
@@ -230,5 +194,4 @@ class util{
     }
     
 }
-
 ?>

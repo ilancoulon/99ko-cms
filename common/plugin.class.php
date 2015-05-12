@@ -16,12 +16,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-defined('ROOT') OR exit('No direct script access allowed'); 
-
-/*
- * classe plugin
- *
- */
+defined('ROOT') OR exit('No direct script access allowed');
 
 class plugin{
 	private $infos;
@@ -36,72 +31,66 @@ class plugin{
 	private $libFile;
 	private $publicFile;
 	private $adminFile;
-	private $cssFile;
-	private $jsFile;
 	private $dataPath;
 	private $publicTemplate;
 	private $adminTemplate;
 	private $initConfig;
 	private $navigation;
 	private $adminTabs;
-	private $langFile;
 	private $lang;
 	private $publicCssFile;
 	private $publicJsFile;
 	private $adminCssFile;
 	private $adminJsFile;
-
-	public function __construct($name, $config = array(), $infos = array(), $hooks = array(), $initConfig = array()){
-		// nom simplifie du plugin
+	
+	## Constructeur
+	public function __construct($name, $config = array(), $infos = array(), $hooks = array(), $initConfig = array(), $lang = array()){
+		$core = core::getInstance();
+		// Identifiant
 		$this->name = $name;
-		// configuration du plugin
+		// Tableau de configuration
 		$this->config = $config;
-		// informations relatives au plugin
+		// Tableau d'informations
 		$this->infos = $infos;
-		// liste des hooks du plugins
+		// Liste des hooks
 		$this->hooks = $hooks;
-		// validite du plugin (si false l'etat ou la configuration du plugin ne doit pas etre sauvegarde)
+		// Validité du plugin (si false l'etat ou la configuration du plugin ne sera pas sauvegardé)
 		$this->isValid = true;
-		// ce plugin est-il le plugin par defaut specifie dans la configuration du core ?
+		// Détermine si il s'agit du plugin par défaut en mode public
 		$this->isDefaultPlugin = ($name == DEFAULT_PLUGIN) ? true : false;
-		// on defini la meta title
+		// Meta title
 		$this->setTitleTag($infos['name']);
-		// on defini le titre de page
+		// Titre de page
 		$this->setMainTitle($infos['name']);
-		// chemin vers le fichier principal du plugin
+		// Fichier principal
 		$this->libFile = (file_exists(PLUGINS .$this->name.'/'.$this->name.'.php')) ? PLUGINS .$this->name.'/'.$this->name.'.php' : false;
-		// chemin vers le fichier langue du plugin
-		$this->langFile = (file_exists(PLUGINS .$this->name.'/lang/'.getCoreConf('siteLang').'.json')) ? PLUGINS .$this->name.'/lang/'.getCoreConf('siteLang').'.json' : false;
-		// tableau lang
-		$this->lang = ($this->langFile) ? utilReadJsonFile($this->langFile) : array();
-		// chemin vers le controlleur en mode public
+		// Tableau lang
+		$this->lang = $lang;
+		// Controlleur public
 		$this->publicFile = (file_exists(PLUGINS .$this->name.'/public.php')) ? PLUGINS .$this->name.'/public.php' : false;
-		// chemin vers le controlleur en mode admin
+		// Controlleur admin
 		$this->adminFile = (file_exists(PLUGINS .$this->name.'/admin.php')) ? PLUGINS .$this->name.'/admin.php' : false;
-		// chemin vers le fichier css du plugin
-		$this->cssFile = (file_exists(PLUGINS .$this->name.'/other/'.$this->name.'.css')) ? PLUGINS .$this->name.'/other/'.$this->name.'.css' : false; // déprécié
+		// CSS
 		$this->publicCssFile = (file_exists(PLUGINS .$this->name.'/other/public.css')) ? PLUGINS .$this->name.'/other/public.css' : false;
 		$this->adminCssFile = (file_exists(PLUGINS .$this->name.'/other/admin.css')) ? PLUGINS .$this->name.'/other/admin.css' : false;
-		// chemin vers le fichier js du plugin
-		$this->jsFile = (file_exists(PLUGINS .$this->name.'/other/'.$this->name.'.js')) ? PLUGINS .$this->name.'/other/'.$this->name.'.js' : false; //déprécié
+		// JS
 		$this->publicJsFile = (file_exists(PLUGINS .$this->name.'/other/public.js')) ? PLUGINS .$this->name.'/other/public.js' : false;
 		$this->adminJsFile = (file_exists(PLUGINS .$this->name.'/other/admin.js')) ? PLUGINS .$this->name.'/other/admin.js' : false;
-		// chemin vers le dossier data du plugin
+		// Data
 		$this->dataPath = (is_dir(DATA_PLUGIN .$this->name)) ? DATA_PLUGIN .$this->name.'/' : false;
-		// template en mode public (peut etre la template par defaut ou une template personalisee presente dans le dossier du theme)
-		if(file_exists('theme/'.getCoreConf('theme').'/'.$this->name.'.php')) $this->publicTemplate = 'theme/'.getCoreConf('theme').'/'.$this->name.'.php';
+		// Template public (peut etre le template par defaut ou un template présent dans le dossier du theme)
+		if(file_exists('theme/'.$core->getConfigVal('theme').'/'.$this->name.'.php')) $this->publicTemplate = 'theme/'.$core->getConfigVal('theme').'/'.$this->name.'.php';
 		elseif(file_exists(PLUGINS .$this->name.'/template/public.php')) $this->publicTemplate = PLUGINS .$this->name.'/template/public.php';
 		else $this->publicTemplate = false;
-		// template en mode admin (peut etre string si une seule template ou array si la navigation par tabs existe pour ce plugin)
-		$this->adminTemplate = (file_exists(PLUGINS .$this->name.'/template/admin.php')) ? PLUGINS .$this->name.'/template/admin.php' : false;
-		// configuration "d'uzine" du plugin
+		// Template admin
+		$this->adminTemplate = (file_exists(PLUGINS.$this->name.'/template/admin.php')) ? PLUGINS.$this->name.'/template/admin.php' : false;
+		// Configuration usine
 		$this->initConfig = $initConfig;
-		// initialisation des items de navigation
+		// Navigation
 		$this->navigation = array();
-		// tabs admin
+		// Templates admin (mode onglets)
 		$this->adminTabs = array();
 		if(isset($this->config['adminTabs']) && $this->config['adminTabs'] != '') $this->adminTabs = explode(',', $this->config['adminTabs']);
-		// templates si la navigation par tabs sont actives pour ce plugin
 		foreach($this->adminTabs as $k=>$v){
 			if(file_exists(PLUGINS .$this->name.'/template/admin-tab-'.$k.'.php')){
 				if(!is_array($this->adminTemplate)) $this->adminTemplate = array();
@@ -109,7 +98,8 @@ class plugin{
 			}
 		}
 	}
-
+	
+	## Getters
 	public function getConfigVal($val){
 		if(isset($this->config[$val])) return $this->config[$val];
 	}
@@ -158,20 +148,12 @@ class plugin{
 		return $this->adminFile;
 	}
 	
-	public function getCssFile(){
-		return $this->cssFile;
-	}
-	
 	public function getPublicCssFile(){
 		return $this->publicCssFile;
 	}
 	
 	public function getAdminCssFile(){
 		return $this->adminCssFile;
-	}
-	
-	public function getJsFile(){
-		return $this->jsFile;
 	}
 	
 	public function getPublicJsFile(){
@@ -210,57 +192,54 @@ class plugin{
 		return $this->adminTabs;
 	}
 	
-	public function getLangFile(){
-		return $this->langFile;
-	}
-	
 	public function getLang(){
 		return $this->lang;
 	}
 
-	// permet de modifier une valeur de config
+	## Permet de modifier une valeur de configuration
 	public function setConfigVal($k, $v){
 		$this->config[$k] = $v;
 		if($k == 'activate' && $v < 1 && $this->isDefaultPlugin) $this->isValid = false;
 	}
 	
-	// permet de surcharger la meta title
+	## Permet de définir la meta title
 	public function setTitleTag($val){
-		if($this->isDefaultPlugin) $val = getCoreConf('siteName').' | '.trim($val);
-		else $val = $val.' | '.getCoreConf('siteName');
+		$core = core::getInstance();
+		if($this->isDefaultPlugin) $val = $core->getConfigVal('siteName').' | '.trim($val);
+		else $val = $val.' | '.$core->getConfigVal('siteName');
 		if(mb_strlen($val) > 50) $val = mb_strcut($val, 0, 50).'...';
 		$this->titleTag = $val;
 	}
 	
-	// permet de surcharger la meta description
+	## Permet de définir la meta description
 	public function setMetaDescriptionTag($val){
 		$val = trim($val);
 		if(mb_strlen($val) > 150) $val = mb_strcut($val, 0, 150).'...';
 		$this->metaDescriptionTag = $val;
 	}
 	
-	// permet de surcharger le titre de page
+	## Permet de définir le titre de page
 	public function setMainTitle($val){
 		$val = trim($val);
 		$this->mainTitle = $val;
 	}
 	
-	// ajoute un item menu
+	## Ajoute un item dans la navigation
 	function addToNavigation($label, $target, $targetAttribut = '_self'){
 		$this->navigation[] = array('label' => $label, 'target' => $target, 'targetAttribut' => $targetAttribut);
 	}
 	
-	// supprime un item menu
+	## Supprime un item de la navigation
 	function removeToNavigation($k){
 		unset($this->navigation[$k]);
 	}
 
-	// initialise les items menu
+	## Initialise la navigation
 	function initNavigation(){
 		$this->navigation = array();
 	}
 
-	// determine si le plugin est installe ou si le fichier config est coherent avec la config uzine
+	## Détermine si le plugin est installé
 	public function isInstalled(){
 		$currentConfig = implode(',', array_keys($this->config));
 		$initConfig = implode(',', array_keys($this->initConfig));

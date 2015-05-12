@@ -6,15 +6,15 @@
 
 		            <!-- NOTICATIONS -->
 				  	<div id="notifs" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-				  			<h2 id="modalTitle"><?php echo lang('Notifications center'); ?></h2>
+				  			<h2 id="modalTitle"><?php echo $core->lang('Notifications center'); ?></h2>
 				  			<?php
-				  				echo showMsg($notif1, $notif1Type);
-				  				echo showMsg($notif2, $notif2Type);
-				  				echo showMsg($notif3, $notif3Type);
-				  				echo showMsg($notif4, $notif4Type);
-				  				echo showMsg($notif5, $notif5Type);
+				  				echo show::showMsg($notif1, $notif1Type);
+				  				echo show::showMsg($notif2, $notif2Type);
+				  				echo show::showMsg($notif3, $notif3Type);
+				  				echo show::showMsg($notif4, $notif4Type);
+				  				echo show::showMsg($notif5, $notif5Type);
 							?>
-							<?php eval(callHook('adminNotifications')); ?>
+							<?php eval($core->callHook('adminNotifications')); ?>
 							<a class="close-reveal-modal" aria-label="Close">&#215;</a>
 					</div>
 					<!-- /NOTICATIONS -->
@@ -29,6 +29,6 @@
     </div> <!-- /nav off-canvas-wrap -->
     
     <script src="assets/js/scripts.js"></script>
-    <?php eval(callHook('endAdminBody')); ?>
+    <?php eval($core->callHook('endAdminBody')); ?>
   </body>
 </html>

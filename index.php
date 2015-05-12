@@ -17,19 +17,19 @@
  * file that was distributed with this source code.
  */
 
+ ## Préchauffage...
 $time = microtime(true);
 define('ROOT', './');
 include_once(ROOT.'common/common.php');
-// hook
-eval(callHook('startFrontIncludePluginFile'));
-// on inclu le plugin courant
+## Hook
+eval($core->callHook('startFrontIncludePluginFile'));
+## On inclut le fichier public et la template du plugin en cours d'execution
 if($runPlugin->getPublicFile()){
 	include($runPlugin->getPublicFile());
 	include($runPlugin->getPublicTemplate());
-	// cache
+	// Gestion du cache HTML (bêta)
 	if(CACHE_TIME > 0 && count($_POST) == 0) addToCache();
 }
-// hook
-eval(callHook('endFrontIncludePluginFile'));
-
+## Hook
+eval($core->callHook('endFrontIncludePluginFile'));
 ?>

@@ -55,7 +55,8 @@ define('PAGE_DATAPATH', DATA_PLUGIN. 'page/');
 $page = new page();
 
 foreach($page->getItems() as $k=>$pageItem) if(!$pageItem->getIsHidden()){
-	$temp = (getCoreConf('defaultPlugin') == 'page' && $pageItem->getIsHomepage()) ? getCoreConf('siteUrl') : rewriteUrl('page', array('name' => $pageItem->getName(), 'id' => $pageItem->getId()));
+	$core = core::getInstance();
+	$temp = ($core->getConfigVal('defaultPlugin') == 'page' && $pageItem->getIsHomepage()) ? $core->getConfigVal('siteUrl') : $core->makeUrl('page', array('name' => $pageItem->getName(), 'id' => $pageItem->getId()));
 	$pluginsManager->getPlugin('page')->addToNavigation($pageItem->getName(), $temp);
 }
 
@@ -66,11 +67,11 @@ class page{
 		$data = array();
 		if(is_dir(PAGE_DATAPATH)){
 			$dataNotSorted = array();
-			$items = utilScanDir(PAGE_DATAPATH, array('config.txt'));
+			$items = util::scanDir(PAGE_DATAPATH, array('config.txt'));
 			foreach($items['file'] as $k=>$file){
-				$dataNotSorted[] = utilReadJsonFile(DATA_PLUGIN. 'page/'.$file, true);
+				$dataNotSorted[] = util::readJsonFile(DATA_PLUGIN. 'page/'.$file, true);
 			}
-			$dataSorted = utilSort2DimArray($dataNotSorted, 'position', 'num');
+			$dataSorted = util::sort2DimArray($dataNotSorted, 'position', 'num');
 			foreach($dataSorted as $pageItem){
 				$data[] = new pageItem($pageItem);
 			}
@@ -126,8 +127,9 @@ class page{
 		return count($this->items);
 	}
 	public function listFiles(){
+		$core = core::getInstance();
 		$data = array();
-		$items = utilScanDir(THEMES .getCoreConf('theme').'/', array('header.php', 'footer.php', 'style.css'));
+		$items = utilScanDir(THEMES .$core->getConfigVal('theme').'/', array('header.php', 'footer.php', 'style.css'));
 		foreach($items['file'] as $file){
 			if(in_array(utilGetFileExtension($file), array('htm', 'html', 'txt', 'php'))) $data[] = $file;
 		}

@@ -1,0 +1,1 @@
+<?php define('KEY', '15550cf83ca8a5'); ?>
