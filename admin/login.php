@@ -54,7 +54,7 @@
     <!-- End Login Form -->
     
     <p class="text-center">
-         <a title="<?php echo $core->lang("NoDB CMS"); ?>" onclick="window.open(this.href);return false;" href="http://99ko.hellojo.fr"><?php echo $core->lang("Just using <b>99ko</b>"); ?></a><a href="index.php?action=logout&token=<?php echo $token; ?>">.</a>
+         <a title="<?php echo $core->lang("NoDB CMS"); ?>" onclick="window.open(this.href);return false;" href="http://99ko.hellojo.fr"><?php echo $core->lang("Just using <b>99ko</b>"); ?></a><a href="index.php?action=logout&token=<?php echo administrator::getToken(); ?>">.</a>
     </p>    
   </div><!-- /.row --> 
   

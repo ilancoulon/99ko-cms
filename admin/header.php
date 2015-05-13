@@ -38,7 +38,7 @@
 	  </li>
 	  <li class="divider"></li>
       <li>
-        <a href="index.php?action=logout&token=<?php echo $token; ?>">
+        <a href="index.php?action=logout&token=<?php echo administrator::getToken(); ?>">
            <?php echo $core->lang('Logout'); ?>
         </a>
       </li>
@@ -73,7 +73,7 @@
 	<li class="notifsNumber">
 		<a href="#" data-reveal-id="notifs"><?php echo $core->lang('Notifications'); ?> <span class="notif round label"></span></a>
 	</li>
-    <li><a href="index.php?action=logout&token=<?php echo $token; ?>" class="tiny button alert"><?php echo $core->lang('Logout'); ?></a></li>
+    <li><a href="index.php?action=logout&token=<?php echo administrator::getToken(); ?>" class="tiny button alert"><?php echo $core->lang('Logout'); ?></a></li>
     <li><a href="../" class="tiny button" onclick="window.open(this.href);return false;"><?php echo $core->lang('Back to website'); ?></a></li>	
   </ul>
 </aside>
@@ -121,7 +121,7 @@
                 <noscript>
                      <?php show::showMsg($core->lang("Javascript must be enabled in your browser to take full advantage of features 99ko."), "error"); ?> 
                 </noscript> 		        
-		          <?php if(is_array($runPlugin->getAdminTemplate())){ ?>
+		          <?php if($runPlugin->useAdminTabs()){ ?>
                       <dl class="radius tabs" data-tab>
            	          <?php foreach($runPlugin->getAdminTabs() as $k=>$v){ ?>
 			            <dd><a href="#tab-<?php echo $k; ?>"><?php echo $core->lang($v); ?></a></dd>

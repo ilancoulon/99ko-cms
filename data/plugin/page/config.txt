@@ -1,1 +1,1 @@
-{"priority":"2","activate":"1","adminTabs":""}
+{"priority":3,"activate":1}

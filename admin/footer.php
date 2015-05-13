@@ -1,5 +1,5 @@
 <?php defined('ROOT') OR exit('No direct script access allowed'); ?>
-		          <?php if(is_array($runPlugin->getAdminTemplate())){ ?>
+		          <?php if($runPlugin->useAdminTabs()){ ?>
                          </div>
                       </div>
 		          <?php } ?>

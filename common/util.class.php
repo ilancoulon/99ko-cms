@@ -21,30 +21,6 @@ defined('ROOT') OR exit('No direct script access allowed');
 
 class util{
 	
-	## Token
-	
-    protected static $security_token_name = 'security_token';
-
-    public static function generateToken($new = false) {
-        # Get the current token
-        if (isset($_SESSION[(string) util::$security_token_name])) $token = $_SESSION[(string) util::$security_token_name]; else $token = null;
-        # Create a new unique token
-        if ($new === true or ! $token) {
-            # Generate a new unique token
-            $token = sha1(uniqid(mt_rand(), true));
-            # Store the new token
-            $_SESSION[(string) util::$security_token_name] = $token;
-        }
-        # Return token
-        return $token;
-    }
-
-    public static function checkToken($token) {
-        return util::generateToken() === $token;
-    }
-	
-	## End token
-	
     public static function setMagicQuotesOff(){
 		if(phpversion() < 5.4){
 			if(get_magic_quotes_gpc()){
@@ -64,7 +40,9 @@ class util{
     	elseif($mode == 'asc') $mode = SORT_ASC;
     	elseif($mode == 'num') $mode = SORT_NUMERIC;
     	$temp = array();
-    	foreach($data as $k=>$v) $temp[$k] = $v[$key];
+    	foreach($data as $k=>$v){
+			$temp[$k] = $v[$key];
+		}
     	array_multisort($temp, $mode, $data);
     	return $data;
     }

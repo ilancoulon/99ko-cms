@@ -129,9 +129,9 @@ class page{
 	public function listFiles(){
 		$core = core::getInstance();
 		$data = array();
-		$items = utilScanDir(THEMES .$core->getConfigVal('theme').'/', array('header.php', 'footer.php', 'style.css'));
+		$items = util::scanDir(THEMES .$core->getConfigVal('theme').'/', array('header.php', 'footer.php', 'style.css'));
 		foreach($items['file'] as $file){
-			if(in_array(utilGetFileExtension($file), array('htm', 'html', 'txt', 'php'))) $data[] = $file;
+			if(in_array(util::getFileExtension($file), array('htm', 'html', 'txt', 'php'))) $data[] = $file;
 		}
 		return $data;
 	}

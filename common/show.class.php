@@ -104,7 +104,7 @@ class show{
      public static function showAdminTokenField() {
       $core = core::getInstance();
      	eval($core->callHook('startShowAdminTokenField'));
-     	$output = '<input type="hidden" name="token" value="' .util::generateToken(true). '" />';
+     	$output = '<input type="hidden" name="token" value="'.administrator::getToken().'" />';
      	eval($core->callHook('endShowAdminTokenField'));
      	echo $output;
      }

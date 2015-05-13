@@ -27,6 +27,7 @@ class core{
     private $themes;
     private $langs;
     private $lang;
+    private $pluginToCall;
     
     ## Constructeur
     public function __construct(){
@@ -62,6 +63,8 @@ class core{
         if(file_exists(THEMES.$this->getConfigVal('theme').'/lang/'.$this->getConfigVal('siteLang').'.json')){
             $this->lang = array_merge($this->lang, util::readJsonFile(THEMES.$this->getConfigVal('theme').'/lang/'.$this->getConfigVal('siteLang').'.json'));
         }
+        // Quel est le plugin solicité ?
+        $this->pluginToCall = isset($_GET['p']) ? $_GET['p'] : $this->getConfigVal('defaultPlugin');
     }
     
     ## Retourne l'instance core
@@ -72,7 +75,47 @@ class core{
         return self::$instance;
     }
     
-    ## Détermine si 99ko est installé
+    ## Retourne le paramètre d'URL ciblé
+    public function getUrlParam($k){
+        if(isset($this->urlParams[$k])) return $this->urlParams[$k];
+        else return false;
+    }
+    
+    ## Retourne la liste des langues
+    public function getLangs(){
+        return $this->langs;
+    }
+    
+    ## Retourne la liste des thèmes
+    public function getThemes(){
+        return $this->themes;
+    }
+    
+    ## Retourne une phrase dans la langue courante
+    public function lang($k){
+        if($this->getConfigVal('siteLang') == 'en') return $k;
+        elseif(is_array($this->lang) && array_key_exists($k, $this->lang)) return $this->lang[$k];
+        else return $k;
+    }
+    
+    ## Retourne une valeur de configuration
+    public function getConfigVal($k){
+        if(isset($this->config[$k])) return $this->config[$k];
+        else return false;
+    }
+    
+    ## Retourne l'information ciblée d'un thème
+    public function getThemeInfo($k){
+        if(isset($this->themes[$this->getConfigVal('theme')])) return $this->themes[$this->getConfigVal('theme')][$k];
+        else return false;
+    }
+    
+    ## Retourne l'identifiant du plugin solicité
+    public function getPluginToCall(){
+        return $this->pluginToCall;
+    }
+    
+        ## Détermine si 99ko est installé
     public function isInstalled(){
         if(!file_exists(DATA.'config.txt')) return false;
         else return true;
@@ -108,31 +151,6 @@ class core{
             }
         }
         return $url;
-    }
-    
-    ## Retourne le paramètre d'URL ciblé
-    public function getUrlParam($k){
-        if(isset($this->urlParams[$k])) return $this->urlParams[$k];
-        else return false;
-    }
-    
-    ## Retourne le tableau lang de la langue courante
-    public function lang($k){
-        if($this->getConfigVal('siteLang') == 'en') return $k;
-        elseif(is_array($this->lang) && array_key_exists($k, $this->lang)) return $this->lang[$k];
-        else return $k;
-    }
-    
-    ## Retourne une valeur de configuration
-    public function getConfigVal($k){
-        if(isset($this->config[$k])) return $this->config[$k];
-        else return false;
-    }
-    
-    ## Retourne l'information ciblée d'un thème
-    public function getThemeInfo($k){
-        if(isset($this->themes[$this->getConfigVal('theme')])) return $this->themes[$this->getConfigVal('theme')][$k];
-        else return false;
     }
     
     ## Lance un check et retourne les alertes
@@ -187,6 +205,34 @@ class core{
     public function loadPluginLang($plugin){
         $pluginsManager = pluginsManager::getInstance();
         $this->lang = array_merge($this->lang, $pluginsManager->getPlugin($plugin)->getLang());
+    }
+    
+    ## Detecte le mode de l'administration
+    public function detectAdminMode(){
+        $mode = '';
+        if(isset($_GET['action']) && $_GET['action'] == 'login') return 'login';
+        elseif(isset($_GET['action']) && $_GET['action'] == 'logout') return 'logout';
+        elseif(!isset($_GET['p'])) return 'home';
+        elseif(isset($_GET['p'])) return 'plugin';
+    }
+    
+    ## Sauvegarde le tableau de configuration
+    public function saveConfig($val, $append = array()){
+        $config = util::readJsonFile(DATA.'config.txt', true);
+        $config = array_merge($config, $append);
+        foreach($config as $k=>$v) if(isset($val[$k])){
+            $config[$k] = $val[$k];
+        }
+        if(util::writeJsonFile(DATA.'config.txt', $config)){
+            $this->config = util::readJsonFile(DATA.'config.txt', true);
+            return true;
+        }
+        else return false;
+    }
+    
+    ## Retourne l'objet administrator
+    public function createAdministrator(){
+        return new administrator($this->getConfigVal('adminEmail'), $this->getConfigVal('adminPwd'));
     }
 }
 ?>

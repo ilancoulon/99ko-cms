@@ -70,13 +70,13 @@ class menuLink {
 		);
 		
 		if ($this->id == -1) {
-			$index = utilReadJsonFile(MENU_LINKS.'index.json');
+			$index = util::readJsonFile(MENU_LINKS.'index.json');
 			$this->id = $index['current'];
 			$index['current'] += 1;
-			utilWriteJsonFile(MENU_LINKS.'index.json', $index);
+			util::writeJsonFile(MENU_LINKS.'index.json', $index);
 		}
 		
-		return utilWriteJsonFile(MENU_LINKS.$this->id.'.json', $link);
+		return util::writeJsonFile(MENU_LINKS.$this->id.'.json', $link);
 	}
 }
 

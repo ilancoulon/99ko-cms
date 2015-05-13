@@ -1,15 +1,15 @@
 <?php include_once(ROOT.'admin/header.php'); ?>
 
 <?php if ($data['menuMode'] == 'list') { ?>
-<a class="button round medium" id="addLink" onclick="addLink()"><?php echo lang('New link'); ?></a>
+<a class="button round medium" id="addLink" onclick="addLink()"><?php echo $core->lang('New link'); ?></a>
 <form method="post" action="index.php?p=menu&action=save">
-	<?php showAdminTokenField(); ?>
+	<?php show::showAdminTokenField(); ?>
 	<table id="linksList" style="width:100%">
 		<thead>
 			<tr>
-				<th><?php echo lang('Label'); ?></th>
-				<th><?php echo lang('Url'); ?></th>
-				<th><?php echo lang('Target'); ?></th>
+				<th><?php echo $core->lang('Label'); ?></th>
+				<th><?php echo $core->lang('Url'); ?></th>
+				<th><?php echo $core->lang('Target'); ?></th>
 				<th></th>
 				<th></th>
 				<th></th>
@@ -39,27 +39,27 @@
 				<td class="target">
 					<?php if ($link->getPlugin() == 'menu') {?>
 						<select name="target<?php echo $position; ?>">
-							<option value="_self" <?php echo ($link->getTarget() == '_self' ? 'selected' : ''); ?>><?php echo lang('Current page'); ?></option>
-							<option value="_blank" <?php echo ($link->getTarget() == '_blank' ? 'selected' : ''); ?>><?php echo lang('New page'); ?></option>
+							<option value="_self" <?php echo ($link->getTarget() == '_self' ? 'selected' : ''); ?>><?php echo $core->lang('Current page'); ?></option>
+							<option value="_blank" <?php echo ($link->getTarget() == '_blank' ? 'selected' : ''); ?>><?php echo $core->lang('New page'); ?></option>
 						</select>
 					<?php } else { ?>
 						<input type="hidden" name="target<?php echo $position; ?>" value="<?php echo $link->getTarget(); ?>" />
-						<?php echo ($link->getTarget() == '_self' ? lang('Current page') : lang('New page')); ?>
+						<?php echo ($link->getTarget() == '_self' ? $core->lang('Current page') : $core->lang('New page')); ?>
 					<?php } ?>
 				</td>
 				<td class="up">
 					<?php if ($position > 0) {?>
-						<a onclick="upLink(<?php echo $position; ?>)"><span data-tooltip class="has-tip tip-top" title="<?php echo lang('Up'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/up.png" alt="<?php echo lang('Up'); ?>" /></span></a>
+						<a onclick="upLink(<?php echo $position; ?>)"><span data-tooltip class="has-tip tip-top" title="<?php echo $core->lang('Up'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/up.png" alt="<?php echo $core->lang('Up'); ?>" /></span></a>
 					<?php } ?>
 				</td>
 				<td class="down">
 					<?php if ($position < count($data['menuLinks']) - 1) {?>
-						<a onclick="downLink(<?php echo $position; ?>)"><span data-tooltip class="has-tip tip-top" title="<?php echo lang('Down'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/down.png" alt="<?php echo lang('Down'); ?>" /></span></a>
+						<a onclick="downLink(<?php echo $position; ?>)"><span data-tooltip class="has-tip tip-top" title="<?php echo $core->lang('Down'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/down.png" alt="<?php echo $core->lang('Down'); ?>" /></span></a>
 					<?php } ?>
 				</td>
 				<td class="delete">
 					<?php if ($link->getPlugin() == 'menu') {?>
-						<a onclick="deleteLink(<?php echo $position; ?>)"><span data-tooltip class="has-tip tip-top" title="<?php echo lang('Delete'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/delete.png" alt="<?php echo lang('Delete'); ?>" /></span></a>
+						<a onclick="deleteLink(<?php echo $position; ?>)"><span data-tooltip class="has-tip tip-top" title="<?php echo $core->lang('Delete'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/delete.png" alt="<?php echo $core->lang('Delete'); ?>" /></span></a>
 					<?php } ?>
 				</td>
 			</tr>
@@ -68,17 +68,17 @@
 	</table>
 	<input type="hidden" name="number" value="<?php echo count($data['menuLinks']); ?>" />
 	<div class="buttons">
-		<button type="submit" class="button success radius"><?php echo lang("Save"); ?></button>
-		<button class="button secondary radius" onclick="window.location.reload();return false;"><?php echo lang('Cancel modifications'); ?></button>
+		<button type="submit" class="button success radius"><?php echo $core->lang("Save"); ?></button>
+		<button class="button secondary radius" onclick="window.location.reload();return false;"><?php echo $core->lang('Cancel modifications'); ?></button>
 	</div>
 </form>
-<a class="button round medium" id="addLink" onclick="addLink()"><?php echo lang('New link'); ?></a>
+<a class="button round medium" id="addLink" onclick="addLink()"><?php echo $core->lang('New link'); ?></a>
 <?php } ?>
 <script>
 function addLink() {
 	var position = parseInt($('#linksList tr:last').attr('id'));
 	
-	$('#linksList tr:last .down').html('<a onclick="downLink(' + position + ')"><span data-tooltip class="has-tip tip-top" title="<?php echo lang('Down'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/down.png" alt="<?php echo lang('Down'); ?>" /></span></a>')
+	$('#linksList tr:last .down').html('<a onclick="downLink(' + position + ')"><span data-tooltip class="has-tip tip-top" title="<?php echo $core->lang('Down'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/down.png" alt="<?php echo $core->lang('Down'); ?>" /></span></a>')
 	
 	position += 1;
 	
@@ -94,16 +94,16 @@ function addLink() {
 			'</td>'+
 			'<td class="target">'+
 				'<select name="target' + position + '">'+
-					'<option value="_self"><?php echo lang('Current page'); ?></option>' +
-					'<option value="_blank"><?php echo lang('New page'); ?></option>' +
+					'<option value="_self"><?php echo $core->lang('Current page'); ?></option>' +
+					'<option value="_blank"><?php echo $core->lang('New page'); ?></option>' +
 				'</select>' +
 			'</td>'+
 			'<td class="up">'+
-				'<a onclick="upLink(' + position + ')"><span data-tooltip class="has-tip tip-top" title="<?php echo lang('Up'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/up.png" alt="<?php echo lang('Up'); ?>" /></span></a>'+
+				'<a onclick="upLink(' + position + ')"><span data-tooltip class="has-tip tip-top" title="<?php echo $core->lang('Up'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/up.png" alt="<?php echo $core->lang('Up'); ?>" /></span></a>'+
 			'</td>'+
 			'<td class="down"></td>'+
 			'<td class="delete">'+
-				'<a onclick="deleteLink(' + position + ')"><span data-tooltip class="has-tip tip-top" title="<?php echo lang('Delete'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/delete.png" alt="<?php echo lang('Delete'); ?>" /></span></a>'+
+				'<a onclick="deleteLink(' + position + ')"><span data-tooltip class="has-tip tip-top" title="<?php echo $core->lang('Delete'); ?>"><img src="<?php echo MENU_PLUGINPATH; ?>img/delete.png" alt="<?php echo $core->lang('Delete'); ?>" /></span></a>'+
 			'</td>'+
 		'</tr>'
 	);

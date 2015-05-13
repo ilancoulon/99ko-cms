@@ -27,17 +27,17 @@ defined('ROOT') OR exit('No direct script access allowed');
 
 
 // sauvagarde la configuration du core (prise en charge de nouvelles valeures via $append)
-function saveConfig($val, $append = array()){
+/*function saveConfig($val, $append = array()){
 	$config = utilReadJsonFile(DATA.'config.txt', true);   
 	$config = array_merge($config, $append);
 	foreach($config as $k=>$v) if(isset($val[$k])) $config[$k] = $val[$k];
 	return utilWriteJsonFile(DATA.'config.txt', $config);
-}
+}*/
 
 // hash une chaine
-function encrypt($data){
+/*function encrypt($data){
 	return hash_hmac('sha1', $data, KEY);
-}
+}*/
 
 // Retourne une erreur 404 Document non trouvé
 function error404(){

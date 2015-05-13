@@ -20,7 +20,7 @@
 ## Préchauffage...
 session_start();
 defined('ROOT') OR exit('No direct script access allowed');
-define('VERSION', '1.6.3');
+define('VERSION', '2.0 b');
 define('COMMON',  ROOT.'common/');
 define('LANG', COMMON.'lang/');
 define('DATA', ROOT.'data/');
@@ -73,7 +73,7 @@ foreach($pluginsManager->getPlugins() as $plugin){
 ## Hook
 eval($core->callHook('startCreatePlugin'));
 ## Création de l'instance runPlugin, objet qui représente le plugin en cours d'execution
-$runPlugin = $pluginsManager->getPlugin((isset($_GET['p'])) ? $_GET['p'] : DEFAULT_PLUGIN);
+$runPlugin = $pluginsManager->getPlugin($core->getPluginToCall());
 ## Gestion des erreurs 404
 if(ROOT == './' && (!$runPlugin || $runPlugin->getConfigVal('activate') < 1)) error404();
 ## Hook

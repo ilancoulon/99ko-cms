@@ -47,7 +47,7 @@ class pluginsManager{
 	## Sauvegarde la configuration d'un plugin
 	public function savePluginConfig($obj){
 		if($obj->getIsValid() && $path = $obj->getDataPath()){
-		    return utilWriteJsonFile($path.'config.txt', $obj->getConfig());
+		    return util::writeJsonFile($path.'config.txt', $obj->getConfig());
 		}
 	}
 	
@@ -88,14 +88,14 @@ class pluginsManager{
 			else $dataNotSorted[$dir]['priority'] = '10';
 		}
 		// On tri les plugins par priorité
-		$dataSorted = util::sort2DimArray($dataNotSorted, 'priority', 'num');
+		$dataSorted = @util::sort2DimArray($dataNotSorted, 'priority', 'num');
 		foreach($dataSorted as $plugin=>$config){
 			$data[] = $this->createPlugin($plugin);
 		}
 		return $data;
 	}
 	
-	// Créée un objet plugin
+	## Créée un objet plugin
 	private function createPlugin($name){
 		// Instance du core
 		$core = core::getInstance();
@@ -117,20 +117,20 @@ class pluginsManager{
 		return $plugin;
 	}
 	
-	// Singleton
+	## Singleton
 	public static function getInstance(){
 		if(is_null(self::$instance)) self::$instance = new pluginsManager();
 		return self::$instance;
 	}
 	
-	// Retourne une valeur de configuration
+	## Retourne une valeur de configuration
 	public static function getPluginConfVal($pluginName, $kConf){
 		$instance = self::getInstance();
 		$plugin = $instance->getPlugin($pluginName);
 		return $plugin->getConfigVal($kConf);
 	}
 	
-	// Détermine si le plugin ciblé existe et s'il est actif
+	## Détermine si le plugin ciblé existe et s'il est actif
 	public static function isActivePlugin($pluginName){
 		$instance = self::getInstance();
 		$plugin = $instance->getPlugin($pluginName);

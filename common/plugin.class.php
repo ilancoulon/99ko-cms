@@ -195,6 +195,12 @@ class plugin{
 	public function getLang(){
 		return $this->lang;
 	}
+	
+	## Détermine si le plugin utilise des onglets admin
+	public function useAdminTabs(){
+		if(is_array($this->adminTemplate)) return true;
+		else return false;
+	}
 
 	## Permet de modifier une valeur de configuration
 	public function setConfigVal($k, $v){
@@ -241,7 +247,9 @@ class plugin{
 
 	## Détermine si le plugin est installé
 	public function isInstalled(){
-		$currentConfig = implode(',', array_keys($this->config));
+		$temp = $this->config;
+		unset($temp['activate']);
+		$currentConfig = implode(',', array_keys($temp));
 		$initConfig = @implode(',', array_keys($this->initConfig));
 		if(count($this->config) < 1 || $currentConfig != $initConfig) return false;
 		elseif(isset($currentConfig['adminTabs'])){
