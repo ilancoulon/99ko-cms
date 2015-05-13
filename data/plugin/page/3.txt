@@ -1,1 +1,0 @@
-{"id":3,"name":"Texte support","position":5,"isHomepage":"0","content":"<p>T\u00e9l\u00e9chargez une version plus r\u00e9cente, des plugins et des th\u00e8mes sur le site officiel<br>En cas de probl\u00e8me avec 99ko, rendez-vous sur le forum d'entraide.<\/p>","isHidden":1,"file":"","mainTitle":null,"metaDescriptionTag":null,"metaTitleTag":""}

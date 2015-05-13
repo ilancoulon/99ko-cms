@@ -4,7 +4,7 @@ defined('ROOT') OR exit('No direct script access allowed');
 $id = ($core->getUrlParam(1)) ? $core->getUrlParam(1) : false;
 if(!$id) $pageItem = $page->createHomepage();
 elseif($pageItem = $page->create($id)){}
-else error404();
+else $core->error404();
 # Gestion du titre
 if($runPlugin->getConfigVal('hideTitles')) $runPlugin->setMainTitle('');
 else $runPlugin->setMainTitle(($pageItem->getMainTitle() != '') ? $pageItem->getMainTitle() : $pageItem->getName());

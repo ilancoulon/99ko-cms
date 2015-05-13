@@ -47,7 +47,7 @@ class pluginsManager{
 	## Sauvegarde la configuration d'un plugin
 	public function savePluginConfig($obj){
 		if($obj->getIsValid() && $path = $obj->getDataPath()){
-		    return util::writeJsonFile($path.'config.txt', $obj->getConfig());
+		    return util::writeJsonFile($path.'config.json', $obj->getConfig());
 		}
 	}
 	
@@ -67,8 +67,8 @@ class pluginsManager{
 		if($activate) $config['activate'] = "1";
 		else $config['activate'] = "0";
 		// Création du fichier config
-		@util::writeJsonFile(DATA_PLUGIN .$name.'/config.txt', $config);
-		@chmod(DATA_PLUGIN .$name.'/config.txt', 0666);
+		@util::writeJsonFile(DATA_PLUGIN .$name.'/config.json', $config);
+		@chmod(DATA_PLUGIN .$name.'/config.json', 0666);
 		// Appel de la fonction d'installation du plugin
 		if(function_exists($name.'Install')) call_user_func($name.'Install');
 		// Check du fichier config
@@ -83,7 +83,7 @@ class pluginsManager{
 		$items = util::scanDir(PLUGINS);
 		foreach($items['dir'] as $dir){
 			// Si le plugin est installé on récupère sa configuration
-			if(file_exists(DATA_PLUGIN .$dir. '/config.txt')) $dataNotSorted[$dir] = util::readJsonFile(DATA_PLUGIN .$dir. '/config.txt', true);
+			if(file_exists(DATA_PLUGIN .$dir. '/config.json')) $dataNotSorted[$dir] = util::readJsonFile(DATA_PLUGIN .$dir. '/config.json', true);
 			// Sinon on lui attribu une priorité faible
 			else $dataNotSorted[$dir]['priority'] = '10';
 		}
@@ -102,7 +102,7 @@ class pluginsManager{
 		// Infos du plugin
 		$infos = util::readJsonFile(PLUGINS .$name. '/param/infos.json');
 		// Configuration du plugin
-		$config = util::readJsonFile(DATA_PLUGIN .$name. '/config.txt');
+		$config = util::readJsonFile(DATA_PLUGIN .$name. '/config.json');
 		// Hooks du plugin
 		$hooks = util::readJsonFile(PLUGINS .$name. '/param/hooks.json');
 		// Config usine

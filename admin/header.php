@@ -105,7 +105,7 @@
                   </ul>
                 </nav>
                 
-                <a title="<?php echo $core->lang("NoDB CMS"); ?>" onclick="window.open(this.href);return false;" href="http://99ko.hellojo.fr" class="copyright button expand"><?php echo $core->lang("Just using <b>99ko</b>"); ?> <?php echo $version; ?></a>
+                <a title="<?php echo $core->lang("NoDB CMS"); ?>" onclick="window.open(this.href);return false;" href="http://99ko.hellojo.fr" class="copyright button expand"><?php echo $core->lang("Just using <b>99ko</b>"); ?> <?php echo VERSION; ?></a>
 
               </div>  <!-- /sidebar -->
               </div> <!-- /hide-for-small -->

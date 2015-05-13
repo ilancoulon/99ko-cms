@@ -67,7 +67,7 @@ class page{
 		$data = array();
 		if(is_dir(PAGE_DATAPATH)){
 			$dataNotSorted = array();
-			$items = util::scanDir(PAGE_DATAPATH, array('config.txt'));
+			$items = util::scanDir(PAGE_DATAPATH, array('config.json'));
 			foreach($items['file'] as $k=>$file){
 				$dataNotSorted[] = util::readJsonFile(DATA_PLUGIN. 'page/'.$file, true);
 			}

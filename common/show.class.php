@@ -64,7 +64,7 @@ class show{
      // affiche les balises "link" type css (admin + theme)
      public static function showLinkTags($format = '<link href="[file]" rel="stylesheet" type="text/css" />'){
       $core = core::getInstance();
-     	global $pluginsManager;
+     	$pluginsManager = pluginsManager::getInstance();
      	$data = '';
      	eval($core->callHook('startShowLinkTags'));
      	foreach($pluginsManager->getPlugins() as $k=>$plugin) if($plugin->getConfigval('activate') == 1){
@@ -79,7 +79,7 @@ class show{
      // affiche les balises "script" type javascript (admin + theme)
      public static function showScriptTags($format = '<script type="text/javascript" src="[file]"></script>') {
       $core = core::getInstance();
-     	global $pluginsManager;
+     	$pluginsManager = pluginsManager::getInstance();
      	$data = '';
      	eval($core->callHook('startShowScriptTags'));
      	foreach($pluginsManager->getPlugins() as $k=>$plugin) if($plugin->getConfigval('activate') == 1){
@@ -179,19 +179,9 @@ class show{
      	echo $data;
      }
 
-     // affiche le temps d'execution (theme)
-     public static function showExecTime() {
-     	global $time;
-	$core = core::getInstance();
-     	eval($core->callHook('startShowExecTime'));
-     	$data = round(microtime(true) - $time, 3);
-     	eval($core->callHook('endShowExecTime'));
-     	echo $data;
-     }
-
      // affiche la navigation principale (theme)
      public static function showMainNavigation($format = '<li><a href="[target]" target="[targetAttribut]">[label]</a></li>') {
-     	global $pluginsManager;
+     	$pluginsManager = pluginsManager::getInstance();
 	$core = core::getInstance();
      	$data = '';
      	eval($core->callHook('startShowMainNavigation'));

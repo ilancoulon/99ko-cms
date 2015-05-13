@@ -20,18 +20,7 @@
 ## Préchauffage...
 session_start();
 defined('ROOT') OR exit('No direct script access allowed');
-define('VERSION', '2.0 b');
-define('COMMON',  ROOT.'common/');
-define('LANG', COMMON.'lang/');
-define('DATA', ROOT.'data/');
-define('UPLOAD', ROOT.'data/upload/');
-define('DATA_PLUGIN', ROOT.'data/plugin/');
-define('THEMES', ROOT.'theme/');
-define('PLUGINS', ROOT.'plugin/');
-define('ADMIN_PATH', ROOT.'admin/');
-define('CACHE_TIME', 0);
-if(file_exists(DATA.'key.php')) include(DATA.'key.php');
-include_once(COMMON.'core.lib.php');
+include_once('config.php');
 include_once(COMMON.'util.class.php');
 include_once(COMMON.'core.class.php');
 include_once(COMMON.'pluginsManager.class.php');
@@ -46,14 +35,6 @@ define('DEFAULT_PLUGIN', $core->getConfigVal('defaultPlugin'));
 if(!$core->isInstalled()){
 	header('location:' .ROOT. 'install.php');
 	die();
-}
-## Gestion du cache HTML (bêta)
-if(CACHE_TIME > 0 && ROOT == './'){
-	$isInCache = readCache();
-	if(!is_numeric($isInCache)){
-		echo $isInCache;
-		die();
-	}
 }
 ## Création de l'istance pluginsManager
 $pluginsManager = pluginsManager::getInstance();
@@ -74,8 +55,6 @@ foreach($pluginsManager->getPlugins() as $plugin){
 eval($core->callHook('startCreatePlugin'));
 ## Création de l'instance runPlugin, objet qui représente le plugin en cours d'execution
 $runPlugin = $pluginsManager->getPlugin($core->getPluginToCall());
-## Gestion des erreurs 404
-if(ROOT == './' && (!$runPlugin || $runPlugin->getConfigVal('activate') < 1)) error404();
 ## Hook
 eval($core->callHook('endCreatePlugin'));
 ?>

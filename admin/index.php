@@ -25,7 +25,6 @@ $administrator = $core->createAdministrator();
 ## Variables
 $msg = '';
 $msgType = '';
-$version = VERSION;
 $pageTitle = (!isset($_GET['p'])) ? $core->lang('Welcome to 99ko') : $runPlugin->getInfoVal('name');
 ## Mode login
 if($administrator->isAuthorized() && $core->detectAdminMode() == 'login'){

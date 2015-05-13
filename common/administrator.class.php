@@ -53,7 +53,6 @@ class administrator{
             $_SESSION['admin'] = $this->pwd;
             $_SESSION['adminEmail'] = $email;
             $_SESSION['adminPwd'] = $this->pwd;
-            $_SESSION['loginAttempt'] = 0;
             return true;
         }
         else return false;
@@ -78,7 +77,7 @@ class administrator{
     }
     
     ## Fonction de cryptage
-    private function encrypt($data){
+    public function encrypt($data){
         return hash_hmac('sha1', $data, KEY);
     }
 

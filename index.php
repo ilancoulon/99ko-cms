@@ -18,17 +18,16 @@
  */
 
  ## Préchauffage...
-$time = microtime(true);
 define('ROOT', './');
 include_once(ROOT.'common/common.php');
 ## Hook
 eval($core->callHook('startFrontIncludePluginFile'));
+## Gestion des erreurs 404
+if(!$runPlugin || $runPlugin->getConfigVal('activate') < 1) $core->error404();
 ## On inclut le fichier public et la template du plugin en cours d'execution
-if($runPlugin->getPublicFile()){
+elseif($runPlugin->getPublicFile()){
 	include($runPlugin->getPublicFile());
 	include($runPlugin->getPublicTemplate());
-	// Gestion du cache HTML (bêta)
-	if(CACHE_TIME > 0 && count($_POST) == 0) addToCache();
 }
 ## Hook
 eval($core->callHook('endFrontIncludePluginFile'));

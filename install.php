@@ -20,14 +20,21 @@ define('ROOT', './');
 define('EXTRAS', ROOT.'plugin/extras/other/');
 # plugin par defaut
 define('DEFAULT_PLUGIN', 'page');
-include_once(ROOT.'common/constants.php');
-include_once(COMMON.'core.lib.php');
+include_once(ROOT.'common/config.php');
+include_once(COMMON.'util.class.php');
+include_once(COMMON.'core.class.php');
+include_once(COMMON.'pluginsManager.class.php');
+include_once(COMMON.'plugin.class.php');
+include_once(COMMON.'show.class.php');
+include_once(COMMON.'administrator.class.php');
 # Gestion des erreurs PHP (Dev Mod)
 if(DEBUG) error_reporting(E_ALL).ini_set('display_errors', 1);
 else error_reporting(E_ALL ^ E_NOTICE);
-utilSetMagicQuotesOff();
+$core = core::getInstance();
+$administrator = new administrator();
+//utilSetMagicQuotesOff();
 // Très important de déclarer le jeton !!!
-$token = util::generateToken();
+//$token = util::generateToken();
 
 /*
  *---------------------------------------------------------------
@@ -42,10 +49,10 @@ if (isset($_POST['submit_lang'])) {
 	$_SESSION['lang'] = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 	$lang = $_SESSION['lang'];
 }
-$pluginsManager = new pluginsManager();
+$pluginsManager = pluginsManager::getInstance();
 $hooks = array();
 # Vérification que le fichier de configuration n'existe pas
-if(file_exists(DATA. 'config.txt')) die(lang('Config file already exist !'));
+if(file_exists(DATA. 'config.json')) die($core->lang('Config file already exist !'));
 /*
  *---------------------------------------------------------------
  * ON VÉRIFIE QUE LE SERVEUR PEUT FAIRE TOURNER 99KO
@@ -88,28 +95,7 @@ foreach ($dir_array as $dir) {
  * CRÉATION DES FICHIERS NÉCESSAIRES A 99KO
  *---------------------------------------------------------------
  */
-$error = '';
-@chmod(ROOT.'.htaccess', 0666);
-if(!file_exists(ROOT.'.htaccess')){
-	if(!@file_put_contents(ROOT.'.htaccess', "Options -Indexes", 0666)) $error = true;
-}
-if(!is_dir(DATA) && (!@mkdir(DATA) || !@chmod(DATA, 0777))) $error = true;
-
-if (!$error) {
-  if(!file_exists(DATA. '.htaccess')){
-  	if(!@file_put_contents(DATA. '.htaccess', "deny from all", 0666)) $error = true;
-  }
-  if(!is_dir(DATA_PLUGIN) && (!@mkdir(DATA_PLUGIN) || !@chmod(DATA_PLUGIN, 0777))) $error = true;
-  if(!is_dir(UPLOAD) && (!@mkdir(UPLOAD) || !@chmod(UPLOAD, 0777))) $error = true;
-  if(!file_exists(UPLOAD. '.htaccess')){
-  	if(!@file_put_contents(UPLOAD. '.htaccess', "allow from all", 0666)) $error = true;
-  }
-  # Chmodd sur le fichier install.php
-  if(!file_exists(__FILE__) || !@chmod(__FILE__, 0666)) $error = true;
-
-  $key = uniqid(true);
-  if(!file_exists(DATA. 'key.php') && !@file_put_contents(DATA. 'key.php', "<?php define('KEY', '$key'); ?>", 0666)) $error = true;
-  if(!file_exists(DATA. 'key.php')) include(DATA. 'key.php');
+if($core->install()){
 
             foreach($pluginsManager->getPlugins() as $plugin){
   	          if($plugin->getLibFile()){
@@ -119,20 +105,17 @@ if (!$error) {
 			  $pluginsManager->savePluginConfig($plugin);
   	          }
             }
-            foreach($pluginsManager->getPlugins() as $plugin){
-  	        foreach($plugin->getHooks() as $hookName=>$function) $hooks[$hookName][] = $function;
-            }
 }
 /*
  *---------------------------------------------------------------
  * PROCÉSSUS D'INSTALLATION LORS DU SUBMIT
  *---------------------------------------------------------------
  */                 
-if (isset($_POST['install_submit']) && util::checkToken($token)) {
+if (isset($_POST['install_submit']) && $administrator->isAuthorized()) {
         $error = array();
     	$siteName = isset($_POST['siteName']) ? $_POST['siteName'] : '';
     	$siteDescription = isset($_POST['siteDescription']) ? $_POST['siteDescription'] : '';
-    	$adminPwd = isset($_POST['adminPwd']) ? encrypt($_POST['adminPwd']) : ''; 
+    	$adminPwd = isset($_POST['adminPwd']) ? $administrator->encrypt($_POST['adminPwd']) : ''; 
     	$adminEmail = isset($_POST['adminEmail']) ? $_POST['adminEmail'] : '';
     	$siteUrl = isset($_POST['siteUrl']) ? $_POST['siteUrl'] : '';
     	$defaultPlugin = isset($_POST['defaultPlugin']) ? $_POST['defaultPlugin'] : '';
@@ -157,14 +140,14 @@ if (isset($_POST['install_submit']) && util::checkToken($token)) {
            'checkUrl'        => util::strCheck($checkUrl),
            'debug'           => '0',
         );  		
-        if(!@file_put_contents(DATA. 'config.txt', json_encode($config)) ||	!@chmod(DATA. 'config.txt', 0666)) $error = true;
+        if(!@file_put_contents(DATA. 'config.json', json_encode($config)) ||	!@chmod(DATA. 'config.json', 0666)) $error = true;
 
         if($error){
-	      $data['msg'] = lang('Problem when installing');
+	      $data['msg'] = $core->lang('Problem when installing');
 	      $data['msgType'] = "error";
         }
 		elseif(!util::isEmail(trim($_POST['adminEmail']))){
-			$msg = lang("Invalid email.");
+			$msg = $core->lang("Invalid email.");
 			$msgType = 'error';
 		}        
         else{              
@@ -183,7 +166,7 @@ if (isset($_POST['install_submit']) && util::checkToken($token)) {
 <html>
   <head>
     <meta charset="utf-8">
-    <title><?php echo lang("99ko installer"); ?></title>
+    <title><?php echo $core->lang("99ko installer"); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo EXTRAS; ?>admin.css" media="all">
     <link rel="stylesheet" href="<?php echo EXTRAS; ?>foundation.min.css?v=5.5.2" media="all">
@@ -212,12 +195,12 @@ if (isset($_POST['install_submit']) && util::checkToken($token)) {
                     <div class="small-8 columns">
 						<select name="siteLang">
 							<?php foreach($langs_select as $k => $v) { ?>
-							<option <?php if($k == $lang){ ?>selected="selected"<?php } ?> value="<?php echo $k; ?>"><?php echo lang($v); ?></option>
+							<option <?php if($k == $lang){ ?>selected="selected"<?php } ?> value="<?php echo $k; ?>"><?php echo $core->lang($v); ?></option>
 							<?php }?>			
 	  					</select>	                    	
                     </div>
                     <div class="small-4 columns">
-                       <input type="submit" name="submit_lang" class="button postfix" value="<?php echo lang("Go"); ?>">
+                       <input type="submit" name="submit_lang" class="button postfix" value="<?php echo $core->lang("Go"); ?>">
                    </div>
                  </div>
                </div>
@@ -226,57 +209,57 @@ if (isset($_POST['install_submit']) && util::checkToken($token)) {
 	   	   
        <div class="row panel">
                 <noscript>
-                    <?php showMsg(lang("Javascript must be enabled in your browser to take full advantage of features 99ko."), "error"); ?> 
+                    <?php show::showMsg($core->lang("Javascript must be enabled in your browser to take full advantage of features 99ko."), "error"); ?> 
                 </noscript> 
-                <?php showMsg($msg, $msgType); // Affichage de toutes les Notifications ?>
+                <?php show::showMsg($msg, $msgType); // Affichage de toutes les Notifications ?>
 		
-		<h3 class="subheader"><?php echo lang("99ko installer"); ?> <?php echo VERSION; ?></h3>	
+		<h3 class="subheader"><?php echo $core->lang("99ko installer"); ?> <?php echo VERSION; ?></h3>	
 		<hr />		
 		<form role="form" method="post">
-		<?php showAdminTokenField(); ?>
+		<?php show::showAdminTokenField(); ?>
 		
 		  <div class="row">
 		     <div class="large-12 columns">
-                 <label for="siteName"><?php echo lang("Site name"); ?> :</label>
+                 <label for="siteName"><?php echo $core->lang("Site name"); ?> :</label>
                  <input type="text" name="siteName" id="siteName" autocomplete="off" required />
 		     </div>
 		  </div>
 
 		  <div class="row">
 		     <div class="large-12 columns">
-                 <label for="siteDescription"><?php echo lang("Site description"); ?> :</label>
+                 <label for="siteDescription"><?php echo $core->lang("Site description"); ?> :</label>
                  <input type="text" name="siteDescription" id="siteDescription" autocomplete="off" required />
 		     </div>
 		  </div>
 		  		  
 		  <div class="row">
 		     <div class="large-12 columns">
-                 <label for="siteUrl"><?php echo lang("URL of the site (no trailing slash)"); ?> :</label>
-                 <input type="url" name="siteUrl" id="siteUrl" value="<?php echo getSiteUrl(); ?>" required />
+                 <label for="siteUrl"><?php echo $core->lang("URL of the site (no trailing slash)"); ?> :</label>
+                 <input type="url" name="siteUrl" id="siteUrl" value="<?php echo $core->makeSiteUrl(); ?>" required />
 		     </div>
 		  </div>
 		  
 		  <div class="row">
 		     <div class="large-12 columns">
-                 <label for="adminEmail"><?php echo lang("Admin mail"); ?> :</label>
+                 <label for="adminEmail"><?php echo $core->lang("Admin mail"); ?> :</label>
                  <input type="email" name="adminEmail" id="adminEmail" autocomplete="off" required />
 		     </div>
 		  </div>
 		  
 		  <div class="row">
 		     <div class="large-12 columns">
-                 <label for="adminPwd"><?php echo lang('Password'); ?> :</label>
+                 <label for="adminPwd"><?php echo $core->lang('Password'); ?> :</label>
                  <input type="password" name="adminPwd" id="adminPwd" autocomplete="off" required />
 		     </div>
 		  </div>		  		  
 		  		  
-		  <input type="submit" name="install_submit" class="button success large radius right" value="<?php echo lang("Install"); ?>">
+		  <input type="submit" name="install_submit" class="button success large radius right" value="<?php echo $core->lang("Install"); ?>">
 		</form>
 
        </div> <!-- row & pannel Fin -->	
        
        <p class="text-center">
-               <a title="<?php echo lang("NoDB CMS"); ?>" onclick="window.open(this.href);return false;" href="http://99ko.hellojo.fr"><?php echo lang("Just using <b>99ko</b>"); ?></a>
+               <a title="<?php echo $core->lang("NoDB CMS"); ?>" onclick="window.open(this.href);return false;" href="http://99ko.hellojo.fr"><?php echo $core->lang("Just using <b>99ko</b>"); ?></a>
        </p>	
        
     </div>

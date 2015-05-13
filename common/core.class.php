@@ -34,7 +34,7 @@ class core{
         // Macgic quotes OFF
         util::setMagicQuotesOff();
         // Configuration
-        $this->config = util::readJsonFile(DATA.'config.txt', true);
+        $this->config = util::readJsonFile(DATA.'config.json', true);
         // Error reporting
         if($this->config['debug']) error_reporting(E_ALL);
         else error_reporting(E_ALL ^ E_NOTICE);
@@ -117,7 +117,7 @@ class core{
     
         ## Détermine si 99ko est installé
     public function isInstalled(){
-        if(!file_exists(DATA.'config.txt')) return false;
+        if(!file_exists(DATA.'config.json')) return false;
         else return true;
     }
     
@@ -216,15 +216,23 @@ class core{
         elseif(isset($_GET['p'])) return 'plugin';
     }
     
+    ## Renvoi une erreur 404
+    public function error404(){
+            header("HTTP/1.1 404 Not Found");
+            header("Status: 404 Not Found");
+            include_once(THEMES.$this->getConfigVal('theme').'/404.php');	
+            die();
+    }
+    
     ## Sauvegarde le tableau de configuration
     public function saveConfig($val, $append = array()){
-        $config = util::readJsonFile(DATA.'config.txt', true);
+        $config = util::readJsonFile(DATA.'config.json', true);
         $config = array_merge($config, $append);
         foreach($config as $k=>$v) if(isset($val[$k])){
             $config[$k] = $val[$k];
         }
-        if(util::writeJsonFile(DATA.'config.txt', $config)){
-            $this->config = util::readJsonFile(DATA.'config.txt', true);
+        if(util::writeJsonFile(DATA.'config.json', $config)){
+            $this->config = util::readJsonFile(DATA.'config.json', true);
             return true;
         }
         else return false;
@@ -233,6 +241,31 @@ class core{
     ## Retourne l'objet administrator
     public function createAdministrator(){
         return new administrator($this->getConfigVal('adminEmail'), $this->getConfigVal('adminPwd'));
+    }
+    
+    ## Installation de 99ko
+    public function install(){
+        $install = true;
+        @chmod(ROOT.'.htaccess', 0666);
+        if(!file_exists(ROOT.'.htaccess')){
+            if(!@file_put_contents(ROOT.'.htaccess', "Options -Indexes", 0666)) $install = false;
+        }
+        if(!is_dir(DATA) && (!@mkdir(DATA) || !@chmod(DATA, 0777))) $install = false;
+        if (!$error){
+            if(!file_exists(DATA. '.htaccess')){
+                if(!@file_put_contents(DATA. '.htaccess', "deny from all", 0666)) $install = false;
+            }
+            if(!is_dir(DATA_PLUGIN) && (!@mkdir(DATA_PLUGIN) || !@chmod(DATA_PLUGIN, 0777))) $install = false;
+            if(!is_dir(UPLOAD) && (!@mkdir(UPLOAD) || !@chmod(UPLOAD, 0777))) $install = false;
+            if(!file_exists(UPLOAD. '.htaccess')){
+                if(!@file_put_contents(UPLOAD. '.htaccess', "allow from all", 0666)) $install = false;
+            }
+            if(!file_exists(__FILE__) || !@chmod(__FILE__, 0666)) $install = false;
+            $key = uniqid(true);
+            if(!file_exists(DATA. 'key.php') && !@file_put_contents(DATA. 'key.php', "<?php define('KEY', '$key'); ?>", 0666)) $install = false;
+            if(!file_exists(DATA. 'key.php')) include(DATA. 'key.php');
+        }
+        return $install;
     }
 }
 ?>
