@@ -43,11 +43,11 @@ $administrator = new administrator();
  */
 $langs_select = array('fr'=> 'French', 'en' => 'English');
 if (isset($_POST['submit_lang'])) { 
-    $_SESSION['lang'] = isset($_POST['siteLang']) ? $_POST['siteLang'] : '';
-    $lang = utilReadJsonFile(LANG. $_SESSION['lang'].'.json');
+    $_SESSION['lang'] = isset($_POST['siteLang']) ? $_POST['siteLang'] : '';  
+    $lang = util::readJsonFile(LANG. $_SESSION['lang'].'.json');
 } else {
 	$_SESSION['lang'] = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-	$lang = $_SESSION['lang'];
+	$lang = util::readJsonFile(LANG. $_SESSION['lang'].'.json');
 }
 $pluginsManager = pluginsManager::getInstance();
 $hooks = array();
@@ -111,7 +111,7 @@ if($core->install()){
  * PROCÉSSUS D'INSTALLATION LORS DU SUBMIT
  *---------------------------------------------------------------
  */                 
-if (isset($_POST['install_submit']) && $administrator->isAuthorized()) {
+if (isset($_POST['install_submit'])) {
         $error = array();
     	$siteName = isset($_POST['siteName']) ? $_POST['siteName'] : '';
     	$siteDescription = isset($_POST['siteDescription']) ? $_POST['siteDescription'] : '';

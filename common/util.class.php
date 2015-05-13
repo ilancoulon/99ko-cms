@@ -57,7 +57,7 @@ class util{
     }
 
 	public static function strCheck($str) {
-		return htmlspecialchars($str, ENT_QUOTES);
+		return htmlspecialchars($str, ENT_QUOTES ,'UTF-8');
 	}
 	
     public static function isEmail($email){

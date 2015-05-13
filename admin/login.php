@@ -18,9 +18,9 @@
     <div class="small-5 small-centered columns login">
      <div class="panel radius">
 
-	  <?php if (isset($_SESSION['msg_install'])) { ?>	
+	  <?php if (isset($_SESSION['msg_install'])): ?>	
           <?php show::showMsg('<h5>' .$core->lang('Installed !'). '</h5><strong>'.$core->lang('99ko is installed').'<br />'.$core->lang('Also, delete the install.php file'). '</strong>', 'success'); ?>     		     
-	  <?php } ?> 
+	  <?php endif; ?> 
 	  
            <h3><?php echo $core->lang('Login'); ?></h3>
            <hr />
