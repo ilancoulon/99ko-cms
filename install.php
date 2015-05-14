@@ -37,10 +37,10 @@ $token = util::generateToken();
 $langs_select = array('fr'=> 'French', 'en' => 'English');
 if (isset($_POST['submit_lang'])) { 
     $language = isset($_POST['siteLang']) ? $_POST['siteLang'] : '';
-    $lang = utilReadJsonFile(LANG. $language. '.json');
+    $lang = util::readJsonFile(LANG. $language. '.json');
 } else {
 	$language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-	$lang = utilReadJsonFile(LANG. $language .'.json');
+	$lang = util::readJsonFile(LANG. $language .'.json');
 }
 $pluginsManager = new pluginsManager();
 $hooks = array();
