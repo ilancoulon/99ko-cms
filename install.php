@@ -36,11 +36,11 @@ $token = util::generateToken();
  */
 $langs_select = array('fr'=> 'French', 'en' => 'English');
 if (isset($_POST['submit_lang'])) { 
-    $_SESSION['lang'] = isset($_POST['siteLang']) ? $_POST['siteLang'] : '';
-    $lang = utilReadJsonFile(LANG. $_SESSION['lang'].'.json');
+    $language = isset($_POST['siteLang']) ? $_POST['siteLang'] : '';
+    $lang = utilReadJsonFile(LANG. $language. '.json');
 } else {
-	$_SESSION['lang'] = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-	$lang = $_SESSION['lang'];
+	$language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+	$lang = utilReadJsonFile(LANG. $language .'.json');
 }
 $pluginsManager = new pluginsManager();
 $hooks = array();
@@ -130,32 +130,33 @@ if (!$error) {
  */                 
 if (isset($_POST['install_submit']) && util::checkToken($token)) {
         $error = array();
-    	$siteName = isset($_POST['siteName']) ? $_POST['siteName'] : '';
-    	$siteDescription = isset($_POST['siteDescription']) ? $_POST['siteDescription'] : '';
+    	$siteName = isset($_POST['siteName']) ? util::strCheck($_POST['siteName']) : '';
+    	$siteDescription = isset($_POST['siteDescription']) ? util::strCheck($_POST['siteDescription']) : '';
     	$adminPwd = isset($_POST['adminPwd']) ? encrypt($_POST['adminPwd']) : ''; 
     	$adminEmail = isset($_POST['adminEmail']) ? $_POST['adminEmail'] : '';
-    	$siteUrl = isset($_POST['siteUrl']) ? $_POST['siteUrl'] : '';
-    	$defaultPlugin = isset($_POST['defaultPlugin']) ? $_POST['defaultPlugin'] : '';
-    	$urlRewriting = isset($_POST['urlRewriting']) ? $_POST['urlRewriting'] : '';
-    	$theme = isset($_POST['theme']) ? $_POST['theme'] : '';
-    	$siteLang = isset($lang) ? $lang : '';
-    	$hideTitles = isset($_POST['hideTitles']) ? $_POST['hideTitles'] : '';
+    	$siteUrl = isset($_POST['siteUrl']) ? util::strCheck($_POST['siteUrl']) : '';
+    	$defaultPlugin = isset($_POST['defaultPlugin']) ? $_POST['defaultPlugin'] : 'page';
+    	$urlRewriting = isset($_POST['urlRewriting']) ? $_POST['urlRewriting'] : '0';
+    	$theme = isset($_POST['theme']) ? $_POST['theme'] : 'default';
+    	$siteLang = isset($language) ? $language : 'fr';
+    	$hideTitles = isset($_POST['hideTitles']) ? $_POST['hideTitles'] : '0';
     	$checkUrl = base64_decode('aHR0cDovLzk5a28uaGVsbG9qby5mci92ZXJzaW9u');
+    	$debug = '0';
     	
         # Ecriture du fichier de configuration
     	$config = array(
-           'siteName'        => util::strCheck($siteName),
-           'siteDescription' => util::strCheck($siteDescription),
-           'adminPwd'        => util::strCheck($adminPwd),
-           'adminEmail'      => util::strCheck($adminEmail),
-           'siteUrl'         => util::strCheck($siteUrl),        
-           'urlRewriting'    => '0',
-           'theme'           => 'default',
-           'siteLang'        => util::strCheck($siteLang),
-           'hideTitles'      => '0',
-           'defaultPlugin'   => 'page',
-           'checkUrl'        => util::strCheck($checkUrl),
-           'debug'           => '0',
+           'siteName'        => $siteName,
+           'siteDescription' => $siteDescription,
+           'adminPwd'        => $adminPwd,
+           'adminEmail'      => $adminEmail,
+           'siteUrl'         => $siteUrl,        
+           'urlRewriting'    => $urlRewriting,
+           'theme'           => $theme,
+           'siteLang'        => $siteLang,
+           'hideTitles'      => $hideTitles,
+           'defaultPlugin'   => $defaultPlugin,
+           'checkUrl'        => $checkUrl,
+           'debug'           => $debug,
         );  		
         if(!@file_put_contents(DATA. 'config.txt', json_encode($config)) ||	!@chmod(DATA. 'config.txt', 0666)) $error = true;
 
@@ -163,8 +164,8 @@ if (isset($_POST['install_submit']) && util::checkToken($token)) {
 	      $data['msg'] = lang('Problem when installing');
 	      $data['msgType'] = "error";
         }
-		elseif(!util::isEmail(trim($_POST['adminEmail']))){
-			$msg = lang("Invalid email.");
+		elseif (!$adminEmail || !util::isValidEmail($adminEmail)){
+			$msg = lang("Please insert a valid email.");
 			$msgType = 'error';
 		}        
         else{              

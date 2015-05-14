@@ -31,7 +31,7 @@ class show{
      public static function showMsg($msg, $type){
       if(ROOT == './'){
      	$class = array(
-     		'error'   => 'error',
+     		'error'   => 'alert',
      		'success' => 'success',
      		'info'    => 'info',
      		'warning' => 'warning',
@@ -42,7 +42,7 @@ class show{
           }
      	$data = '';
      	eval(callHook('startShowMsg'));
-     	if($msg != '') $data = '<div id="msg" class="'.$class[$type].'"><p>'.nl2br($msg).'</p></div>';
+     	if($msg != '') $data = '<div data-alert class="alert-box '.$class[$type].' radius">'.nl2br($msg).'</div>';
       }
       else{
 	 $class = array(
@@ -59,7 +59,7 @@ class show{
      	$data = '';
      	eval(callHook('startShowMsg'));
      	if($msg != '') $data = '<div data-alert class="alert-box '.$class[$type].' radius">
-     	                                <p>'.nl2br($msg).'</p><a href="#" class="close">&times;</a>
+     	                                '.nl2br($msg).'<a href="#" class="close">&times;</a>
      	                        </div>';
       }
      	eval(callHook('endShowMsg'));

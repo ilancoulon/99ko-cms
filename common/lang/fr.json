@@ -47,6 +47,7 @@
 	"Update successful" : "Mise à jour effectuée",
 	"The admin password has been reset :" : "Le mot de passe admin a été réinitialisé :",
 	"Problem when installing" : "Problème lors de l'installation",
+	"Please insert a valid email." : "Veuillez insérer une adresse de couriel valide.",
 	"99ko is installed" : "99ko est installé",
 	"Also, delete the install.php file" : "N'oubliez pas de supprimer le fichier install.php",
 	"Done" : "Terminée",

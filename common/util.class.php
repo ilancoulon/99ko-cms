@@ -108,14 +108,14 @@ class util{
     }
 
 	/**
-	 * Méthode qui retourne une chaine de caractères formatée en fonction du charset
+	 * Méthode qui retourne une chaine de caractères formatée
 	 *
 	 * @param	str			chaine de caractères
 	 * @return	string		chaine de caractères tenant compte du charset
 	 **/
 	public static function strCheck($str) {
 
-		return htmlspecialchars($str,ENT_QUOTES);
+		return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 	}
 	
     public static function isEmail($email){
@@ -124,8 +124,7 @@ class util{
     }
     
     public static function isValidEmail($email){
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) return false;
-        return true;
+	    return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
     public static function sendEmail($from, $reply, $to, $subject, $msg){
