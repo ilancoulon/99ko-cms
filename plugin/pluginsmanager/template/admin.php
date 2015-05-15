@@ -25,7 +25,11 @@
 			</td>
 			<td><?php echo $plugin->getInfoVal('version'); ?></td>
 			<td><?php echo util::htmlSelect($priority, $plugin->getconfigVal('priority'), 'name="priority['.$plugin->getName().']" onchange="document.getElementById(\'pluginsmanagerForm\').submit();"'); ?></td>
-			<td><br /><div class="switch tiny radius"><input onchange="document.getElementById('pluginsmanagerForm').submit();" id="activate[<?php echo $plugin->getName(); ?>]" type="checkbox" name="activate[<?php echo $plugin->getName(); ?>]" <?php if($plugin->getConfigVal('activate')){ ?>checked<?php } ?> /><label for="activate[<?php echo $plugin->getName(); ?>]"></label></div></td>
+			<td>
+				<?php if(!$plugin->isRequired()){ ?>
+				<br /><div class="switch tiny radius"><input onchange="document.getElementById('pluginsmanagerForm').submit();" id="activate[<?php echo $plugin->getName(); ?>]" type="checkbox" name="activate[<?php echo $plugin->getName(); ?>]" <?php if($plugin->getConfigVal('activate')){ ?>checked<?php } ?> /><label for="activate[<?php echo $plugin->getName(); ?>]"></label></div>
+				<?php } ?>
+			</td>
 		</tr>
 		<?php } ?>
 	  </tbody>					

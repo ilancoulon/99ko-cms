@@ -51,6 +51,16 @@ function pageInstall(){
 ** Elle peut contenir des classes, des fonctions, hooks... ou encore du code à exécutter lors du chargement du plugin
 ********************************************************************************************************************/
 
+function pageAdminNotifications(){
+	echo "TOTO";
+	global $page;
+	var_dump($page);
+	if(!$page->createHomepage()){
+		show::showMsg($core->lang("No homepage defined"), "error");
+	}
+}
+
+
 define('PAGE_DATAPATH', DATA_PLUGIN. 'page/');
 $page = new page();
 

@@ -188,6 +188,7 @@ class core{
     ## Ajoute un hook à executter
     public function addHook($name, $function){
         $this->hooks[$name][] = $function;
+        //print_r($this->hooks);
     }
     
     ## Appel un hook

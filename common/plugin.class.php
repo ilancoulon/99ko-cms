@@ -205,7 +205,7 @@ class plugin{
 	## Permet de modifier une valeur de configuration
 	public function setConfigVal($k, $v){
 		$this->config[$k] = $v;
-		if($k == 'activate' && $v < 1 && $this->isDefaultPlugin) $this->isValid = false;
+		if($k == 'activate' && $v < 1 && $this->isRequired()) $this->isValid = false;
 	}
 	
 	## Permet de définir la meta title
@@ -256,6 +256,13 @@ class plugin{
 			if($currentConfig['adminTabs'] != $initConfig['adminTabs']) return false;
 		}
 		return true;
+	}
+	
+	## Détermine si le plugin est protégé, ce qui empèche de le désactiver
+	public function isRequired(){
+		if(isset($this->config['protected']) && $this->config['protected'] == 1) return true;
+		if($this->isDefaultPlugin) return true;
+		return false;
 	}
 }
 ?>

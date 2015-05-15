@@ -25,9 +25,7 @@ switch($action){
 				if(isset($_POST['activate'][$v->getName()])){
 					if(!$v->isInstalled()) $pluginsManager->installPlugin($v->getName(), true);
 					else $v->setConfigVal('activate', 1);
-				}else {
-					if(!$v->getIsDefaultPlugin()) $v->setConfigVal('activate', 0);
-				}
+				}else $v->setConfigVal('activate', 0);
 				if($v->isInstalled()){
 					$v->setConfigVal('priority', intval($_POST['priority'][$v->getName()]));
 					if(!$pluginsManager->savePluginConfig($v)){
