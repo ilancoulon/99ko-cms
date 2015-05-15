@@ -1,0 +1,40 @@
+table#linksList {
+	font-size : 12px;
+	font-family : Verdana,'Helvetica Neue',Helvetica,Arial,Geneva,sans-serif;
+}
+
+table#linksList tr {
+	height : 37px;
+}
+
+table#linksList td.lab,
+table#linksList td.target {
+	height : 37px;
+	padding-top : 0;
+	padding-bottom : 0;
+	vertical-align : middle;
+}
+table#linksList td.up img,
+table#linksList td.down img,
+table#linksList td.delete img {
+    display: block;
+	height : 30px;
+	width: 30px;
+}
+ 
+table#linksList td.lab input {
+	max-width : 150px;
+}
+
+table#linksList td.target input {
+	max-width : 300px;
+}
+
+
+table#linksList tr.deleted {
+	background-color : #ffcccc;
+}
+
+table#linksList tr.added {
+	background-color : #ccffcc;
+}
