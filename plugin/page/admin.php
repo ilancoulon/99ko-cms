@@ -8,6 +8,7 @@ $msgType = (isset($_GET['msgType'])) ? $_GET['msgType'] : '';
 $error = false;
 $changeOrder = (pluginsManager::isActivePlugin('menu')) ? false : true;
 $hideTitles = $runPlugin->getConfigVal('hideTitles');
+$page = new page();
 
 switch($action){
 	case 'save':
@@ -56,9 +57,5 @@ switch($action){
 		}
 	default:
 		$mode = 'list';
-		if(!$page->createHomepage()){
-			$msg = $core->lang("No homepage defined");
-			$msgType = 'error';
-		}
 }
 ?>

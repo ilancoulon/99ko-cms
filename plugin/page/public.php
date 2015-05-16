@@ -1,10 +1,12 @@
 <?php
 defined('ROOT') OR exit('No direct script access allowed');
+$page = new page();
 # Création, de la page
 $id = ($core->getUrlParam(1)) ? $core->getUrlParam(1) : false;
 if(!$id) $pageItem = $page->createHomepage();
 elseif($pageItem = $page->create($id)){}
 else $core->error404();
+//if($pageItem == false) $core->error404();
 # Gestion du titre
 if($runPlugin->getConfigVal('hideTitles')) $runPlugin->setMainTitle('');
 else $runPlugin->setMainTitle(($pageItem->getMainTitle() != '') ? $pageItem->getMainTitle() : $pageItem->getName());

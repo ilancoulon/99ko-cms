@@ -1,5 +1,5 @@
 <?php
-defined('ROOT') OR exit('No direct script access allowed');
+defined('ROOT') OR exit('No pagesFileect script access allowed');
 
 /*******************************************************************************************************
 ** Partie obligatoire
@@ -52,41 +52,34 @@ function pageInstall(){
 ********************************************************************************************************************/
 
 function pageAdminNotifications(){
-	echo "TOTO";
 	global $page;
-	var_dump($page);
+	$core = core::getInstance();
 	if(!$page->createHomepage()){
 		show::showMsg($core->lang("No homepage defined"), "error");
 	}
 }
 
-
-define('PAGE_DATAPATH', DATA_PLUGIN. 'page/');
-$page = new page();
-
-foreach($page->getItems() as $k=>$pageItem) if(!$pageItem->getIsHidden()){
-	$core = core::getInstance();
-	$temp = ($core->getConfigVal('defaultPlugin') == 'page' && $pageItem->getIsHomepage()) ? $core->getConfigVal('siteUrl') : $core->makeUrl('page', array('name' => $pageItem->getName(), 'id' => $pageItem->getId()));
-	$pluginsManager->getPlugin('page')->addToNavigation($pageItem->getName(), $temp);
+function pageStartFrontIncludePluginFile(){
+	page::addToNavigation();
 }
 
 class page{
 	private $items;
+	private $pagesFile;
 	
 	public function __construct(){
-		$data = array();
-		if(is_dir(PAGE_DATAPATH)){
-			$dataNotSorted = array();
-			$items = util::scanDir(PAGE_DATAPATH, array('config.json'));
-			foreach($items['file'] as $k=>$file){
-				$dataNotSorted[] = util::readJsonFile(DATA_PLUGIN. 'page/'.$file, true);
-			}
-			$dataSorted = util::sort2DimArray($dataNotSorted, 'position', 'num');
-			foreach($dataSorted as $pageItem){
-				$data[] = new pageItem($pageItem);
-			}
+		$this->pagesFile = DATA_PLUGIN.'page/pages.json';
+		$this->items = $this->loadPages();
+	}
+	
+	public static function addToNavigation(){
+		$page = new page();
+		$pluginsManager = pluginsManager::getInstance();
+		foreach($page->getItems() as $k=>$pageItem) if(!$pageItem->getIsHidden()){
+			$core = core::getInstance();
+			$temp = ($core->getConfigVal('defaultPlugin') == 'page' && $pageItem->getIsHomepage()) ? $core->getConfigVal('siteUrl') : $core->makeUrl('page', array('name' => $pageItem->getName(), 'id' => $pageItem->getId()));
+			$pluginsManager->getPlugin('page')->addToNavigation($pageItem->getName(), $temp);
 		}
-		$this->items = $data;
 	}
 	
 	public function getItems(){
@@ -99,12 +92,14 @@ class page{
 		}
 		return false;
 	}
+	
 	public function createHomepage(){
 		foreach($this->items as $pageItem){
 			if($pageItem->getIshomepage()) return $pageItem;
 		}
 		return false;
 	}
+	
 	public function save($obj){
 		$id = intval($obj->getId());
 		if($id < 1) $id = $this->makeId();
@@ -120,23 +115,48 @@ class page{
 			'metaDescriptionTag' => $obj->getMetaDescriptionTag(),
 			'metaTitleTag' => $obj->getMetaTitleTag(),
 		);
+		$update = false;
+		foreach($this->items as $k=>$v){
+			if($v->getId() == $obj->getId()){
+				$this->items[$k] = $obj;
+				$update = true;
+			}
+		}
+		if(!$update){
+			$this->items[] = $obj;
+		}
 		if($obj->getIsHomepage() > 0) $this->initIshomepageVal();
-		if(@file_put_contents(PAGE_DATAPATH.$id.'.txt', json_encode($data), 0666)){
+		$pages = util::readJsonFile($this->pagesFile, true);
+		if($update){
+			foreach($pages as $k=>$v){
+				if($v['id'] == $obj->getId()){
+					$pages[$k] = $data;
+					$update = true;
+				}
+			}
+		}
+		else{
+			$pages[] = $data;
+		}
+		if(util::writeJsonFile($this->pagesFile, $pages)){
 			$this->repairPositions($obj);
 			return true;
 		}
 		return false;
 	}
+	
 	public function del($obj){
 		if($obj->getIsHomepage() < 1 && $this->count() > 1){
-			if(@unlink(PAGE_DATAPATH.$obj->getId().'.txt')) return true;
+			if(@unlink($this->pagesFile.$obj->getId().'.txt')) return true;
 		}
 		return false;
 	}
+	
 	public function count(){
 		return count($this->items);
 	}
-	public function listFiles(){
+	
+	public function listTemplates(){
 		$core = core::getInstance();
 		$data = array();
 		$items = util::scanDir(THEMES .$core->getConfigVal('theme').'/', array('header.php', 'footer.php', 'style.css'));
@@ -169,6 +189,18 @@ class page{
 				$this->save($obj);
 			}
 		}
+	}
+	
+	private function loadPages(){
+		$data = array();
+		if(file_exists($this->pagesFile)){
+			$items = util::readJsonFile($this->pagesFile);
+			$items = util::sort2DimArray($items, 'position', 'num');
+			foreach($items as $pageItem){
+				$data[] = new pageItem($pageItem);
+			}
+		}
+		return $data;
 	}
 }
 
@@ -204,29 +236,37 @@ class pageItem{
 		if($val == '') $val = "Page sans nom";
 		$this->name = $val;
 	}
+	
 	public function setPosition($val){
 		$this->position = intval($val);
 	}
+	
 	public function setIsHomepage($val){
 		$this->isHomepage = trim($val);
 	}
+	
 	public function setContent($val){
 		$this->content = trim($val);
 	}
+	
 	public function setIsHidden($val){
 		$this->isHidden = intval($val);
 	}
+	
 	public function setFile($val){
 		$this->file = trim($val);
 	}
+	
 	public function setMainTitle($val){
 		$this->mainTitle = trim($val);
 	}
+	
 	public function setMetaDescriptionTag($val){
 		$val = trim($val);
 		if(mb_strlen($val) > 150) $val = mb_strcut($val, 0, 150).'...';
 		$this->metaDescriptionTag = $val;
 	}
+	
 	public function setMetaTitleTag($val){
 		$val = trim($val);
 		if(mb_strlen($val) > 65) $val = mb_strcut($val, 0, 65).'...';
@@ -236,30 +276,39 @@ class pageItem{
 	public function getId(){
 		return $this->id;
 	}
+	
 	public function getName(){
 		return $this->name;
 	}
+	
 	public function getPosition(){
 		return $this->position;
 	}
+	
 	public function getIsHomepage(){
 		return $this->isHomepage;
 	}
+	
 	public function getContent(){
 		return $this->content;
 	}
+	
 	public function getIsHidden(){
 		return $this->isHidden;
 	}
+	
 	public function getFile(){
 		return $this->file;
 	}
+	
 	public function getMainTitle(){
 		return $this->mainTitle;
 	}
+	
 	public function getMetaDescriptionTag(){
 		return $this->metaDescriptionTag;
 	}
+	
 	public function getMetaTitleTag(){
 		return $this->metaTitleTag;
 	}
