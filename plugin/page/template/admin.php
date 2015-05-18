@@ -98,7 +98,7 @@
       <label><?php echo $core->lang('Include a file instead of content (must be present in your theme folder)'); ?></label>
 		<select name="file" class="large-3 columns">
 			<option value="">--</option>
-			<?php foreach($page->listFiles() as $file){ ?>
+			<?php foreach($page->listTemplates() as $file){ ?>
 			<option <?php if($file == $pageItem->getFile()){ ?>selected<?php } ?> value="<?php echo $file; ?>"><?php echo $file; ?></option>
 			<?php } ?>
 		</select>

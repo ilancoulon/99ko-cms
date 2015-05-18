@@ -52,7 +52,7 @@ function pageInstall(){
 ********************************************************************************************************************/
 
 function pageAdminNotifications(){
-	global $page;
+	$page = new page();
 	$core = core::getInstance();
 	if(!$page->createHomepage()){
 		show::showMsg($core->lang("No homepage defined"), "error");
@@ -80,6 +80,14 @@ class page{
 			$temp = ($core->getConfigVal('defaultPlugin') == 'page' && $pageItem->getIsHomepage()) ? $core->getConfigVal('siteUrl') : $core->makeUrl('page', array('name' => $pageItem->getName(), 'id' => $pageItem->getId()));
 			$pluginsManager->getPlugin('page')->addToNavigation($pageItem->getName(), $temp);
 		}
+	}
+	
+	public static function getPageContent(){
+		$page = new page();
+		if($temp = $page->create($id)){
+			return $temp->getContent();
+		}
+		else return '';
 	}
 	
 	public function getItems(){
@@ -269,7 +277,7 @@ class pageItem{
 	
 	public function setMetaTitleTag($val){
 		$val = trim($val);
-		if(mb_strlen($val) > 65) $val = mb_strcut($val, 0, 65).'...';
+		if(mb_strlen($val) > 50) $val = mb_strcut($val, 0, 50).'...';
 		$this->metaTitleTag = $val;
 	}
 
@@ -311,13 +319,6 @@ class pageItem{
 	
 	public function getMetaTitleTag(){
 		return $this->metaTitleTag;
-	}
-}
-
-function pageContent($id){
-	global $page;
-	if($temp = $page->create($id)){
-		return $temp->getContent();
 	}
 }
 ?>
