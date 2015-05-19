@@ -1,17 +1,7 @@
 <?php
 defined('ROOT') OR exit('No pagesFileect script access allowed');
 
-/*******************************************************************************************************
-** Partie obligatoire
-** Les fonctions ci-dessous sont obligatoires !
-** Les fonctions ci-dessous doivent être nommées de cette façon : nomdupluginConfig, nomdupluginInfos...
-*******************************************************************************************************/
-
-/*
-** Exécute du code lors de l'installation
-** Le code présent dans cette fonction sera exécuté lors de l'installation
-** Le contenu de cette fonction est facultatif
-*/
+## Traitements à effecturer lors de l'installation du plugin
 function pageInstall(){
 	$page = new page();
 	if(count($page->getItems()) < 1){
@@ -45,12 +35,7 @@ function pageInstall(){
 	}
 }
 
-/********************************************************************************************************************
-** Code relatif au plugin
-** La partie ci-dessous est réservé au code du plugin 
-** Elle peut contenir des classes, des fonctions, hooks... ou encore du code à exécutter lors du chargement du plugin
-********************************************************************************************************************/
-
+## Hook (notifications admin)
 function pageAdminNotifications(){
 	$page = new page();
 	$core = core::getInstance();
@@ -59,10 +44,12 @@ function pageAdminNotifications(){
 	}
 }
 
-function pageStartFrontIncludePluginFile(){
+## Hook (ajout des items navigation)
+function pageStartCreatePlugin(){
 	page::addToNavigation();
 }
 
+## Classe page manager
 class page{
 	private $items;
 	private $pagesFile;
@@ -82,7 +69,7 @@ class page{
 		}
 	}
 	
-	public static function getPageContent(){
+	public static function getPageContent($id){
 		$page = new page();
 		if($temp = $page->create($id)){
 			return $temp->getContent();
@@ -212,6 +199,7 @@ class page{
 	}
 }
 
+## Classe page item
 class pageItem{
 	private $id;
 	private $name;

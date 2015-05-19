@@ -139,6 +139,7 @@ if (isset($_POST['install_submit']) && $administrator->isAuthorized()) {
            'defaultPlugin'   => 'page',
            'checkUrl'        => util::strCheck($checkUrl),
            'debug'           => '0',
+		   'defaultAdminPlugin' => '',
         );  		
         if(!@file_put_contents(DATA. 'config.json', json_encode($config)) ||	!@chmod(DATA. 'config.json', 0666)) $error = true;
 

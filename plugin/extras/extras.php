@@ -14,15 +14,15 @@ function extrasEndAdminBody(){
 
 ## Hook (header admin)
 function extrasAdminHead(){
-    $data = '<script src="'.PLUGINS.'extras/other/jquery.js"></script>'."\n";
-    $data.= '<link href="'.PLUGINS.'extras/other/normalize.css" type="text/css" />'."\n";
+    $data = '<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>'."\n";
+    $data.= '<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" type="text/css" />'."\n";
     echo $data;
 }
 
 ## Hook (header thème)
 function extrasFrontHead(){
-    $data = '<script src="'.PLUGINS.'extras/other/jquery.js"></script>'."\n";
-    $data.= '<link href="'.PLUGINS.'extras/other/normalize.css" type="text/css" />'."\n";
+    $data = '<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>'."\n";
+    $data.= '<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" type="text/css" />'."\n";
     echo $data;
 }
 ?>

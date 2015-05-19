@@ -54,7 +54,11 @@ if(!$administrator->isLogged()){
 }
 ## Mode homepage
 elseif($core->detectAdminMode() == 'home'){
-	include_once('home.php');
+	if($core->getConfigVal('defaultAdminPlugin') != '' && pluginsManager::isActivePlugin($core->getConfigVal('defaultAdminPlugin'))){
+		header('location:index.php?p='.$core->getConfigVal('defaultAdminPlugin'));
+		die();
+	}
+	else include_once('home.php');
 }
 ## Mode plugin
 elseif($core->detectAdminMode() == 'plugin'){

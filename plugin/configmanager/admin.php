@@ -25,6 +25,7 @@ switch($action){
 				'hideTitles' => (isset($_POST['hideTitles'])) ? '1' : '0',
 				'gzip' => (isset($_POST['gzip'])) ? '1' : '0',
 				'debug' => (isset($_POST['debug'])) ? '1' : '0',
+				'defaultAdminPlugin' => $_POST['defaultAdminPlugin'],
 			);
 			if(trim($_POST['adminPwd']) != ''){
 				if(trim($_POST['adminPwd']) == trim($_POST['adminPwd2'])) {

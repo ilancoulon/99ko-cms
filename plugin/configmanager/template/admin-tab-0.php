@@ -7,7 +7,7 @@
     <div class="large-12 columns">
       <input <?php if($core->getConfigVal('hideTitles')){ ?>checked<?php } ?> type="checkbox" name="hideTitles" /> <label for="hideTitles"><?php echo $core->lang("Hide pages titles"); ?>
     </div>
-    <div class="large-6 columns">
+    <div class="large-4 columns">
       <label><?php echo $core->lang("Lang"); ?></label>
       <select name="lang">
 	    <?php foreach($core->getLangs() as $k=>$v){ ?>
@@ -15,14 +15,23 @@
 	    <?php } ?>
       </select>
     </div>
-    <div class="large-6 columns">
-      <label><?php echo $core->lang("Default plugin"); ?></label>
+    <div class="large-4 columns">
+      <label><?php echo $core->lang("Default plugin"); ?> (public)</label>
       <select name="defaultPlugin">
 	    <?php foreach($pluginsManager->getPlugins() as $plugin) if($plugin->getAdminFile() && $plugin->getConfigVal('activate') && $plugin->getPublicFile()){ ?>
 	    <option <?php if($plugin->getIsDefaultPlugin()){ ?>selected<?php } ?> value="<?php echo $plugin->getName(); ?>"><?php echo $plugin->getInfoVal('name'); ?></option>
 	    <?php } ?>
       </select>
-    </div>       
+    </div>
+	<div class="large-4 columns">
+      <label><?php echo $core->lang("Default plugin"); ?> (admin)</label>
+      <select name="defaultAdminPlugin">
+		<option value=""><?php echo $core->lang("None"); ?></option>
+	    <?php foreach($pluginsManager->getPlugins() as $k=>$v) if($v->getConfigVal('activate') && $v->getAdminFile()){ ?>
+	    <option <?php if($v->getIsDefaultAdminPlugin()){ ?>selected<?php } ?> value="<?php echo $v->getName(); ?>"><?php echo $v->getInfoVal('name'); ?></option>
+	    <?php } ?>
+      </select>
+    </div>
   </div> 
   
   <div class="row">

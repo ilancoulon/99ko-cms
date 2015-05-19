@@ -42,6 +42,7 @@ class plugin{
 	private $publicJsFile;
 	private $adminCssFile;
 	private $adminJsFile;
+	private $isDefaultAdminPlugin;
 	
 	## Constructeur
 	public function __construct($name, $config = array(), $infos = array(), $hooks = array(), $initConfig = array(), $lang = array()){
@@ -58,6 +59,8 @@ class plugin{
 		$this->isValid = true;
 		// Détermine si il s'agit du plugin par défaut en mode public
 		$this->isDefaultPlugin = ($name == DEFAULT_PLUGIN) ? true : false;
+		// Détermine si il s'agit du plugin par défaut en mode admin
+		$this->isDefaultAdminPlugin = ($name == DEFAULT_ADMIN_PLUGIN) ? true : false;
 		// Meta title
 		$this->setTitleTag($infos['name']);
 		// Titre de page
@@ -194,6 +197,10 @@ class plugin{
 	
 	public function getLang(){
 		return $this->lang;
+	}
+	
+	public function getIsDefaultAdminPlugin(){
+		return $this->isDefaultAdminPlugin;
 	}
 	
 	## Détermine si le plugin utilise des onglets admin

@@ -1,4 +1,4 @@
 {
     "adminNotifications" : "pageAdminNotifications",
-    "startFrontIncludePluginFile" : "pageStartFrontIncludePluginFile"
+    "startCreatePlugin" : "pageStartCreatePlugin"
 }

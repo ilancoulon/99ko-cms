@@ -30,6 +30,8 @@ include_once(COMMON.'show.class.php');
 $core = core::getInstance();
 ## Plugin par défaut du mode public
 define('DEFAULT_PLUGIN', $core->getConfigVal('defaultPlugin'));
+## Plugin par défaut du mode admin
+define('DEFAULT_ADMIN_PLUGIN', $core->getConfigVal('defaultAdminPlugin'));
 // else...
 ## Si le core n'est pas installé on redirige vers le script d'installation
 if(!$core->isInstalled()){
