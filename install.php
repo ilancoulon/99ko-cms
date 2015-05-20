@@ -100,11 +100,12 @@ if($core->install()){
             foreach($pluginsManager->getPlugins() as $plugin){
   	          if($plugin->getLibFile()){
   		          include_once($plugin->getLibFile());
-  		          if(!$plugin->isInstalled()) $pluginsManager->installPlugin($plugin->getName());
+  		          if(!$plugin->isInstalled()) $pluginsManager->installPlugin($plugin->getName(), true);
 			  $plugin->setConfigVal('activate', '1');
 			  $pluginsManager->savePluginConfig($plugin);
   	          }
             }
+			//die();
 }
 /*
  *---------------------------------------------------------------

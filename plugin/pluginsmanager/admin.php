@@ -42,5 +42,13 @@ switch($action){
 		header('location:index.php?p=pluginsmanager&msg='.urlencode($msg).'&msgType='.$msgType);
 		die();
 		break;
+	case 'cache':
+		if($administrator->isAuthorized()){
+			$pluginsManager->intiPluginsCache(array(), true);
+			$msg = $core->lang("Cache cleared.");
+		}
+		header('location:index.php?p=pluginsmanager&msg='.urlencode($msg).'&msgType='.$msgType);
+		die();
+		break;
 }
 ?>

@@ -1,4 +1,5 @@
 {
     "priority" : "2",
-    "protected" : "1"
+    "protected" : "1",
+    "adminTabs" : "Plugins,Advanced"
 }

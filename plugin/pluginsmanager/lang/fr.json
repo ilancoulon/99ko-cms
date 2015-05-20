@@ -9,5 +9,9 @@
 	"An error occured while saving your modifications." : "Une erreur est survenue lors de l'enregistrement des modifications.",
     "Version" : "Version",
     "The changes have been saved." : "Les modifications ont été enregistrées.",
-    "Plugins are inactive" : "Des plugins sont inactifs"
+    "Plugins are inactive" : "Des plugins sont inactifs",
+	"Plugins" : "Plugins",
+	"Advanced" : "Avancé",
+	"Clear plugins cache" : "Vider le cache plugins",
+	"Cache cleared." : "Cache vidé"
 }

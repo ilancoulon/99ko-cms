@@ -46,6 +46,8 @@ class pluginsManager{
 	
 	## Sauvegarde la configuration d'un plugin
 	public function savePluginConfig($obj){
+		// Effacement du cache plugins lors d'une sauvegarde
+		$this->intiPluginsCache(array(), true);
 		if($obj->getIsValid() && $path = $obj->getDataPath()){
 		    return util::writeJsonFile($path.'config.json', $obj->getConfig());
 		}
@@ -58,6 +60,8 @@ class pluginsManager{
 
 	## Installe un plugin
 	public function installPlugin($name, $activate = false){
+		// Effacement du cache plugins lors d'une installation
+		$this->intiPluginsCache(array(), true);
 		// Création du dossier data
 		@mkdir(DATA_PLUGIN .$name.'/', 0777);
 		@chmod(DATA_PLUGIN .$name.'/', 0777);
@@ -80,18 +84,26 @@ class pluginsManager{
 	private function listPlugins(){
 		$data = array();
 		$dataNotSorted = array();
-		$items = util::scanDir(PLUGINS);
-		foreach($items['dir'] as $dir){
-			// Si le plugin est installé on récupère sa configuration
-			if(file_exists(DATA_PLUGIN .$dir. '/config.json')) $dataNotSorted[$dir] = util::readJsonFile(DATA_PLUGIN .$dir. '/config.json', true);
-			// Sinon on lui attribu une priorité faible
-			else $dataNotSorted[$dir]['priority'] = '10';
+		$dataFromCache = $this->loadPluginsFromCache();
+		// Si pas de cache plugins, on reconstruit le fichier cache
+		if(!$dataFromCache){
+			$items = util::scanDir(PLUGINS);
+			foreach($items['dir'] as $dir){
+				// Si le plugin est installé on récupère sa configuration
+				if(file_exists(DATA_PLUGIN .$dir. '/config.json')) $dataNotSorted[$dir] = util::readJsonFile(DATA_PLUGIN .$dir. '/config.json', true);
+				// Sinon on lui attribu une priorité faible
+				else $dataNotSorted[$dir]['priority'] = '10';
+			}
+			// On tri les plugins par priorité
+			$dataSorted = @util::sort2DimArray($dataNotSorted, 'priority', 'num');
+			foreach($dataSorted as $plugin=>$config){
+				$data[] = $this->createPlugin($plugin);
+			}
+			// On génère le cache
+			$this->intiPluginsCache($data);
 		}
-		// On tri les plugins par priorité
-		$dataSorted = @util::sort2DimArray($dataNotSorted, 'priority', 'num');
-		foreach($dataSorted as $plugin=>$config){
-			$data[] = $this->createPlugin($plugin);
-		}
+		// Sinon on lit le fichier cache
+		$data = $this->loadPluginsFromCache();
 		return $data;
 	}
 	
@@ -115,6 +127,23 @@ class pluginsManager{
 		// Création de l'objet
 		$plugin = new plugin($name, $config, $infos, $hooks, $initConfig, $lang);
 		return $plugin;
+	}
+	
+	## Lecture des plugins depuis le cache
+	public function loadPluginsFromCache(){
+		if(ROOT == './' && file_exists(DATA.'plugins_public_cache.json')) return unserialize(util::readJsonFile(DATA.'plugins_public_cache.json'));
+		elseif(ROOT == '../' && file_exists(DATA.'plugins_admin_cache.json')) return unserialize(util::readJsonFile(DATA.'plugins_admin_cache.json'));
+		else return false;
+	}
+	
+	## Initialisation du cache plugins
+	public function intiPluginsCache($data, $clearAll = false){
+		if($clearAll){
+			@unlink(DATA.'plugins_public_cache.json');
+			@unlink(DATA.'plugins_admin_cache.json');
+		}
+		elseif(ROOT == './' || $force == 'public') util::writeJsonFile(DATA.'plugins_public_cache.json', serialize($data));
+		elseif(ROOT == '../' || $force == 'admin') util::writeJsonFile(DATA.'plugins_admin_cache.json', serialize($data));
 	}
 	
 	## Singleton
