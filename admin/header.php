@@ -65,7 +65,7 @@
   <hr>
   <ul class="off-canvas-list">
     <li><label><?php echo $core->lang('Navigation'); ?></label></li>
-	<li><a href="./"><?php echo $core->lang('Home'); ?></a></li>
+	<!--<li><a href="./"><?php echo $core->lang('Home'); ?></a></li>-->
               	  <?php foreach($pluginsManager->getPlugins() as $k=>$v) if($v->getConfigVal('activate') && $v->getAdminFile()){ ?>
               	  <li><a class="" href="index.php?p=<?php echo $v->getName(); ?>"><?php echo $core->lang($v->getInfoVal('name')); ?></a></li>
               	  <?php } ?>
@@ -96,7 +96,7 @@
                 <nav>
                   <ul class="side-nav">
                     <li class="heading"><?php echo $core->lang('Navigation'); ?></li>
-		    <li><a href="./"><?php echo $core->lang('Home'); ?></a></li>
+		    <!--<li><a href="./"><?php echo $core->lang('Home'); ?></a></li>-->
               	  <?php foreach($pluginsManager->getPlugins() as $k=>$v) if($v->getConfigVal('activate') && $v->getAdminFile()){ ?>
               	  <li><a class="" href="index.php?p=<?php echo $v->getName(); ?>"><?php echo $core->lang($v->getInfoVal('name')); ?></a></li>
               	  <?php } ?>
