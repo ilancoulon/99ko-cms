@@ -7,7 +7,7 @@ function extrasInstall(){
 
 ## Hook (footer admin)
 function extrasEndAdminBody(){
-    $data = '<script src="'.PLUGINS.'extras/other/foundation.min.js?v=5.5.2"></script>'."\n";
+    $data = '<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation.min.js"></script>'."\n";
     $data.= '<script>$(document).foundation();</script>'."\n"; 
     echo $data;
 }

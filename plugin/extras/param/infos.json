@@ -1,6 +1,6 @@
 {
     "name" : "Extras",
-    "description" : "Add jQuery, Modernizr, Fundation",
+    "description" : "Add jQuery, Foundation (js) and Normalize.css",
     "author" : "Jonathan Coulet",
     "authorEmail" : "99ko@hellojo.fr",
     "authorWebsite" : "http://99ko.hellojo.fr",

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8">	
 	<title>99ko - <?php echo $core->lang('Backend'); ?></title>	
-	<link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="assets/favicon.gif">
 	<?php show::showLinkTags(); ?>
 	<link rel="stylesheet" href="assets/css/99ko.css" media="all">
 	<?php show::showScriptTags(); ?>

@@ -8,7 +8,7 @@
 	<base href="<?php show::showSiteUrl(); ?>/" />
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
 	<meta name="description" content="<?php show::showMetaDescriptionTag(); ?>" />
-	<link rel="icon" href="theme/<?php show::showTheme("[id]"); ?>/flower.png" />
+	<link rel="icon" href="theme/<?php show::showTheme("[id]"); ?>/favicon.gif" />
 	<?php show::showLinkTags(); ?>
 	<?php show::showScriptTags(); ?>
 	<?php eval($core->callHook('endFrontHead')); ?>
