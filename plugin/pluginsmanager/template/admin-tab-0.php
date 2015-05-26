@@ -34,6 +34,5 @@
 		<?php } ?>
 	  </tbody>					
 	</table>
-</form>
 
 <?php include_once(ROOT.'admin/footer.php') ?>

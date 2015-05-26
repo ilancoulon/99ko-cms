@@ -8,6 +8,8 @@
     <a class="button" href="index.php?p=pluginsmanager&action=cache&token=<?php echo $administrator->getToken(); ?>"><?php echo $core->lang("Clear plugins cache"); ?></a>
 </p>
 </div>
-  </div> 
+  </div>
+
+</form>
 
 <?php include_once(ROOT.'admin/footer.php') ?>

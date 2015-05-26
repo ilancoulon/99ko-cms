@@ -18,9 +18,6 @@
 	<div id="header">
 		<div id="header_content">
 			<p id="siteName"><a title="<?php show::showSiteDescription(); ?>" href="<?php show::showSiteUrl(); ?>"><?php show::showSiteName(); ?></a></p>
-			<ul id="mobNavigation">
-				<?php show::showMainNavigation(); ?>
-			</ul>
 		</div>
 		<div id="banner"></div>
 	</div>

@@ -24,5 +24,6 @@
 	"Confirm" : "Confirmation",
 	"Hide pages titles" : "Masquer les titres de page",
 	"The changes have been saved." : "Les modifications ont été enregistrées.",
-	"Invalid email." : "Email invalide"
+	"Invalid email." : "Email invalide",
+	"None" : "Aucun"
 }

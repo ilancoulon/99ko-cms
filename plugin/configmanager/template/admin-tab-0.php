@@ -28,7 +28,7 @@
       <select name="defaultAdminPlugin">
 		<option value=""><?php echo $core->lang("None"); ?></option>
 	    <?php foreach($pluginsManager->getPlugins() as $k=>$v) if($v->getConfigVal('activate') && $v->getAdminFile()){ ?>
-	    <option <?php if($v->getIsDefaultAdminPlugin()){ ?>selected<?php } ?> value="<?php echo $v->getName(); ?>"><?php echo $v->getInfoVal('name'); ?></option>
+	    <option <?php if($v->getName() == DEFAULT_ADMIN_PLUGIN){ ?>selected<?php } ?> value="<?php echo $v->getName(); ?>"><?php echo $v->getInfoVal('name'); ?></option>
 	    <?php } ?>
       </select>
     </div>
