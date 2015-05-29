@@ -19,6 +19,7 @@ body{
     background: #fff;
     margin: 0;
     padding: 0;
+    position: relative;
 }
 
 a, a:hover, a:active, a:visited{
@@ -257,11 +258,18 @@ code{
 .slicknav_menu{
     display: none;
     background: #222;
+    position: fixed;
+    width: 100%;
+    top: 0;
 }
 
 /* MOBILE */
 
 @media only screen and (max-width: 768px){
+    
+    body{
+        padding-top: 47px;
+    }
     
     #sidebar{
         width: 100%;

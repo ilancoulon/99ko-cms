@@ -263,7 +263,6 @@ class core{
             if(!file_exists(__FILE__) || !@chmod(__FILE__, 0666)) $install = false;
             $key = uniqid(true);
             if(!file_exists(DATA. 'key.php') && !@file_put_contents(DATA. 'key.php', "<?php define('KEY', '$key'); ?>", 0666)) $install = false;
-            if(!file_exists(DATA. 'key.php')) include(DATA. 'key.php');
         }
         return $install;
     }
