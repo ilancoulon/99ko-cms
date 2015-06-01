@@ -40,7 +40,7 @@ function pageAdminNotifications(){
 	$page = new page();
 	$core = core::getInstance();
 	if(!$page->createHomepage()){
-		show::showMsg($core->lang("No homepage defined"), "error");
+		show::msg($core->lang("No homepage defined"), "error");
 	}
 }
 

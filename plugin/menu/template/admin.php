@@ -3,7 +3,7 @@
 <?php if ($data['menuMode'] == 'list') { ?>
 <a class="button round medium" id="addLink" onclick="addLink()"><?php echo $core->lang('New link'); ?></a>
 <form method="post" action="index.php?p=menu&action=save">
-	<?php show::showAdminTokenField(); ?>
+	<?php show::adminTokenField(); ?>
 	<table id="linksList" style="width:100%">
 		<thead>
 			<tr>

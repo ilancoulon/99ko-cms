@@ -1,16 +1,16 @@
 <?php defined('ROOT') OR exit('No direct script access allowed'); ?>
 <!doctype html>
-<!--[if IE 9]><html class="lt-ie10" lang="<?php show::showSiteLang(); ?>" > <![endif]-->
-<html class="no-js" lang="<?php show::showSiteLang(); ?>">
+<!--[if IE 9]><html class="lt-ie10" lang="<?php show::siteLang(); ?>" > <![endif]-->
+<html class="no-js" lang="<?php show::siteLang(); ?>">
   <head>
 	<?php eval($core->callHook('adminHead')); ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8">	
 	<title>99ko - <?php echo $core->lang('Backend'); ?></title>	
 	<link rel="icon" href="assets/favicon.gif">
-	<?php show::showLinkTags(); ?>
+	<?php show::linkTags(); ?>
 	<link rel="stylesheet" href="assets/css/99ko.css" media="all">
-	<?php show::showScriptTags(); ?>
+	<?php show::scriptTags(); ?>
 	<?php eval($core->callHook('endAdminHead')); ?>	
   </head>
   
@@ -23,7 +23,7 @@
 <nav class="top-bar docs-bar hide-for-small" data-topbar>
   <ul class="title-area">
     <li class="name">
-      <h1><a href="./"><?php show::showSiteName(); ?></a></h1>
+      <h1><a href="./"><?php show::siteName(); ?></a></h1>
     </li>
   </ul>
   <!-- RETOUR SITE & DECONNEXION -->
@@ -53,13 +53,13 @@
 <!-- NAVIGATION MOBILE -->
 <nav class="tab-bar show-for-small">
   <a class="left-off-canvas-toggle menu-icon">
-    <span><?php show::showSiteName(); ?></span>
+    <span><?php show::siteName(); ?></span>
   </a>
 </nav>
 
 <aside class="nav-left-off-canvas-menu">
   <ul class="off-canvas-list">
-    <li><label class="first"><?php show::showSiteName(); ?></label></li>
+    <li><label class="first"><?php show::siteName(); ?></label></li>
   </ul>
 
   <hr>
@@ -117,10 +117,7 @@
         <br><br>
 		        <h2><?php echo $core->lang($pageTitle); ?></h2>
 		        <hr><br><br>
-		        <?php show::showMsg($msg, $msgType); // Affichage de toutes les Notifications ?>
-                <noscript>
-                     <?php show::showMsg($core->lang("Javascript must be enabled in your browser to take full advantage of features 99ko."), "error"); ?> 
-                </noscript> 		        
+		        <?php show::msg($msg, $msgType); // Affichage de toutes les Notifications ?>		        
 		          <?php if($runPlugin->useAdminTabs()){ ?>
                       <dl class="radius tabs" data-tab>
            	          <?php foreach($runPlugin->getAdminTabs() as $k=>$v){ ?>

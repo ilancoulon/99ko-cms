@@ -251,7 +251,7 @@ class core{
             if(!@file_put_contents(ROOT.'.htaccess', "Options -Indexes", 0666)) $install = false;
         }
         if(!is_dir(DATA) && (!@mkdir(DATA) || !@chmod(DATA, 0777))) $install = false;
-        if (!$error){
+        if($install){
             if(!file_exists(DATA. '.htaccess')){
                 if(!@file_put_contents(DATA. '.htaccess', "deny from all", 0666)) $install = false;
             }

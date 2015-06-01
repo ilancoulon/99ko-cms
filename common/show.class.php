@@ -22,7 +22,7 @@ defined('ROOT') OR exit('No direct script access allowed');
 class show{
     
      // affiche un message d'alerte (admin + theme)
-     public static function showMsg($msg, $type){
+     public static function msg($msg, $type){
       $core = core::getInstance();
       if(ROOT == './'){
      	$class = array(
@@ -62,7 +62,7 @@ class show{
      }
 
      // affiche les balises "link" type css (admin + theme)
-     public static function showLinkTags($format = '<link href="[file]" rel="stylesheet" type="text/css" />'){
+     public static function linkTags($format = '<link href="[file]" rel="stylesheet" type="text/css" />'){
       $core = core::getInstance();
      	$pluginsManager = pluginsManager::getInstance();
      	$data = '';
@@ -77,7 +77,7 @@ class show{
      }
 
      // affiche les balises "script" type javascript (admin + theme)
-     public static function showScriptTags($format = '<script type="text/javascript" src="[file]"></script>') {
+     public static function scriptTags($format = '<script type="text/javascript" src="[file]"></script>') {
       $core = core::getInstance();
      	$pluginsManager = pluginsManager::getInstance();
      	$data = '';
@@ -92,7 +92,7 @@ class show{
      }
 
      // affiche une balise textarea (admin)
-     public static function showAdminEditor($name, $content, $id='editor', $class='editor') {
+     public static function adminEditor($name, $content, $id='editor', $class='editor') {
       $core = core::getInstance();
      	eval($core->callHook('startShowAdminEditor'));
      	$data = '<textarea name="'.$name.'" id="'.$id.'" class="'.$class.'">'.$content.'</textarea>';
@@ -101,7 +101,7 @@ class show{
      }
 
      // affiche un input hidden contenant le token (admin)
-     public static function showAdminTokenField() {
+     public static function adminTokenField() {
       $core = core::getInstance();
      	eval($core->callHook('startShowAdminTokenField'));
      	$output = '<input type="hidden" name="token" value="'.administrator::getToken().'" />';
@@ -110,7 +110,7 @@ class show{
      }
    
      // affiche le contenu de la meta title (theme)
-     public static function showTitleTag() {
+     public static function titleTag() {
       $core = core::getInstance();
      	global $runPlugin;
      	eval($core->callHook('startShowtitleTag'));
@@ -120,7 +120,7 @@ class show{
      }
 
      // affiche le contenu de la meta description (theme)
-     public static function showMetaDescriptionTag() {
+     public static function metaDescriptionTag() {
       $core = core::getInstance();
      	global $runPlugin;
      	eval($core->callHook('startShowMetaDescriptionTag'));
@@ -130,7 +130,7 @@ class show{
      }
 
      // affiche le titre de page (theme)
-     public static function showMainTitle($format = '<h1>[mainTitle]</h1>') {
+     public static function mainTitle($format = '<h1>[mainTitle]</h1>') {
       $core = core::getInstance();
      	global $runPlugin;
      	eval($core->callHook('startShowMainTitle'));
@@ -144,7 +144,7 @@ class show{
      }
 
      // affiche le nom du site (theme)
-     public static function showSiteName() {
+     public static function siteName() {
       $core = core::getInstance();
      	eval($core->callHook('startShowSiteName'));
      	$data = $core->getConfigVal('siteName');
@@ -153,7 +153,7 @@ class show{
      }
 
      // affiche la escription du site (theme)
-     public static function showSiteDescription() {
+     public static function siteDescription() {
       $core = core::getInstance();
      	eval($core->callHook('startShowSiteDescription'));
      	$data = $core->getConfigVal('siteDescription');
@@ -162,7 +162,7 @@ class show{
      }
 
      // affiche l'url du site (theme)
-     public static function showSiteUrl() {
+     public static function siteUrl() {
       $core = core::getInstance();
      	eval($core->callHook('startShowSiteUrl'));
      	$data = $core->getConfigVal('siteUrl');
@@ -171,7 +171,7 @@ class show{
      }
 
      // affiche la langue courante (theme)
-     public static function showSiteLang() {
+     public static function siteLang() {
       $core = core::getInstance();
      	eval($core->callHook('startShowSiteLang'));
      	$data = $core->getConfigVal('siteLang');
@@ -180,7 +180,7 @@ class show{
      }
 
      // affiche la navigation principale (theme)
-     public static function showMainNavigation($format = '<li><a href="[target]" target="[targetAttribut]">[label]</a></li>') {
+     public static function mainNavigation($format = '<li><a href="[target]" target="[targetAttribut]">[label]</a></li>') {
      	$pluginsManager = pluginsManager::getInstance();
 	$core = core::getInstance();
      	$data = '';
@@ -199,7 +199,7 @@ class show{
      }
 
      // affiche le theme courant (theme)
-     public static function showTheme($format = '<a onclick="window.open(this.href);return false;" href="[authorWebsite]">[name]</a>') {
+     public static function theme($format = '<a onclick="window.open(this.href);return false;" href="[authorWebsite]">[name]</a>') {
      	//global $themes;
 	$core = core::getInstance();
      	eval($core->callHook('startShowTheme'));
@@ -213,7 +213,7 @@ class show{
      }
 
      // affiche l'identifiant du plugin courant (theme)
-     public static function showPluginId(){
+     public static function pluginId(){
       $core = core::getInstance();
      	global $runPlugin;
      	eval($core->callHook('startShowPluginId'));

@@ -1,6 +1,6 @@
 <?php defined('ROOT') OR exit('No direct script access allowed'); ?>
 <!DOCTYPE html>
-<html lang="<?php show::showSiteLang(); ?>">
+<html lang="<?php show::siteLang(); ?>">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>404</title>

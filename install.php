@@ -211,15 +211,12 @@ if (isset($_POST['install_submit']) && $administrator->isAuthorized()) {
        </div>		    	
 	   	   
        <div class="row panel">
-                <noscript>
-                    <?php show::showMsg($core->lang("Javascript must be enabled in your browser to take full advantage of features 99ko."), "error"); ?> 
-                </noscript> 
-                <?php show::showMsg($msg, $msgType); // Affichage de toutes les Notifications ?>
+                <?php show::msg($msg, $msgType); // Affichage de toutes les Notifications ?>
 		
 		<h3 class="subheader"><?php echo $core->lang("99ko installer"); ?> <?php echo VERSION; ?></h3>	
 		<hr />		
 		<form role="form" method="post">
-		<?php show::showAdminTokenField(); ?>
+		<?php show::adminTokenField(); ?>
 		
 		  <div class="row">
 		     <div class="large-12 columns">

@@ -1,6 +1,6 @@
    <?php defined('ROOT') OR exit('No direct script access allowed'); ?>
 <br />
-   <?php show::showMsg($core->lang("Do not change advanced settings if you're not on what you're doing."), "info"); ?>
+   <?php show::msg($core->lang("Do not change advanced settings if you're not on what you're doing."), "info"); ?>
    
      <div class="row">
     <div class="large-6 columns">

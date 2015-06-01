@@ -8,7 +8,7 @@
 				  	<div id="notifs" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 				  			<h2 id="modalTitle"><?php echo $core->lang('Notifications center'); ?></h2>
 				  			<?php foreach($core->check() as $k=>$v){ ?>
-							<?php echo show::showMsg($v['msg'], $v['type']); ?>
+							<?php echo show::msg($v['msg'], $v['type']); ?>
 							<?php } ?>
 							<?php eval($core->callHook('adminNotifications')); ?>
 							<a class="close-reveal-modal" aria-label="Close">&#215;</a>

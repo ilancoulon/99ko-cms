@@ -1,14 +1,14 @@
 <!doctype html>
-<!--[if IE 9]><html class="lt-ie10" lang="<?php show::showSiteLang(); ?>" > <![endif]-->
-<html class="no-js" lang="<?php show::showSiteLang(); ?>">
+<!--[if IE 9]><html class="lt-ie10" lang="<?php show::siteLang(); ?>" > <![endif]-->
+<html class="no-js" lang="<?php show::siteLang(); ?>">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8">	
 	<title>99ko - <?php echo $core->lang('Login'); ?></title>	
 	<link rel="icon" href="assets/favicon.ico" type="image/x-icon">
-	<?php show::showLinkTags(); ?>
+	<?php show::linkTags(); ?>
 	<link rel="stylesheet" href="assets/css/99ko.css" media="all">
-	<?php show::showScriptTags(); ?>	
+	<?php show::scriptTags(); ?>	
   </head>
   
   <body class="antialiased hide-extras">
@@ -19,15 +19,15 @@
      <div class="panel radius">
 
 	  <?php if (isset($_SESSION['msg_install'])) { ?>	
-          <?php show::showMsg('<h5>' .$core->lang('Installed !'). '</h5><strong>'.$core->lang('99ko is installed').'<br />'.$core->lang('Also, delete the install.php file'). '</strong>', 'success'); ?>     		     
+          <?php show::msg('<h5>' .$core->lang('Installed !'). '</h5><strong>'.$core->lang('99ko is installed').'<br />'.$core->lang('Also, delete the install.php file'). '</strong>', 'success'); ?>     		     
 	  <?php } ?> 
 	  
            <h3><?php echo $core->lang('Login'); ?></h3>
            <hr />
-           <?php show::showMsg($msg, 'error'); ?>
+           <?php show::msg($msg, 'error'); ?>
            
            <form method="post" action="index.php?action=login">   
-           <?php show::showAdminTokenField(); ?>          
+           <?php show::adminTokenField(); ?>          
               <div class="row collapse">
                 <div class="large-12 columns">
                    <label for="adminEmail"><?php echo $core->lang('Email'); ?></label>

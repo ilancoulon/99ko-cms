@@ -2,7 +2,7 @@
 <?php include_once(ROOT.'admin/header.php') ?>
 <br />
 <form method="post" action="index.php?p=pluginsmanager&action=save" id="pluginsmanagerForm">
-	<?php show::showAdminTokenField(); ?>
+	<?php show::adminTokenField(); ?>
 	<table style="width:100%">
 	  <thead>
 		<tr>

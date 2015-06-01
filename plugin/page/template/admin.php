@@ -34,7 +34,7 @@
 <p><a class="button round medium" href="index.php?p=page&amp;action=edit"><?php echo $core->lang("Add"); ?></a></p>
 <?php } elseif($mode == 'edit'){ ?>
 <form method="post" action="index.php?p=page&amp;action=save">
-  <?php show::showAdminTokenField(); ?>
+  <?php show::adminTokenField(); ?>
   <input type="hidden" name="id" value="<?php echo $pageItem->getId(); ?>" />
   
   <div class="row">
@@ -89,7 +89,7 @@
   <div class="row">
     <div class="large-12 columns">
       <label><?php echo $core->lang("Content"); ?></label>
-      <?php show::showAdminEditor('content', $pageItem->getContent()); ?>
+      <?php show::adminEditor('content', $pageItem->getContent()); ?>
     </div>
   </div>
   <br /> 	

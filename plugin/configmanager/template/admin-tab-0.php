@@ -1,7 +1,7 @@
 <?php defined('ROOT') OR exit('No direct script access allowed'); ?>
 <br />
 <form id="configForm" method="post" action="index.php?p=configmanager&action=save">
-  <?php show::showAdminTokenField(); ?>
+  <?php show::adminTokenField(); ?>
     
   <div class="row">
     <div class="large-12 columns">
