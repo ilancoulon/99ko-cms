@@ -27,14 +27,9 @@ include_once(COMMON.'pluginsManager.class.php');
 include_once(COMMON.'plugin.class.php');
 include_once(COMMON.'show.class.php');
 include_once(COMMON.'administrator.class.php');
-# Gestion des erreurs PHP (Dev Mod)
-if(DEBUG) error_reporting(E_ALL).ini_set('display_errors', 1);
-else error_reporting(E_ALL ^ E_NOTICE);
+
 $core = core::getInstance();
 $administrator = new administrator();
-//utilSetMagicQuotesOff();
-// Très important de déclarer le jeton !!!
-//$token = util::generateToken();
 
 /*
  *---------------------------------------------------------------
@@ -96,15 +91,17 @@ foreach ($dir_array as $dir) {
  *---------------------------------------------------------------
  */
 if($core->install()){
-
-            foreach($pluginsManager->getPlugins() as $plugin){
-  	          if($plugin->getLibFile()){
-  		          include_once($plugin->getLibFile());
-  		          if(!$plugin->isInstalled()) $pluginsManager->installPlugin($plugin->getName(), true);
-			  $plugin->setConfigVal('activate', '1');
-			  $pluginsManager->savePluginConfig($plugin);
-  	          }
-            }
+			$plugins = $pluginsManager->getPlugins();
+			if($plugins != false){
+				foreach($plugins as $plugin){
+				  if($plugin->getLibFile()){
+					  include_once($plugin->getLibFile());
+					  if(!$plugin->isInstalled()) $pluginsManager->installPlugin($plugin->getName(), true);
+				  $plugin->setConfigVal('activate', '1');
+				  $pluginsManager->savePluginConfig($plugin);
+				  }
+				}
+			}
 			//die();
 }
 /*

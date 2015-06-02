@@ -1,5 +1,4 @@
 <?php defined('ROOT') OR exit('No direct script access allowed'); ?>
-<?php include_once(ROOT.'admin/header.php') ?>
 
 <br />
 <div class="row">
@@ -10,6 +9,4 @@
 </div>
   </div>
 
-</form>
-
-<?php include_once(ROOT.'admin/footer.php') ?>
+</form>

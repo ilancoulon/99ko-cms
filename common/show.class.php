@@ -221,6 +221,14 @@ class show{
      	eval($core->callHook('endShowPluginId'));
      	echo $data;
      }
+	 
+	 public static function currentUrl(){
+	  $core = core::getInstance();
+     	eval($core->callHook('startShowCurrentUrl'));
+     	$data = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+     	eval($core->callHook('endShowCurrentUrl'));
+     	echo $data;
+	 }
     
 }
 ?>
