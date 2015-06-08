@@ -59,9 +59,9 @@ class core{
             $this->langs[] = substr($v, 0, 2);
         }
         // Tableau langue courante
-        $this->lang = util::readJsonFile(LANG.$this->getConfigVal('siteLang').'.json');
+        $this->lang = util::readJsonFile(LANG.$this->getConfigVal('siteLang').'.json', true);
         if(file_exists(THEMES.$this->getConfigVal('theme').'/lang/'.$this->getConfigVal('siteLang').'.json')){
-            $this->lang = array_merge($this->lang, util::readJsonFile(THEMES.$this->getConfigVal('theme').'/lang/'.$this->getConfigVal('siteLang').'.json'));
+            $this->lang = array_merge($this->lang, util::readJsonFile(THEMES.$this->getConfigVal('theme').'/lang/'.$this->getConfigVal('siteLang').'.json', true));
         }
         // Quel est le plugin solicité ?
         $this->pluginToCall = isset($_GET['p']) ? $_GET['p'] : $this->getConfigVal('defaultPlugin');

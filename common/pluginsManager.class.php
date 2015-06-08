@@ -85,6 +85,7 @@ class pluginsManager{
 		$data = array();
 		$dataNotSorted = array();
 		$dataFromCache = $this->loadPluginsFromCache();
+		if(ROOT == './' && is_array($dataFromCache)) $data = $dataFromCache;
 		// Si pas de cache plugins, on reconstruit le fichier cache
 		if(!$dataFromCache){
 			$items = util::scanDir(PLUGINS);
@@ -100,10 +101,8 @@ class pluginsManager{
 				$data[] = $this->createPlugin($plugin);
 			}
 			// On génère le cache
-			$this->intiPluginsCache($data);
+			if(ROOT == './') $this->intiPluginsCache($data);
 		}
-		// Sinon on lit le fichier cache
-		$data = $this->loadPluginsFromCache();
 		return $data;
 	}
 	
@@ -131,19 +130,17 @@ class pluginsManager{
 	
 	## Lecture des plugins depuis le cache
 	public function loadPluginsFromCache(){
-		if(ROOT == './' && file_exists(DATA.'plugins_public_cache.json')) return unserialize(util::readJsonFile(DATA.'plugins_public_cache.json'));
-		elseif(ROOT == '../' && file_exists(DATA.'plugins_admin_cache.json')) return unserialize(util::readJsonFile(DATA.'plugins_admin_cache.json'));
+		if(ROOT == './' && file_exists(DATA.'plugins_cache.json')) return unserialize(util::readJsonFile(DATA.'plugins_cache.json'));
 		else return false;
 	}
 	
 	## Initialisation du cache plugins
-	public function intiPluginsCache($data, $clearAll = false){
-		if($clearAll){
-			@unlink(DATA.'plugins_public_cache.json');
-			@unlink(DATA.'plugins_admin_cache.json');
+	public function intiPluginsCache($data, $clear = false){
+		if($clear){
+			@unlink(DATA.'plugins_cache.json');
+			return true;
 		}
-		elseif(ROOT == './' || $force == 'public') util::writeJsonFile(DATA.'plugins_public_cache.json', serialize($data));
-		elseif(ROOT == '../' || $force == 'admin') util::writeJsonFile(DATA.'plugins_admin_cache.json', serialize($data));
+		util::writeJsonFile(DATA.'plugins_cache.json', serialize($data));
 	}
 	
 	## Singleton
