@@ -23,8 +23,8 @@ include_once(ROOT.'common/common.php');
 include_once(COMMON.'administrator.class.php');
 $administrator = $core->createAdministrator();
 ## Variables
-$msg = '';
-$msgType = '';
+$msg = (isset($_GET['msg'])) ? $_GET['msg'] : '';
+$msgType = (isset($_GET['msgType'])) ? $_GET['msgType'] : '';
 $pageTitle = (!isset($_GET['p'])) ? $core->lang('Welcome to 99ko') : $runPlugin->getInfoVal('name');
 ## Mode login
 if($administrator->isAuthorized() && $core->detectAdminMode() == 'login'){

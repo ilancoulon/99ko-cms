@@ -63,6 +63,7 @@ class core{
         if(file_exists(THEMES.$this->getConfigVal('theme').'/lang/'.$this->getConfigVal('siteLang').'.json')){
             $this->lang = array_merge($this->lang, util::readJsonFile(THEMES.$this->getConfigVal('theme').'/lang/'.$this->getConfigVal('siteLang').'.json', true));
         }
+        if(!is_array($this->lang)) $this->lang = array();
         // Quel est le plugin solicité ?
         $this->pluginToCall = isset($_GET['p']) ? $_GET['p'] : $this->getConfigVal('defaultPlugin');
     }
