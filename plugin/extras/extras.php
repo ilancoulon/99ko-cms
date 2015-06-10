@@ -22,7 +22,8 @@ function extrasAdminHead(){
 
 ## Hook (header thème)
 function extrasFrontHead(){
-    $data = '<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>'."\n";
+    $data = '<meta name="generator" content="99ko CMS" />'."\n";
+    $data.= '<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>'."\n";
     $data.= '<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" type="text/css" />'."\n";
     echo $data;
 }

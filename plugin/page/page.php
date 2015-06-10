@@ -123,10 +123,12 @@ class page{
 		if($obj->getIsHomepage() > 0) $this->initIshomepageVal();
 		$pages = util::readJsonFile($this->pagesFile, true);
 		if($update){
-			foreach($pages as $k=>$v){
-				if($v['id'] == $obj->getId()){
-					$pages[$k] = $data;
-					$update = true;
+			if(is_array($pages)){
+				foreach($pages as $k=>$v){
+					if($v['id'] == $obj->getId()){
+						$pages[$k] = $data;
+						$update = true;
+					}
 				}
 			}
 		}
