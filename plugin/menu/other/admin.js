@@ -32,6 +32,7 @@ function upLink(id) {
 	$('#'+(id-1)+' img[alt=monter]').attr('onclick', 'upLink('+(id-1)+')');
 	$('#'+(id-1)+' img[alt=descendre]').attr('onclick', 'downLink('+(id-1)+')');
 	$('#'+(id-1)+' img[alt=supprimer]').attr('onclick', 'deleteLink('+(id-1)+')');
+	document.getElementById('formUpdate').submit();
 }
 
 function downLink(id) {
@@ -68,6 +69,7 @@ function downLink(id) {
 	$('#'+(id+1)+' img[alt=monter]').attr('onclick', 'upLink('+(id+1)+')');
 	$('#'+(id+1)+' img[alt=descendre]').attr('onclick', 'downLink('+(id+1)+')');
 	$('#'+(id+1)+' img[alt=supprimer]').attr('onclick', 'deleteLink('+(id+1)+')');
+	document.getElementById('formUpdate').submit();
 }
 
 function deleteLink(id) {

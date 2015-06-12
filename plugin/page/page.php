@@ -144,7 +144,22 @@ class page{
 	
 	public function del($obj){
 		if($obj->getIsHomepage() < 1 && $this->count() > 1){
-			if(@unlink($this->pagesFile.$obj->getId().'.txt')) return true;
+			foreach($this->items as $k=>$v){
+				if($v->getId() == $obj->getId()){
+					unset($this->items[$k]);
+				}
+			}
+			$pages = util::readJsonFile($this->pagesFile, true);
+			foreach($pages as $k=>$v){
+				if($v['id'] == $obj->getId()){
+					unset($pages[$k]);
+				}
+			}
+			if(util::writeJsonFile($this->pagesFile, $pages)){
+				$this->repairPositions($obj);
+				return true;
+			}
+			return false;
 		}
 		return false;
 	}

@@ -6851,9 +6851,7 @@ textarea.editor {
 html, body, .nav-left-off-canvas-menu, .inner-wrap, section[role="main"] {
     height: 100%;
 }
-.tabs a.active {
-	background-color: white;
-}    
+   
 a.about:hover {
     color: #333;	 
 } 
@@ -6875,3 +6873,12 @@ a.about:hover {
     text-align: center;
     border-radius: 50%;
 }
+
+.tabs a.active {
+	background-color: #ccc;
+    color: #222222;
+} 
+.tabs dd.active a,
+    .tabs .tab-title.active a {
+      background-color: #ccc;
+      color: #222222; }

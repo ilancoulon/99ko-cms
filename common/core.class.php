@@ -37,7 +37,7 @@ class core{
         $this->config = util::readJsonFile(DATA.'config.json', true);
         // Error reporting
         if($this->config['debug']) error_reporting(E_ALL);
-        else error_reporting(E_ALL ^ E_NOTICE);
+        else error_reporting(E_ERROR | E_PARSE);
         // Tableau des paramètres d'URL
         if($this->getConfigVal('urlRewriting') == 1){
             if(isset($_GET['param'])) $this->urlParams = explode(',', $_GET['param']);

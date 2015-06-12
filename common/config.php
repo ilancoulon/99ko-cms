@@ -1,5 +1,5 @@
 <?php
-define('VERSION', '2.0 b');
+define('VERSION', '2.0.1 b');
 define('COMMON',  ROOT.'common/');
 define('LANG', COMMON.'lang/');
 define('DATA', ROOT.'data/');

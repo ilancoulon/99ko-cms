@@ -51,6 +51,7 @@ switch($action){
 				$msgType = 'success';
 			}
 			@file_put_contents(ROOT.'.htaccess', str_replace('¶m', '&param', $_POST['htaccess']));
+			$pluginsManager->intiPluginsCache(array(), true);
 			header('location:index.php?p=configmanager&msg='.urlencode($msg).'&msgType='.$msgType);
 			die();
 		}

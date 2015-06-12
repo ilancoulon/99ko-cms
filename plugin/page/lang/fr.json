@@ -28,5 +28,6 @@
 	"Hide pages titles" : "Masquer les titres de page",
 	"An error occurred while saving the changes" : "Une erreur est survenue lors de l'enregistrement des modifications",
 	"The changes have been saved." : "Les modifications ont été enregistrées.",
-	"Meta title tag (optional)" : "Balise meta title (facultatif)"
+	"Meta title tag (optional)" : "Balise meta title (facultatif)",
+	"Link position on the menu" : "Position du lien dans le menu"
 }

@@ -73,7 +73,7 @@ elseif($core->detectAdminMode() == 'plugin'){
 		include_once(ROOT.'admin/header.php');
 		foreach($runPlugin->getAdminTemplate() as $k=>$v){
 			echo '<div class="tab" id="tab-'.$k.'">';
-			echo '<h3>'.$core->lang($runPlugin->getAdminTabs()[0]).'</h3>';
+			//echo '<h3>'.$core->lang($runPlugin->getAdminTabs()[$k]).'</h3>';
 			include_once($v);
 			echo '</div>';
 		}

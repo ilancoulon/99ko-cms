@@ -68,7 +68,7 @@
 	<?php if($changeOrder){ ?>
   <div class="row">
     <div class="large-6 columns">
-      <label><?php echo $core->lang("link position on the menu"); ?></label>
+      <label><?php echo $core->lang("Link position on the menu"); ?></label>
       <input type="text" name="position" value="<?php echo $pageItem->getPosition(); ?>" />
     </div>
   </div>

@@ -120,7 +120,7 @@ class util{
 
     public static function uploadFile($k, $dir, $name, $validations = array()){
     	if(isset($_FILES[$k]) && $_FILES[$k]['name'] != ''){
-    		$extension = mb_strtolower(utilGetFileExtension($_FILES[$k]['name']));
+    		$extension = mb_strtolower(util::getFileExtension($_FILES[$k]['name']));
     		if(isset($validations['extensions']) && !in_array($extension, $validations['extensions'])) return 'extension error';
     		$size = filesize($_FILES[$k]['tmp_name']);
     		if(isset($validations['size']) && $size > $validations['size']) return 'size error';
