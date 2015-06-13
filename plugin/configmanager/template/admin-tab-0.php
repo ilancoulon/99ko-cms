@@ -1,6 +1,6 @@
 <?php defined('ROOT') OR exit('No direct script access allowed'); ?>
 <br />
-<form id="configForm" method="post" action="index.php?p=configmanager&action=save">
+<form id="configForm" method="post" action="index.php?p=configmanager&action=save" autocomplete="off">
   <?php show::adminTokenField(); ?>
     
   <div class="row">

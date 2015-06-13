@@ -29,7 +29,7 @@ switch($action){
 			);
 			if(trim($_POST['adminPwd']) != ''){
 				if(trim($_POST['adminPwd']) == trim($_POST['adminPwd2'])) {
-					$config['adminPwd'] = encrypt(trim($_POST['adminPwd']));
+					$config['adminPwd'] = $administrator->encrypt(trim($_POST['adminPwd']));
 					$_SESSION['admin'] = $config['adminPwd'];
 				}
 				else $passwordError = true;
