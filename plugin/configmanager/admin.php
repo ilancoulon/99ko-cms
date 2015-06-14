@@ -17,7 +17,7 @@ switch($action){
 				'siteName' => (trim($_POST['siteName']) != '') ? trim($_POST['siteName']) : 'Démo',
 				'siteDescription' => (trim($_POST['siteDescription']) != '') ? trim($_POST['siteDescription']) : 'Un site propulsé par 99Ko',
 				'adminEmail' => trim($_POST['adminEmail']),
-				'siteUrl' => (trim($_POST['siteUrl']) != '') ? trim($_POST['siteUrl']) : getSiteUrl(),
+				'siteUrl' => (trim($_POST['siteUrl']) != '') ? trim($_POST['siteUrl']) : $core->getConfigVal('siteUrl'),
 				'theme' => $_POST['theme'],
 				'defaultPlugin' => $_POST['defaultPlugin'],
 				'urlRewriting' => (isset($_POST['urlRewriting'])) ? '1' : '0',
@@ -27,9 +27,9 @@ switch($action){
 				'debug' => (isset($_POST['debug'])) ? '1' : '0',
 				'defaultAdminPlugin' => $_POST['defaultAdminPlugin'],
 			);
-			if(trim($_POST['adminPwd']) != ''){
-				if(trim($_POST['adminPwd']) == trim($_POST['adminPwd2'])) {
-					$config['adminPwd'] = $administrator->encrypt(trim($_POST['adminPwd']));
+			if(trim($_POST['_adminPwd']) != ''){
+				if(trim($_POST['_adminPwd']) == trim($_POST['_adminPwd2'])) {
+					$config['adminPwd'] = $administrator->encrypt(trim($_POST['_adminPwd']));
 					$_SESSION['admin'] = $config['adminPwd'];
 				}
 				else $passwordError = true;
