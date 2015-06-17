@@ -28,9 +28,6 @@ include_once(COMMON.'plugin.class.php');
 include_once(COMMON.'show.class.php');
 include_once(COMMON.'administrator.class.php');
 
-$core = core::getInstance();
-$administrator = new administrator();
-
 /*
  *---------------------------------------------------------------
  * CHARGEMENT DE LA LANGUE (À DÉFINIR SUR LA PAGE D'INSTALLATION)
@@ -39,13 +36,17 @@ $administrator = new administrator();
 $langs_select = array('fr'=> 'French', 'en' => 'English');
 if (isset($_POST['submit_lang'])) { 
     $_SESSION['lang'] = isset($_POST['siteLang']) ? $_POST['siteLang'] : '';
-    $lang = util::readJsonFile(LANG. $_SESSION['lang'].'.json');
+    $lang = $_SESSION['lang'];
 } else {
 	$_SESSION['lang'] = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 	$lang = $_SESSION['lang'];
 }
+
+$core = new core($lang);
+$administrator = new administrator();
 $pluginsManager = pluginsManager::getInstance();
 $hooks = array();
+
 # Vérification que le fichier de configuration n'existe pas
 if(file_exists(DATA. 'config.json')) die($core->lang('Config file already exist !'));
 /*
