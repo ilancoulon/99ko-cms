@@ -9,8 +9,7 @@ function pageInstall(){
 		$pageItem->setName('Accueil');
 		$pageItem->setPosition(1);
 		$pageItem->setIsHomepage(1);
-		$pageItem->setContent('<p>L\'installation s\'est déroulée avec succès.<br />Vous pouvez maintenant vous connecter à l\'administration en utilisant le lien en bas de page et les informations de connexion qui vous ont été communiqués lors de l\'installation.</p>
-<p>N\'oubliez pas de modifier vos informations de connexion et de supprimer le fichier install de votre FTP.</p>');
+		$pageItem->setContent('<p>L\'installation s\'est déroulée avec succès !<br>Rendez-vous sur le site officiel de 99ko pour télécharger des plugins et des thèmes.</p>');
 		$pageItem->setIsHidden(0);
 		$pageItem->setFile('home.php');
 		$page->save($pageItem);
@@ -28,7 +27,9 @@ function pageInstall(){
 		$pageItem->setName('Texte support');
 		$pageItem->setPosition(3);
 		$pageItem->setIsHomepage(0);
-		$pageItem->setContent("<p>Téléchargez une version plus récente, des plugins et des thèmes sur le site officiel<br>En cas de problème avec 99ko, rendez-vous sur le forum d'entraide.</p>");
+		$pageItem->setContent('<p style="padding:15px;background:#f7f7f7;">Site officiel : <a href="http://99ko.hellojo.fr/">http://99ko.hellojo.fr/</a><br>
+Forum : <a href="http://99ko.hellojo.fr/forum/">http://99ko.hellojo.fr/forum/</a><br>
+Page Facebook : <a href="https://www.facebook.com/pages/99ko-CMS/791174950978461">https://www.facebook.com/pages/99ko-CMS/791174950978461</a></p>');
 		$pageItem->setIsHidden(1);
 		$pageItem->setFile('');
 		$page->save($pageItem);

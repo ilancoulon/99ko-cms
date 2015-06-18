@@ -3,6 +3,7 @@ $(document).ready(function(){
         if($('#advancedConfiguration').css('display') == 'none') $('#advancedConfiguration').show();
         else $('#advancedConfiguration').hide();
     });
+    $('.configmanager-admin input[type=password]').attr('value', '');
 });
 function updateHtaccess(rewriteBase){
         var checked = $('#urlRewriting')[0].checked;

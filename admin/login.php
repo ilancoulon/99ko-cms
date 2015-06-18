@@ -2,13 +2,15 @@
 <!--[if IE 9]><html class="lt-ie10" lang="<?php show::siteLang(); ?>" > <![endif]-->
 <html class="no-js" lang="<?php show::siteLang(); ?>">
   <head>
+	<?php eval($core->callHook('adminHead')); ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8">	
 	<title>99ko - <?php echo $core->lang('Login'); ?></title>	
-	<link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="assets/favicon.gif" type="image/x-icon">
 	<?php show::linkTags(); ?>
 	<link rel="stylesheet" href="assets/css/99ko.css" media="all">
-	<?php show::scriptTags(); ?>	
+	<?php show::scriptTags(); ?>
+	<?php eval($core->callHook('endAdminHead')); ?>	
   </head>
   
   <body class="antialiased hide-extras">
@@ -43,7 +45,7 @@
               <div class="row">
                  <div class="large-12 columns">
                        <ul class="button-group radius">
-			<li><a href="../" class="button alert"><?php echo $core->lang('Back to website'); ?></a></li>
+			<li><a href="../" class="button alert"><?php echo $core->lang('Quit'); ?></a></li>
 			<li><button type="submit" class="button success"><?php echo $core->lang('Go'); ?></button></li>
 		       </ul>
                  </div>
@@ -59,5 +61,6 @@
   </div><!-- /.row --> 
   
     <script src="assets/js/scripts.js"></script>
+	<?php eval($core->callHook('endAdminBody')); ?>
 </body>
 </html>
