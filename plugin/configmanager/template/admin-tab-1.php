@@ -10,6 +10,7 @@
   <div class="row">
     <div class="large-6 columns">
       <label><?php echo $core->lang("New admin password"); ?></label>
+      <input type="password" name="adminPwd" value="" autocomplete="off" style="display: none;" />
       <input type="password" name="_adminPwd" value="" autocomplete="off" />
     </div>
     <div class="large-6 columns">

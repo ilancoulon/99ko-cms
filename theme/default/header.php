@@ -23,9 +23,11 @@
 	</div>
 	<div id="body">
 		<div id="sidebar">
+			<?php eval($core->callHook('sidebar')); ?>
 			<ul id="navigation">
 				<?php show::mainNavigation(); ?>
 			</ul>
+			<?php eval($core->callHook('endSidebar')); ?>
 		</div>
 		<div id="content" class="<?php show::pluginId(); ?>">
 			<?php show::mainTitle(); ?>

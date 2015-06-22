@@ -31,6 +31,8 @@ class core{
     
     ## Constructeur
     public function __construct($forceLang = ''){
+        // Timezone
+        date_default_timezone_set(date_default_timezone_get());
         // Macgic quotes OFF
         util::setMagicQuotesOff();
         // Configuration
