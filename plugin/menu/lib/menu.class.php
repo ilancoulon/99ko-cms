@@ -1,31 +1,32 @@
 <?php
 
 class menu {
-	public static function createLink($label, $url, $plugin, $target = '_self') {
+	public static function createLink($label, $url, $plugin, $target = '_self', $parent = '') {
 		$newlink = new menuLink();
 
 		$newlink->setLabel($label);
 		$newlink->setUrl($url);
 		$newlink->setTarget($target);
 		$newlink->setPlugin($plugin);
+		$newlink->setParent($parent);
 
 		$newlink->save();
-		
+
 		return $newlink;
 	}
-	
+
 	public static function getLinks($plugin = '') {
 		$links = array();
 
 		if ($plugin == '') {
 			$index = util::readJsonFile(MENU_LINKS.'index.json');
-		
+
 			foreach ($index['links'] as $link) {
 				$links[] = new menuLink($link['id']);
 			}
 		} else {
 			$index = util::readJsonFile(MENU_LINKS.'index.json');
-		
+
 			foreach ($index['links'] as $link) {
 				if ($link['plugin'] == $plugin) {
 					$links[] = new menuLink($link['id']);
@@ -35,11 +36,11 @@ class menu {
 
 		return $links;
 	}
-	
+
 	public static function getMenu() {
 		return util::readJsonFile(MENU_DATAPATH.'menu.json');
 	}
-	
+
 	public static function deleteLink($link) {
 		if (is_file(MENU_LINKS.$link->getId().'.json')) {
 			unlink(MENU_LINKS.$link->getId().'.json');
@@ -57,25 +58,26 @@ class menu {
 
 		util::writeJsonFile(MENU_LINKS.'index.json', $index);
 	}
-	
-	public static function updateLink($id, $label, $url, $plugin, $target = '_self') {
+
+	public static function updateLink($id, $label, $url, $plugin, $target = '_self', $parent = '') {
 		$link = new menuLink($id);
 
 		$link->setLabel($label);
 		$link->setUrl($url);
 		$link->setTarget($target);
 		$link->setPlugin($plugin);
+		$link->setParent($parent);
 
 		$link->save();
-		
+
 		return $link;
 	}
-	
+
 	public static function updateLinks($plugin, $links) {
 		$currentlinks = menu::getLinks($plugin);
 		$newlinks = array();
 		$changed = false;
-		
+
 		foreach ($links as $link) {
 			$new = true;
 			$id = -1;
@@ -104,34 +106,34 @@ class menu {
 				unset($currentlinks[$id]);
 			}
 		}
-		
+
 		foreach ($currentlinks as $currentlink) {
 			menu::deleteLink($currentlink);
 			$changed = true;
 		}
-		
+
 		menu::saveLinks($plugin, $newlinks);
-		
+
 		return $changed;
 	}
-	
+
 	public static function saveLinks($plugin, $links) {
 		$index = util::readJsonFile(MENU_LINKS.'index.json');
-		
+
 		foreach ($links as $link) {
 			$index['links'][] = array(
 				'id' => $link->getId(),
 				'plugin' => $plugin
 			);
 		}
-		
+
 		util::writeJsonFile(MENU_LINKS.'index.json', $index);
 	}
-	
+
 	public static function saveMenu() {
 		$index = util::readJsonFile(MENU_LINKS.'index.json');
 		$menu = array();
-		
+
 		foreach ($index['links'] as $link) {
 			$link = new menuLink($link['id']);
 			$menu[] = array(
@@ -140,7 +142,7 @@ class menu {
 				'target' => $link->getTarget()
 			);
 		}
-		
+
 		util::writeJsonFile(MENU_DATAPATH.'menu.json', $menu);
 	}
 }

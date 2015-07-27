@@ -6,7 +6,8 @@ class menuLink {
 	private $url;
 	private $target;
 	private $plugin;
-	
+	private $parent;
+
 	public function __construct($id = -1) {
 		$this->id = $id;
 
@@ -15,6 +16,7 @@ class menuLink {
 			$this->url = '';
 			$this->target = '_self';
 			$this->plugin = '';
+			$this->parent = '';
 		} else {
 			$link = util::readJsonFile(MENU_LINKS.$id.'.json');
 
@@ -24,7 +26,7 @@ class menuLink {
 			$this->plugin = $link['plugin'];
 		}
 	}
-	
+
 	public function getId() {
 		return $this->id;
 	}
@@ -44,7 +46,11 @@ class menuLink {
 	public function getPlugin() {
 		return $this->plugin;
 	}
-	
+
+	public function getParent() {
+		return $this->parent;
+	}
+
 	public function setLabel($label) {
 		$this->label = trim($label);
 	}
@@ -60,22 +66,27 @@ class menuLink {
 	public function setPlugin($plugin) {
 		$this->plugin = trim($plugin);
 	}
-	
+
+	public function setParent($parent) {
+		$this->parent = trim($parent);
+	}
+
 	public function save() {
 		$link = array(
 			'label' => $this->label,
 			'url' => $this->url,
 			'target' => $this->target,
-			'plugin' => $this->plugin
+			'plugin' => $this->plugin,
+			'parent' => $this->parent
 		);
-		
+
 		if ($this->id == -1) {
 			$index = util::readJsonFile(MENU_LINKS.'index.json');
 			$this->id = $index['current'];
 			$index['current'] += 1;
 			util::writeJsonFile(MENU_LINKS.'index.json', $index);
 		}
-		
+
 		return util::writeJsonFile(MENU_LINKS.$this->id.'.json', $link);
 	}
 }

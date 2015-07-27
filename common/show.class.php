@@ -185,17 +185,29 @@ class show{
 	$core = core::getInstance();
      	$data = '';
      	eval($core->callHook('startShowMainNavigation'));
-     	foreach($pluginsManager->getPlugins() as $k=>$plugin) if($plugin->getConfigval('activate') == 1){
-     		foreach($plugin->getNavigation() as $k2=>$item){
-     			$temp = $format;
-     			$temp = str_replace('[target]', $item['target'], $temp);
-     			$temp = str_replace('[label]', $item['label'], $temp);
-     			$temp = str_replace('[targetAttribut]', $item['targetAttribut'], $temp);
-     			$data.= $temp;
-     		}
-     	}
-     	eval($core->callHook('endShowMainNavigation'));
-     	echo $data;
+         $filesdf=file_exists(THEMES. $core->getConfigVal('theme').'/overrided_templates/menu.php');
+         if (file_exists(THEMES. $core->getConfigVal('theme').'/overrided_templates/menu.php')) {
+             $menuItems = array();
+             foreach($pluginsManager->getPlugins() as $k=>$plugin) if($plugin->getConfigval('activate') == 1){
+                 foreach($plugin->getNavigation() as $k2=>$item){
+                     $menuItems[] = $item;
+                 }
+             }
+
+             include(THEMES. $core->getConfigVal('theme').'/overrided_templates/menu.php');
+         } else {
+             foreach($pluginsManager->getPlugins() as $k=>$plugin) if($plugin->getConfigval('activate') == 1){
+                 foreach($plugin->getNavigation() as $k2=>$item){
+                     $temp = $format;
+                     $temp = str_replace('[target]', $item['target'], $temp);
+                     $temp = str_replace('[label]', $item['label'], $temp);
+                     $temp = str_replace('[targetAttribut]', $item['targetAttribut'], $temp);
+                     $data.= $temp;
+                 }
+             }
+             echo $data;
+         }
+        eval($core->callHook('endShowMainNavigation'));
      }
 
      // affiche le theme courant (theme)
